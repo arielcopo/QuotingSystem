@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clients - Builders Signs</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* === Global Reset & Variables === */
+        :root {
+            --text-main: #171717;
+            --text-sub: #525252;
+            --text-light: #737373;
+            --bg-body: #FFFFFF;
+            --bg-gray: #FAFAFA;
+            --border-light: #E5E5E5;
+            --border-dark: #D4D4D4;
+            --brand-yellow: #FFCC00;
+            --brand-dark: #332900;
+            --brand-red: #DC2626;
+            --icon-green: #16A34A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button, input { font-family: inherit; outline: none; border: none; background: none; }
+        button { cursor: pointer; }
+
+        /* === Layout Containers === */
+        .container { max-width: 1440px; margin: 0 auto; padding: 0 40px; }
+
+        /* === Header === */
+        .header { border-bottom: 1px solid var(--border-light); background: var(--bg-body); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; height: 72px; }
+        .nav-left { display: flex; align-items: center; gap: 32px; }
+        .logo { height: 30px; width: auto; }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: var(--text-main); font-size: 28px; cursor: pointer; }
+        .main-nav { display: flex; align-items: center; gap: 20px; }
+        .nav-item { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--text-main); padding-bottom: 2px; border-bottom: 1px solid transparent; }
+        .nav-item i { font-size: 20px; }
+        .nav-item.active { border-bottom-color: var(--text-main); border-bottom: 1px dashed var(--text-main); }
+        
+        .nav-right { display: flex; align-items: center; gap: 12px; }
+        .global-search { display: flex; align-items: center; gap: 8px; padding: 6px 14px; border: 1px solid var(--border-dark); border-radius: 8px; width: 187px; height: 30px; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05); }
+        .global-search input { font-size: 12px; color: var(--text-main); width: 100%; }
+        .global-search input::placeholder { color: var(--text-light); }
+        .divider-vertical { width: 1px; height: 30px; background-color: var(--border-light); }
+        
+        .user-profile { display: flex; align-items: center; gap: 8px; position: relative; cursor: pointer; }
+        .user-avatar { width: 30px; height: 30px; border-radius: 50%; background-color: var(--brand-yellow); }
+        .user-info { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+
+        /* === Dropdown Global === */
+        .dropdown-wrapper { position: relative; }
+        .dropdown-menu {
+            display: none; position: absolute; top: calc(100% + 4px); left: 0; background: var(--bg-body);
+            border: 1px solid var(--border-dark); border-radius: 8px; box-shadow: 0px 12px 16px -4px rgba(0, 0, 0, 0.08);
+            z-index: 100; min-width: 100%; padding: 4px 0;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-item { padding: 8px 14px; font-size: 12px; color: var(--text-main); display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .dropdown-item:hover { background: var(--bg-gray); }
+
+        /* === Main Content === */
+        .main-content { margin-top: 32px; padding-bottom: 64px; display: flex; flex-direction: column; }
+
+        /* === Toolbar === */
+        .toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; margin-bottom: 20px; }
+        .toolbar-left, .toolbar-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        
+        .page-search-wrapper { display: flex; align-items: center; border: 1px solid var(--border-dark); border-radius: 8px; padding: 6px 14px; width: 250px; height: 30px; background: white; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05); }
+        .page-search-wrapper input { width: 100%; font-size: 12px; color: var(--text-main); }
+        .page-search-wrapper input::placeholder { color: var(--text-light); }
+        
+        .btn { display: inline-flex; justify-content: center; align-items: center; height: 30px; padding: 0 12px; border-radius: 8px; font-size: 14px; font-weight: 500; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05); transition: opacity 0.2s; white-space: nowrap; }
+        .btn:hover { opacity: 0.9; }
+        .btn-outline { background: var(--bg-gray); border: 1px solid var(--border-light); color: var(--text-main); }
+        .btn-primary { background: var(--brand-yellow); color: var(--brand-dark); }
+
+        /* === Tabs === */
+        .tabs-container { display: flex; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-dark); width: fit-content; margin-bottom: 20px; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05); }
+        .tab-btn { padding: 6px 16px; font-size: 12px; font-weight: 600; color: #404040; background: white; border-right: 1px solid var(--border-dark); height: 30px; }
+        .tab-btn:last-child { border-right: none; }
+        .tab-btn.active { background: var(--brand-yellow); color: #262626; }
+
+        /* === Table Elements === */
+        .table-wrapper { width: 100%; background: white; border: 1px solid var(--border-light); border-radius: 16px; box-shadow: 0px 1px 2px rgba(0,0,0,0.05); overflow: hidden; }
+        .data-table { width: 100%; border-collapse: collapse; text-align: left; table-layout: auto; }
+        
+        .data-table th { background: var(--bg-gray); padding: 18px; font-size: 12px; font-weight: 600; color: var(--text-sub); border-bottom: 1px solid var(--border-light); white-space: nowrap; }
+        .data-table th i { vertical-align: middle; margin-left: 4px; font-size: 14px; }
+        
+        .data-table td { padding: 18px; font-size: 12px; font-weight: 400; color: var(--text-sub); border-bottom: 1px solid var(--border-light); white-space: nowrap; }
+        .data-table tr:last-child td { border-bottom: none; }
+
+        /* Desktop Precise Gaps & Padding */
+        @media (min-width: 1025px) {
+            .data-table th:first-child, .data-table td:first-child {
+                padding-left: 18px;
+                padding-right: 0;
+                width: 38px; /* 18px left padding + 20px checkbox width */
+            }
+            .data-table th:nth-child(2), .data-table td:nth-child(2) {
+                padding-left: 14px; /* Exactly 14px gap from checkbox */
+                padding-right: Auto; /* Exactly 50px gap to the First Name / Email */
+            }
+            .data-table th:nth-child(3), .data-table td:nth-child(3) {
+                padding-left: 0;
+            }
+            .data-table th:last-child, .data-table td:last-child {
+                padding-right: 18px;
+                text-align: right;
+            }
+        }
+        
+        .td-strong { font-weight: 600; }
+        .td-email { font-weight: 600; }
+
+        .sortable { cursor: pointer; user-select: none; transition: color 0.2s; }
+        .sortable:hover { color: var(--brand-dark); }
+        
+        /* Refined Figma Checkbox */
+        .figma-checkbox { display: inline-flex; align-items: center; justify-content: center; position: relative; cursor: pointer; width: 20px; height: 20px; }
+        .figma-checkbox input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+        .figma-checkbox .checkmark { position: absolute; top: 0; left: 0; height: 20px; width: 20px; background-color: white; border: 1px solid var(--border-dark); border-radius: 6px; transition: all 0.15s ease-in-out; display: flex; align-items: center; justify-content: center; }
+        .figma-checkbox input:checked ~ .checkmark { border: 1px solid var(--brand-dark); background-color: white; }
+        .figma-checkbox input:checked ~ .checkmark::after { content: ""; display: block; width: 14px; height: 14px; background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11.6654 3.5L5.2487 9.91667L2.33203 7' stroke='%23332900' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; }
+
+        /* Actions Cell */
+        .actions-cell { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+        .action-group { display: flex; border: 1px solid var(--border-dark); border-radius: 8px; overflow: hidden; box-shadow: 0px 1px 2px rgba(0,0,0,0.05); }
+        .action-group button { background: white; padding: 6px 12px; font-size: 12px; font-weight: 600; color: #404040; border-right: 1px solid var(--border-dark); height: 30px; transition: background 0.2s; }
+        .action-group button:hover { background: var(--bg-gray); }
+        .action-group button:last-child { border-right: none; }
+        
+        .icon-btn { display: inline-flex; justify-content: center; align-items: center; padding: 4px; border-radius: 4px; transition: background 0.2s; }
+        .icon-btn:hover { background: var(--bg-gray); }
+        .icon-btn i { font-size: 18px; }
+        .text-green { color: var(--icon-green); }
+        .text-red { color: var(--brand-red); }
+
+        /* Responsive Stacking Table */
+        @media (max-width: 1024px) {
+            .table-wrapper { background: transparent; border: none; box-shadow: none; border-radius: 0; }
+            .data-table thead { display: none; }
+            .data-table, .data-table tbody, .data-table tr, .data-table td { display: block; width: 100%; }
+            .data-table tr { margin-bottom: 16px; border: 1px solid var(--border-light); border-radius: 12px; padding: 18px; background: white; box-shadow: 0px 1px 2px rgba(0,0,0,0.05); }
+            .data-table td { display: flex; justify-content: space-between; align-items: center; text-align: right; padding: 10px 0; border-bottom: 1px dashed var(--border-light); white-space: normal; }
+            .data-table tr td:last-child { border-bottom: none; padding-bottom: 0; }
+            .data-table tr td:first-child { padding-top: 0; }
+            .data-table td::before { content: attr(data-label); font-weight: 600; color: var(--text-light); text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; }
+            .data-table td.checkbox-cell { justify-content: flex-start; border-bottom: none; padding: 0 0 10px 0; }
+            .data-table td.checkbox-cell::before { display: none; }
+            .actions-cell { width: 100%; justify-content: flex-end; }
+        }
+
+        /* === Pagination === */
+        .pagination-area { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; flex-wrap: wrap; gap: 16px; }
+        .page-info-box { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-sub); }
+        .per-page-btn { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 83px; height: 30px; padding: 0 14px; background: white; border: 1px solid var(--border-dark); border-radius: 8px; box-shadow: 0px 1px 2px rgba(0,0,0,0.05); font-size: 12px; color: var(--text-light); }
+        
+        .page-controls { display: flex; align-items: center; border: 1px solid var(--border-dark); border-radius: 8px; background: white; box-shadow: 0px 1px 2px rgba(0,0,0,0.05); overflow: hidden; height: 30px; }
+        .page-btn { display: flex; justify-content: center; align-items: center; min-width: 40px; height: 100%; border-right: 1px solid var(--border-dark); font-size: 14px; font-weight: 500; color: #404040; transition: background 0.2s; }
+        .page-btn:last-child { border-right: none; }
+        .page-btn:hover:not(:disabled) { background: var(--bg-gray); }
+        .page-btn.active { background: var(--bg-gray); color: #262626; }
+        .page-btn i { font-size: 16px; color: #404040; }
+        .page-btn:disabled i { color: var(--border-dark); }
+
+        /* Header Responsiveness */
+        @media (max-width: 1024px) {
+            .header-inner { flex-direction: column; height: auto; padding: 16px 40px; gap: 0; align-items: stretch; }
+            .nav-left { width: 100%; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+            .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
+            .main-nav { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 16px; padding-top: 16px; padding-bottom: 16px; border-top: 1px solid var(--border-light); }
+            .main-nav.show { display: flex; }
+            .nav-right { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 16px; padding-top: 0; margin-top: 0; }
+            .nav-right.show { display: flex; }
+            .global-search, .global-search input { width: 100%; }
+            .divider-vertical { display: none; }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+            .toolbar { flex-direction: column; align-items: flex-start; }
+            .toolbar-left { width: 100%; }
+            .page-search-wrapper { flex-grow: 1; }
+            .pagination-area { justify-content: center; flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container header-inner">
+        <div class="nav-left">
+            <a href="dashboard.html">
+                <img src="https://builderssigns.com.au/wp-content/uploads/2026/06/Dark-and-Yellow-Landscape-2.svg" alt="Builders Signs" class="logo">
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu"><i class="ph ph-list"></i></button>
+            <nav class="main-nav" id="main-nav">
+                <a href="dashboard.html" class="nav-item"><i class="ph ph-chart-bar"></i> Dashboard</a>
+                <a href="proposal.html" class="nav-item"><i class="ph ph-envelope-simple"></i> Proposal</a>
+                <a href="clients.html" class="nav-item active"><i class="ph ph-users"></i> Clients</a>
+                <a href="#" class="nav-item"><i class="ph ph-layout"></i> Templates</a>
+                <a href="#" class="nav-item"><i class="ph ph-squares-four"></i> Themes</a>
+                <a href="#" class="nav-item"><i class="ph ph-gear"></i> Accounts</a>
+            </nav>
+        </div>
+        <div class="nav-right" id="nav-right">
+            <div class="global-search"><input type="text" placeholder="Search..."></div>
+            <div class="divider-vertical"></div>
+            <div class="dropdown-wrapper">
+                <div class="user-profile" data-dropdown-toggle="user-dropdown">
+                    <div class="user-avatar"></div>
+                    <div class="user-info">
+                        <span>Marcus Bawden</span>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                </div>
+                <div class="dropdown-menu" id="user-dropdown">
+                    <div class="dropdown-item">My Profile</div>
+                    <div class="dropdown-item">Logout</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container main-content">
+
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <div class="page-search-wrapper">
+                <input type="text" id="searchInput" placeholder="Name, Client Email, Code...">
+            </div>
+            <button class="btn btn-outline" onclick="triggerSearch()">Search</button>
+        </div>
+        
+        <div class="toolbar-right">
+            <button class="btn btn-outline">Export All Clients</button>
+            <button class="btn btn-primary">New Person</button>
+            <button class="btn btn-primary">New Company</button>
+        </div>
+    </div>
+
+    <div class="tabs-container">
+        <button class="tab-btn active" data-tab="people" onclick="switchTab('people')">People</button>
+        <button class="tab-btn" data-tab="companies" onclick="switchTab('companies')">Companies</button>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="data-table" id="dataTable">
+            <thead id="tableHead">
+                <!-- Injected by JS -->
+            </thead>
+            <tbody id="tableBody">
+                <!-- Injected by JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination-area">
+        <div class="page-info-box">
+            <span id="pageTextInfo">Displaying people 1-15 of 1563 in total | per page:</span>
+            
+            <div class="dropdown-wrapper">
+                <button class="per-page-btn" data-dropdown-toggle="perPageDropdown">
+                    <span id="perPageValue">15</span> <i class="ph ph-caret-down"></i>
+                </button>
+                <div class="dropdown-menu" id="perPageDropdown" style="min-width: 83px;">
+                    <div class="dropdown-item" onclick="setPerPage(15)">15</div>
+                    <div class="dropdown-item" onclick="setPerPage(30)">30</div>
+                    <div class="dropdown-item" onclick="setPerPage(60)">60</div>
+                    <div class="dropdown-item" onclick="setPerPage(100)">100</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-controls" id="paginationControls">
+            <!-- Injected by JS -->
+        </div>
+    </div>
+
+</main>
+
+<script>
+    // === Data Arrays ===
+    
+    // Updated base data with randomized 1-5 proposals count
+    const basePeopleData = [
+        { company: "Launceston Festival of Dance", firstName: "Jordan", lastName: "Dearsley", email: "launcestonfestivalofdance@gmail.com", phone: "0417038265", proposals: 4, created: "14 hours ago" },
+        { company: "Sunshine Coast Lightning", firstName: "Emily", lastName: "Walo", email: "lokeeffe@sunshinecoastlightning.com.au", phone: "0417034665", proposals: 1, created: "18 hours ago" },
+        { company: "St. Mary's College", firstName: "Karen", lastName: "Ardels", email: "barnesp@stmaryscollege.com", phone: "0417078995", proposals: 5, created: "21 hours ago" },
+        { company: "Blacktown City Council", firstName: "Mako", lastName: "Wiko", email: "Emily.Vella@blacktown.nsw.gov.au", phone: "0417039999", proposals: 2, created: "Friday at 10:42" },
+        { company: "Tas Recycle", firstName: "Martin", lastName: "Luther", email: "matt.eiszele@tasrecycle.com.au", phone: "0417046567", proposals: 3, created: "Friday at 08:18" },
+        { company: "Jagger and Stone", firstName: "Anna", lastName: "Ayoh", email: "ellie@jaggerandstone.com", phone: "0416786785", proposals: 4, created: "Thursday at 10:02" },
+        { company: "Day for it", firstName: "Nalo", lastName: "Chita", email: "hello@dayforit.biz", phone: "0417696755", proposals: 1, created: "Thursday at 09:09" },
+        { company: "Iss Facility Services", firstName: "Parky", lastName: "Loki", email: "stefania.cardenas@au.issworld.com", phone: "0417097895", proposals: 5, created: "Wednesday at 15:16" },
+        { company: "Powercor", firstName: "Nathan", lastName: "Tio", email: "nvanovic@powercor.com.au", phone: "0417897899", proposals: 2, created: "on Aug 18" }
+    ];
+
+    const baseCompanyData = [
+        { businessName: "Launceston Festival of Dance", email: "launcestonfestivalofdance@gmail.com", phone: "0417038265", proposals: 3, created: "14 hours ago" },
+        { businessName: "Sunshine Coast Lightning", email: "lokeeffe@sunshinecoastlightning.com.au", phone: "0417034665", proposals: 1, created: "18 hours ago" },
+        { businessName: "St. Mary's College", email: "barnesp@stmaryscollege.com", phone: "0417078995", proposals: 5, created: "21 hours ago" },
+        { businessName: "Blacktown City Council", email: "Emily.Vella@blacktown.nsw.gov.au", phone: "0417039999", proposals: 2, created: "Friday at 10:42" },
+        { businessName: "Tas Recycle", email: "matt.eiszele@tasrecycle.com.au", phone: "0417046567", proposals: 4, created: "Friday at 08:18" },
+        { businessName: "Jagger and Stone", email: "ellie@jaggerandstone.com", phone: "0416786785", proposals: 3, created: "Thursday at 10:02" },
+        { businessName: "Day for it", email: "hello@dayforit.biz", phone: "0417696755", proposals: 1, created: "Thursday at 09:09" },
+        { businessName: "Iss Facility Services", email: "stefania.cardenas@au.issworld.com", phone: "0417097895", proposals: 5, created: "Wednesday at 15:16" },
+        { businessName: "Powercor", email: "nvanovic@powercor.com.au", phone: "0417897899", proposals: 2, created: "on Aug 18" }
+    ];
+
+    let peopleData = [];
+    let companyData = [];
+    for(let i=0; i<6; i++) {
+        peopleData = peopleData.concat(basePeopleData);
+        companyData = companyData.concat(baseCompanyData);
+    }
+
+    // === State Variables ===
+    let currentTab = 'people';
+    let sourceData = peopleData;
+    let filteredData = [...sourceData];
+    let currentPage = 1;
+    let itemsPerPage = 15;
+    const totalSimulatedCount = 1563; 
+    
+    // Sorting States
+    let sortColumn = '';
+    let sortAscending = true;
+
+    // === DOM Elements ===
+    const searchInput = document.getElementById('searchInput');
+    const tableHead = document.getElementById('tableHead');
+    const tableBody = document.getElementById('tableBody');
+    const pageTextInfo = document.getElementById('pageTextInfo');
+    const paginationControls = document.getElementById('paginationControls');
+    const perPageValue = document.getElementById('perPageValue');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+
+    // === Core Functions ===
+
+    function switchTab(tab) {
+        currentTab = tab;
+        tabBtns.forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
+        
+        sourceData = (tab === 'people') ? peopleData : companyData;
+        
+        // Reset Search, Sort, & Page
+        searchInput.value = '';
+        sortColumn = '';
+        sortAscending = true;
+        currentPage = 1;
+        triggerSearch();
+    }
+
+    function setPerPage(num) {
+        itemsPerPage = num;
+        perPageValue.innerText = num;
+        currentPage = 1;
+        document.getElementById('perPageDropdown').classList.remove('show');
+        renderTable();
+    }
+
+    function changePage(page) {
+        const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+        if (page < 1 || page > totalPages) return;
+        currentPage = page;
+        renderTable();
+    }
+
+    function handleSort(column) {
+        if (sortColumn === column) {
+            sortAscending = !sortAscending;
+        } else {
+            sortColumn = column;
+            sortAscending = true;
+        }
+        triggerSearch(); // Re-apply search/sort and render
+    }
+
+    function triggerSearch() {
+        const query = searchInput.value.toLowerCase().trim();
+        
+        // 1. Filter
+        filteredData = sourceData.filter(item => {
+            if (currentTab === 'people') {
+                return item.firstName.toLowerCase().includes(query) || 
+                       item.lastName.toLowerCase().includes(query) || 
+                       item.email.toLowerCase().includes(query) ||
+                       item.company.toLowerCase().includes(query);
+            } else {
+                return item.businessName.toLowerCase().includes(query) || 
+                       item.email.toLowerCase().includes(query);
+            }
+        });
+        
+        // 2. Sort
+        if (sortColumn) {
+            filteredData.sort((a, b) => {
+                let valA = a[sortColumn];
+                let valB = b[sortColumn];
+                
+                if (typeof valA === 'string') valA = valA.toLowerCase();
+                if (typeof valB === 'string') valB = valB.toLowerCase();
+                
+                if (valA < valB) return sortAscending ? -1 : 1;
+                if (valA > valB) return sortAscending ? 1 : -1;
+                return 0;
+            });
+        }
+        
+        currentPage = 1;
+        renderTable();
+    }
+
+    searchInput.addEventListener('input', triggerSearch);
+
+    function getSortIcon(columnName) {
+        if (sortColumn === columnName) {
+            return sortAscending ? '<i class="ph ph-caret-up"></i>' : '<i class="ph ph-caret-down"></i>';
+        }
+        return '<i class="ph ph-caret-down" style="color: #A3A3A3;"></i>';
+    }
+
+    function renderTable() {
+        // Build Headers
+        let headHTML = '';
+        if (currentTab === 'people') {
+            headHTML = `
+                <tr>
+                    <th class="checkbox-cell">
+                        <label class="figma-checkbox"><input type="checkbox"><span class="checkmark"></span></label>
+                    </th>
+                    <th>Company</th>
+                    <th class="sortable" onclick="handleSort('firstName')">First Name ${getSortIcon('firstName')}</th>
+                    <th class="sortable" onclick="handleSort('lastName')">Last Name ${getSortIcon('lastName')}</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th class="sortable" onclick="handleSort('proposals')">Proposals ${getSortIcon('proposals')}</th>
+                    <th class="sortable" onclick="handleSort('created')">Created ${getSortIcon('created')}</th>
+                    <th>Actions</th>
+                </tr>
+            `;
+        } else {
+            headHTML = `
+                <tr>
+                    <th class="checkbox-cell">
+                        <label class="figma-checkbox"><input type="checkbox"><span class="checkmark"></span></label>
+                    </th>
+                    <th class="sortable" onclick="handleSort('businessName')">Business Name ${getSortIcon('businessName')}</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th class="sortable" onclick="handleSort('proposals')">Proposals ${getSortIcon('proposals')}</th>
+                    <th class="sortable" onclick="handleSort('created')">Created ${getSortIcon('created')}</th>
+                    <th>Actions</th>
+                </tr>
+            `;
+        }
+        tableHead.innerHTML = headHTML;
+
+        // Determine slice
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginatedItems = filteredData.slice(startIndex, endIndex);
+
+        // Build Body Rows
+        let bodyHTML = '';
+        if (paginatedItems.length === 0) {
+            bodyHTML = `<tr><td colspan="9" style="text-align:center;">No results found.</td></tr>`;
+        } else {
+            paginatedItems.forEach(item => {
+                if (currentTab === 'people') {
+                    bodyHTML += `
+                        <tr>
+                            <td class="checkbox-cell" data-label=""><label class="figma-checkbox"><input type="checkbox"><span class="checkmark"></span></label></td>
+                            <td data-label="Company">${item.company}</td>
+                            <td data-label="First Name" class="td-strong">${item.firstName}</td>
+                            <td data-label="Last Name" class="td-strong">${item.lastName}</td>
+                            <td data-label="Email" class="td-email">${item.email}</td>
+                            <td data-label="Phone">${item.phone}</td>
+                            <td data-label="Proposals">${item.proposals}</td>
+                            <td data-label="Created">${item.created}</td>
+                            <td data-label="Actions">
+                                <div class="actions-cell">
+                                    <div class="action-group">
+                                        <button>Edit</button>
+                                        <button>Edit Company</button>
+                                    </div>
+                                    <button class="icon-btn"><i class="ph ph-file-plus text-green"></i></button>
+                                    <button class="icon-btn"><i class="ph ph-trash text-red"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    bodyHTML += `
+                        <tr>
+                            <td class="checkbox-cell" data-label=""><label class="figma-checkbox"><input type="checkbox"><span class="checkmark"></span></label></td>
+                            <td data-label="Business Name">${item.businessName}</td>
+                            <td data-label="Email" class="td-email">${item.email}</td>
+                            <td data-label="Phone">${item.phone}</td>
+                            <td data-label="Proposals">${item.proposals}</td>
+                            <td data-label="Created">${item.created}</td>
+                            <td data-label="Actions">
+                                <div class="actions-cell">
+                                    <div class="action-group">
+                                        <button>Edit</button>
+                                    </div>
+                                    <button class="icon-btn"><i class="ph ph-trash text-red"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }
+            });
+        }
+        tableBody.innerHTML = bodyHTML;
+
+        // Render Pagination
+        renderPagination(startIndex, endIndex);
+    }
+
+    function renderPagination(startIndex, endIndex) {
+        const currentCount = filteredData.length;
+        const displayStart = currentCount === 0 ? 0 : startIndex + 1;
+        const displayEnd = Math.min(endIndex, currentCount);
+        
+        const tabLabel = currentTab === 'people' ? 'people' : 'companies';
+        pageTextInfo.innerHTML = `Displaying ${tabLabel} ${displayStart}-${displayEnd} of ${totalSimulatedCount} in total | per page:`;
+
+        const totalPages = Math.ceil(currentCount / itemsPerPage) || 1;
+        
+        let controlsHTML = `
+            <button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+                <i class="ph ph-arrow-left"></i>
+            </button>
+        `;
+
+        for (let i = 1; i <= Math.min(3, totalPages); i++) {
+            controlsHTML += `<button class="page-btn ${currentPage === i ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+        }
+        
+        if (totalPages > 4) {
+            controlsHTML += `<button class="page-btn">...</button>`;
+            controlsHTML += `<button class="page-btn ${currentPage === 105 ? 'active' : ''}">105</button>`; 
+        } else if (totalPages === 4) {
+             controlsHTML += `<button class="page-btn ${currentPage === 4 ? 'active' : ''}" onclick="changePage(4)">4</button>`;
+        }
+
+        controlsHTML += `
+            <button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+                <i class="ph ph-arrow-right"></i>
+            </button>
+        `;
+        
+        paginationControls.innerHTML = controlsHTML;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // === Shared Dropdown Logic ===
+        const toggles = document.querySelectorAll('[data-dropdown-toggle]');
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation(); 
+                const targetId = this.getAttribute('data-dropdown-toggle');
+                const targetMenu = document.getElementById(targetId);
+                
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu !== targetMenu) { menu.classList.remove('show'); }
+                });
+                if (targetMenu) { targetMenu.classList.toggle('show'); }
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown-wrapper')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+
+        // === Mobile Menu Logic ===
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mainNav = document.getElementById('main-nav');
+        const navRight = document.getElementById('nav-right');
+
+        if (mobileMenuBtn && mainNav && navRight) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mainNav.classList.toggle('show');
+                navRight.classList.toggle('show');
+                const icon = mobileMenuBtn.querySelector('i');
+                if (mainNav.classList.contains('show')) {
+                    icon.classList.replace('ph-list', 'ph-x');
+                } else {
+                    icon.classList.replace('ph-x', 'ph-list');
+                }
+            });
+        }
+        
+        // Initialize Table
+        renderTable();
+    });
+</script>
+</body>
+</html>
