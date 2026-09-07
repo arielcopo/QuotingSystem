@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal (#2 Edit Content) - Builders Signs</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* === Global Reset & Variables === */
+        :root {
+            --text-main: #171717;
+            --text-sub: #525252;
+            --text-light: #737373;
+            --text-muted: #A3A3A3;
+            --bg-body: #FFFFFF;
+            --bg-gray: #FAFAFA;
+            --border-light: #E5E5E5;
+            --border-dark: #D4D4D4;
+            --brand-yellow: #FFCC00;
+            --brand-dark: #332900;
+            --brand-red: #DC2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button, input { font-family: inherit; outline: none; border: none; background: none; }
+        button { cursor: pointer; }
+
+        /* === Layout Containers === */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* === Header === */
+        .header {
+            border-bottom: 1px solid var(--border-light);
+            background: var(--bg-body);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .logo {
+            height: 30px;
+            width: auto;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent;
+        }
+
+        .nav-item i { font-size: 20px; }
+        .nav-item.active { 
+            border-bottom-color: var(--text-main); 
+            border-bottom: 1px dashed var(--text-main);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .global-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            width: 187px;
+            height: 30px;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .global-search input {
+            font-size: 12px;
+            color: var(--text-main);
+            width: 100%;
+        }
+        .global-search input::placeholder { color: var(--text-light); }
+
+        .divider-vertical {
+            width: 1px;
+            height: 30px;
+            background-color: var(--border-light);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--brand-yellow);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        /* === Dropdown Global === */
+        .dropdown-wrapper { position: relative; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            background: var(--bg-body);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            box-shadow: 0px 12px 16px -4px rgba(0, 0, 0, 0.08);
+            z-index: 100;
+            min-width: 100%;
+            padding: 4px 0;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-item {
+            padding: 8px 14px;
+            font-size: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        .dropdown-item:hover { background: var(--bg-gray); }
+
+        /* === Main Content === */
+        .main-content {
+            margin-top: 32px; 
+            padding-bottom: 64px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-header-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; 
+            margin-bottom: 40px;
+        }
+
+        .content-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .form-group-inline {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .form-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-sub);
+            width: 90px;
+        }
+
+        .input-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 375px;
+            height: 36px;
+            padding: 0 14px;
+            background: var(--bg-body);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+            font-size: 12px;
+            color: var(--text-main);
+        }
+        
+        .input-box input {
+            width: 100%;
+            font-size: 12px;
+            color: var(--text-main);
+        }
+
+        .input-box.clickable { cursor: pointer; }
+
+        .btn-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            height: 30px;
+            padding: 0 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.8; }
+
+        .btn-default { background: var(--bg-gray); border: 1px solid var(--border-light); color: var(--text-main); }
+        .btn-primary { background: var(--brand-yellow); color: var(--brand-dark); border: none; }
+        .btn-danger { background: var(--brand-red); color: var(--bg-body); border: none; }
+
+        .btn-icon-only {
+            color: var(--text-sub);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* === Tabs === */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .tab {
+            padding: 10px 24px;
+            border-radius: 1000px;
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            background: var(--bg-body);
+        }
+
+        .tab .tab-num { color: #A3A3A3; }
+        .tab.active { border: 1px dashed var(--text-main); }
+
+        /* === Responsive Styles === */
+        @media (max-width: 1024px) {
+            .header-inner { flex-direction: column; height: auto; padding: 16px 40px; gap: 0; align-items: stretch; }
+            .nav-left { width: 100%; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+            .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
+            .main-nav { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 16px; padding-top: 16px; padding-bottom: 16px; border-top: 1px solid var(--border-light); }
+            .main-nav.show { display: flex; }
+            .nav-right { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 16px; padding-top: 0; margin-top: 0; }
+            .nav-right.show { display: flex; }
+            .global-search { width: 100%; }
+            .global-search input { width: 100%; }
+            .divider-vertical { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .content-row { flex-direction: column; align-items: flex-start; }
+            .btn-group { flex-wrap: wrap; }
+            .input-box { width: 100%; }
+            .tabs-container { flex-direction: column; align-items: stretch; }
+            .tab { justify-content: center; }
+        }
+        
+        @media (max-width: 375px) {
+            .container { padding: 0 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container header-inner">
+        <div class="nav-left">
+            <a href="dashboard.html">
+                <img src="https://builderssigns.com.au/wp-content/uploads/2026/06/Dark-and-Yellow-Landscape-2.svg" alt="Builders Signs" class="logo">
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu">
+                <i class="ph ph-list"></i>
+            </button>
+            <nav class="main-nav" id="main-nav">
+                <a href="dashboard.html" class="nav-item"><i class="ph ph-chart-bar"></i> Dashboard</a>
+                <a href="proposal.html" class="nav-item active"><i class="ph ph-envelope-simple"></i> Proposal</a>
+                <a href="#" class="nav-item"><i class="ph ph-users"></i> Clients</a>
+                <a href="#" class="nav-item"><i class="ph ph-layout"></i> Templates</a>
+                <a href="#" class="nav-item"><i class="ph ph-squares-four"></i> Themes</a>
+                <a href="#" class="nav-item"><i class="ph ph-gear"></i> Accounts</a>
+            </nav>
+        </div>
+        <div class="nav-right" id="nav-right">
+            <div class="global-search">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="divider-vertical"></div>
+            <div class="dropdown-wrapper">
+                <div class="user-profile" data-dropdown-toggle="user-dropdown">
+                    <div class="user-avatar"></div>
+                    <div class="user-info">
+                        <span>Marcus Bawden</span>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                </div>
+                <div class="dropdown-menu" id="user-dropdown">
+                    <div class="dropdown-item">My Profile</div>
+                    <div class="dropdown-item">Logout</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container main-content">
+    <!-- Header Content Row 1 -->
+    <div class="content-header-rows">
+        <div class="content-row">
+            <div class="form-group-inline">
+                <div class="form-label" style="display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; width: auto; min-width: 90px;">
+                    Choose Template Set
+                </div>
+                <div class="dropdown-wrapper">
+                    <div class="input-box clickable" data-dropdown-toggle="template-dropdown">
+                        <span>Template 1 (Quotation Proposal)</span>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <div class="dropdown-menu" id="template-dropdown">
+                        <div class="dropdown-item">Template 1 (Quotation Proposal) <i class="ph ph-check"></i></div>
+                        <div class="dropdown-item">Template 2 (Manager Proposal)</div>
+                        <div class="dropdown-item">Template 3 (Tiered Price Proposal)</div>
+                        <div class="dropdown-item">Template 4 (Fixed-Price Proposal)</div>
+                        <div class="dropdown-item">Template 5 (Time and Materials Proposal)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-default">Preview</button>
+                <button class="btn btn-default">Quote</button>
+                <button class="btn btn-default">Overview</button>
+                <div class="divider-vertical" style="height: 36px;"></div>
+                <button class="btn btn-default">Back</button>
+                <button class="btn btn-primary" onclick="alert('Content Saved Successfully!')">Save Content</button>
+            </div>
+        </div>
+
+        <!-- Header Content Row 2 -->
+        <div class="content-row">
+            <div class="form-group-inline">
+                <div class="form-label" style="display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; width: auto; min-width: 90px;">
+                    Choose Content Template
+                </div>
+                <div class="dropdown-wrapper">
+                    <div class="input-box clickable" data-dropdown-toggle="content-dropdown">
+                        <span id="selected-content-template">Intro Card 1 (Top Info | Bottom Title)</span>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <!-- Dropdown updated via Javascript logic -->
+                    <div class="dropdown-menu" id="content-dropdown">
+                        <div class="dropdown-item" data-template="Intro Card 1">Intro Card 1 (Top Info | Bottom Title)</div>
+                        <div class="dropdown-item" data-template="Intro Card 2">Intro Card 2 (Bottom Info | Top Title)</div>
+                        <div class="dropdown-item" data-template="Text & Image 1">Text & Image 1 (Left Text | Right Image)</div>
+                        <div class="dropdown-item" data-template="Text & Image 2">Text & Image 2 (Right Text | Left Image)</div>
+                        <div class="dropdown-item" data-template="Product 1">Product 1 (Banner Mesh)</div>
+                        <div class="dropdown-item" data-template="Product 2">Product 2 (Banner Mesh and Corflutes)</div>
+                        <div class="dropdown-item" data-template="Product 3">Product 3 (Corflutes)</div>
+                        <div class="dropdown-item" data-template="Product 4">Product 4 (Vinyl Hoarding)</div>
+                        <div class="dropdown-item" data-template="Pricing 1">Pricing 1 (Modern with Image)</div>
+                        <div class="dropdown-item" data-template="Pricing 2">Pricing 2 (Simple with Images)</div>
+                        <!-- NEWLY ADDED TEMPLATE -->
+                        <div class="dropdown-item" data-template="Terms 1">Terms 1 (Left Text | Logo Right)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Center Tabs -->
+    <div class="tabs-container">
+        <div class="tab">
+            <span class="tab-num">01</span> Edit Quote
+        </div>
+        <div class="tab active">
+            <span class="tab-num">02</span> Edit Content
+        </div>
+        <div class="tab">
+            <span class="tab-num">03</span> Overview
+        </div>
+    </div>
+
+
+    <!-- THIS IS THE AREA ONLY YOU NEED TO TOUCH THE CONTENT -->
+    <style>
+        /* Scoped Custom CSS for the Edit Content Section */
+        .builder-top-divider {
+            border: none;
+            border-top: 1px solid var(--border-light);
+            margin: 0;
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+        }
+        
+        .builder-wrapper {
+            display: flex;
+            align-items: stretch;
+            min-height: calc(100vh - 280px);
+            margin-bottom: -64px; 
+            padding-bottom: 64px; 
+        }
+        
+        /* Left Sidebar Layout */
+        .builder-sidebar {
+            width: 268px;
+            flex-shrink: 0;
+            margin-right: 12px;
+            display: flex;
+            flex-direction: column;
+            padding-top: 32px; 
+        }
+        
+        .builder-vertical-divider {
+            width: 1px;
+            background-color: var(--border-light);
+            margin-right: 32px;
+            flex-shrink: 0;
+            align-self: stretch; /* Forces line to stretch properly */
+        }
+        
+        .builder-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 32px;
+            padding-top: 32px; 
+        }
+        
+        /* Sidebar List & Draggable Items */
+        .section-list {
+            list-style: none;
+            padding: 0; margin: 0;
+            display: flex; flex-direction: column; gap: 16px;
+        }
+        .section-item {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 18px; font-weight: 600; color: var(--text-main);
+            padding: 4px 0; cursor: pointer; transition: opacity 0.2s;
+        }
+        .section-item:active { cursor: grabbing; }
+        .section-item.active .section-title {
+            text-decoration: underline; text-decoration-color: var(--border-dark); text-underline-offset: 50%;
+        }
+        
+        /* Drag handle and delete act differently */
+        .section-actions { display: flex; align-items: center; gap: 6px; color: var(--text-light); font-size: 20px; }
+        .section-actions i { cursor: pointer; transition: color 0.2s; }
+        .drag-handle { cursor: grab !important; }
+        .section-actions i:hover { color: var(--text-main); }
+        
+        .btn-add-section {
+            display: inline-flex; align-items: center; gap: 8px;
+            height: 36px; padding: 0 16px;
+            background: var(--bg-gray); border: 1px solid var(--border-light); border-radius: 8px;
+            font-size: 14px; font-weight: 500; color: var(--text-main);
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+            cursor: pointer; align-self: flex-start; margin-top: 20px; transition: opacity 0.2s;
+        }
+        .btn-add-section:hover { opacity: 0.8; }
+
+        /* Shared Global Template Wrapper */
+        .template-view {
+            width: 100%;
+            max-width: 1050px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px; 
+        }
+
+        /* === Intro Card Template Specific Styles === */
+        .preview-card {
+            background-color: var(--brand-dark);
+            border-radius: 34px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            color: var(--bg-body);
+            display: flex;
+            flex-direction: column;
+            min-height: 646px; 
+        }
+        .card-yellow-curve-wrapper {
+            position: absolute; bottom: 0; left: 0;
+            width: 100%; height: 55%;
+            overflow: hidden; border-radius: 0 0 34px 34px; z-index: 1;
+        }
+        .card-yellow-curve {
+            position: absolute; top: 0; left: -25%;
+            width: 150%; height: 180%;
+            background-color: var(--brand-yellow); border-radius: 50%;
+        }
+        .card-yellow-top-block {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 46%; background-color: var(--brand-yellow); z-index: 1;
+        }
+        .card-content-inner {
+            position: relative; z-index: 2; padding: 70px 86px;
+            display: flex; flex-direction: column; height: 100%; flex-grow: 1;
+        }
+        .card-top { display: flex; justify-content: space-between; gap: 40px; }
+        .card-bottom { flex-grow: 1; display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 100px; }
+        .card-top-alt { display: flex; justify-content: center; align-items: flex-start; text-align: center; padding-top: 24px; padding-bottom: 60px; z-index: 2; }
+        .card-bottom-alt { flex-grow: 1; display: flex; justify-content: space-between; gap: 40px; z-index: 2; align-items: flex-end; padding-bottom: 24px; }
+        .card-col { display: flex; flex-direction: column; gap: 24px; width: 50%; }
+        .card-logo { height: 48px; width: auto; align-self: flex-start; }
+        .card-title { font-size: 36px; font-weight: 700; line-height: 1.2; margin: 0; }
+        .card-info { display: flex; flex-direction: column; gap: 12px; }
+        .card-info-item { display: flex; align-items: center; gap: 12px; font-size: 18px; }
+        .card-info-item i { font-size: 24px; }
+        .card-main-heading { color: var(--brand-dark); font-size: 56px; font-weight: 700; line-height: 1.25; margin: 0; z-index: 2; }
+
+        /* === Text & Image Template Specific Styles === */
+        .ti-layout { display: flex; align-items: flex-start; justify-content: space-between; gap: 50px; width: 100%; }
+        .ti-text-col { display: flex; flex-direction: column; gap: 20px; flex: 0 0 358px; }
+        .ti-subtitle { color: var(--text-sub); font-size: 20px; font-weight: 500; line-height: 1.5; }
+        .ti-title { color: var(--text-main); font-size: 36px; font-weight: 700; line-height: 1.2; }
+        .ti-desc { color: var(--text-sub); font-size: 18px; font-weight: 400; line-height: 1.55; }
+        
+        .ti-image-col { position: relative; flex: 0 0 632px; height: 632px; }
+        .ti-circle-layout { height: 643px; }
+        .ti-circle-dark { position: absolute; width: 590px; height: 590px; left: 0; top: 54px; background: var(--brand-dark); border-radius: 50%; }
+        .ti-circle-yellow { position: absolute; width: 590px; height: 590px; left: 23px; top: 27px; background: var(--brand-yellow); border-radius: 50%; }
+        .ti-circle-img { position: absolute; width: 590px; height: 590px; left: 42px; top: 0; border-radius: 50%; object-fit: cover; }
+        .ti-rounded-img { width: 632px; height: 632px; border-radius: 30px; object-fit: cover; }
+
+        /* === Product Templates Specific Styles === */
+        .product-layout {
+            position: relative;
+            display: flex;
+            width: 100%;
+            min-height: 650px; 
+            overflow: hidden; 
+        }
+        .product-text-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 488px;
+            position: relative;
+            z-index: 10;
+            pointer-events: auto;
+        }
+        .product-title-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .product-subtitle { color: var(--text-sub); font-size: 20px; font-weight: 500; line-height: 1.5; }
+        .product-title { color: var(--text-main); font-size: 36px; font-weight: 700; line-height: 1.2; }
+        .product-desc { color: var(--text-sub); font-size: 18px; font-weight: 400; line-height: 1.55; }
+        
+        .product-bullets {
+            margin: 0;
+            padding-left: 24px;
+            list-style-type: disc; 
+        }
+        .product-bullets li {
+            color: var(--text-sub);
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        .product-bullets li:last-child { margin-bottom: 0; }
+        
+        .product-visuals {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .product-bg-sketch {
+            position: absolute;
+            right: 0px;
+            bottom: 0px;
+            height: 100%;
+            max-height: 800px;
+            opacity: 1;
+            z-index: 1;
+            object-fit: contain;
+            object-position: bottom right;
+        }
+        .product-main-img {
+            position: absolute;
+            right: 0;
+            bottom: 0px;
+            max-width: 80%;
+            max-height: 60%;
+            z-index: 2;
+            object-fit: contain;
+            object-position: bottom right;
+        }
+        [data-master="Product 4"] .product-main-img {
+            right: 0; width: 60%; object-position: bottom;
+        }
+
+        /* === PRICING 1 Specific Styles === */
+        .pricing-header {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 32px;
+        }
+        .pricing-card {
+            border: 1px solid var(--border-light);
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-body);
+            overflow: hidden;
+        }
+        .pricing-row {
+            display: flex;
+            align-items: flex-start;
+            padding: 32px;
+            border-bottom: 1px solid var(--border-light);
+            gap: 24px;
+        }
+        .pricing-product {
+            display: flex;
+            align-items: flex-start; 
+            gap: 24px;
+            flex: 2;
+            min-width: 300px;
+        }
+        .pricing-img-box {
+            width: 160px;
+            height: 160px;
+            flex-shrink: 0;
+        }
+        .pricing-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .pricing-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .pricing-item-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .pricing-item-desc {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+        .pricing-qty-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 16px; 
+        }
+        
+        .pricing-metrics {
+            display: flex;
+            flex-direction: column; 
+            gap: 24px; 
+            flex: 1;
+        }
+        .pricing-metric-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .pricing-metric-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .pricing-metric-val {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        
+        .pricing-row-total {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: flex-start; 
+            gap: 4px;
+            flex: 1;
+        }
+        .pricing-total-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .pricing-total-val {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--text-muted);
+            line-height: 1.1;
+        }
+        
+        .pricing-delivery {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 32px;
+        }
+        .pricing-delivery-val {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+        .pricing-footer {
+            background-color: var(--brand-yellow);
+            padding: 32px 32px 32px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .pricing-footer-label, .pricing-footer-val {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--brand-dark);
+            line-height: 1.1;
+        }
+
+        /* === PRICING 2 (Simple Table) Specific Styles === */
+        .pricing2-header {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 32px;
+        }
+        .pricing2-card {
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-body);
+            overflow: hidden;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.06);
+        }
+        .pricing2-table-header {
+            display: flex;
+            background: var(--bg-gray);
+            border-bottom: 1px solid var(--border-light);
+            padding: 12px 24px;
+            color: var(--text-sub);
+            font-size: 14px;
+        }
+        .pricing2-row {
+            display: flex;
+            border-bottom: 1px solid var(--border-light);
+            align-items: center;
+            padding: 16px 24px;
+            color: var(--text-sub);
+            font-size: 14px;
+        }
+        .pricing2-row:last-child {
+            border-bottom: none;
+        }
+        .pricing2-col-prod {
+            flex: 2;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 250px;
+        }
+        .pricing2-col {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+        .pricing2-col.pricing2-align-right {
+            justify-content: flex-end;
+            text-align: right;
+            font-weight: 600;
+        }
+        .pricing2-img-box {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+        }
+        .pricing2-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .pricing2-mobile-label {
+            display: none;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        
+        .pricing2-summary-row .pricing2-col-prod {
+            flex: 5;
+            color: var(--text-muted);
+        }
+        .pricing2-summary-row .pricing2-col {
+            flex: 1;
+        }
+        .pricing2-total-row .pricing2-col-prod {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .pricing2-total-row .pricing2-align-right {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* === TERMS 1 Specific Styles === */
+        .terms-layout {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 50px;
+            width: 100%;
+        }
+        .terms-text-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+            max-width: 600px;
+        }
+        .terms-subtitle {
+            color: var(--text-sub);
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        .terms-title {
+            color: var(--text-main);
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .terms-desc-list {
+            margin: 0;
+            padding-left: 24px;
+            list-style-type: disc;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .terms-desc-list li {
+            color: var(--text-sub);
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.55;
+        }
+        .terms-image-col {
+            flex: 0 0 420px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .terms-logo-img {
+            width: 100%;
+            max-width: 419px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Action Buttons Area */
+        .ti-actions { display: flex; align-items: center; gap: 20px; pointer-events: auto; }
+        .ti-actions .btn {
+            height: 36px; padding: 8px 12px; background: var(--bg-gray); border: 1px solid var(--border-light); border-radius: 8px;
+            font-size: 14px; font-weight: 500; color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 8px;
+            cursor: pointer; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05); transition: all 0.2s;
+        }
+        .ti-actions .btn:hover { opacity: 0.8; }
+        .ti-actions .btn.active { background: var(--brand-yellow); border-color: var(--brand-yellow); color: var(--brand-dark); }
+
+        /* Editable Content Styling */
+        .editable-text { border: 1px solid transparent; padding: 2px 6px; border-radius: 4px; margin-left: -6px; transition: all 0.2s; pointer-events: auto; }
+        .editable-text[contenteditable="true"] { border: 1px dashed rgba(0, 0, 0, 0.4); background: rgba(0, 0, 0, 0.03); cursor: text; outline: none; }
+        .preview-card .editable-text[contenteditable="true"] { border: 1px dashed rgba(255, 255, 255, 0.6); background: rgba(255, 255, 255, 0.1); }
+        .card-main-heading.editable-text[contenteditable="true"] { border: 1px dashed rgba(51, 41, 0, 0.6); background: rgba(51, 41, 0, 0.05); }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .card-content-inner { padding: 40px; }
+            .card-top, .card-bottom-alt { flex-direction: column; gap: 40px; }
+            .card-col { width: 100%; }
+            .card-main-heading { font-size: 44px; }
+            
+            .ti-layout { flex-direction: column; align-items: center; gap: 40px; }
+            .ti-text-col, .ti-image-col { width: 100%; flex: none; }
+            .ti-circle-dark, .ti-circle-yellow, .ti-circle-img { width: 100%; max-width: 590px; position: static; margin: 0 auto; }
+            .ti-circle-layout { height: auto; display: flex; justify-content: center; }
+            .ti-circle-dark, .ti-circle-yellow { display: none; }
+            .ti-rounded-img { width: 100%; height: auto; aspect-ratio: 1; }
+            
+            .product-layout { flex-direction: column; }
+            .product-text-col { width: 100%; }
+            .product-visuals { position: relative; height: 400px; margin-top: 40px; }
+
+            /* Pricing 1 Responsive Overrides */
+            .pricing-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 24px;
+            }
+            .pricing-product {
+                width: 100%;
+            }
+            .pricing-metrics {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .pricing-row-total {
+                width: 100%;
+                align-items: flex-start; 
+                border-top: 1px dashed var(--border-light);
+                padding-top: 16px;
+            }
+            .pricing-total-val {
+                font-size: 36px;
+            }
+            .pricing-footer-label, .pricing-footer-val {
+                font-size: 32px;
+            }
+            .pricing-delivery {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            /* Pricing 2 (Simple Table) Responsive Overrides (Stacked Layout) */
+            .pricing2-table-header { 
+                display: none; 
+            }
+            .pricing2-row { 
+                flex-direction: column; 
+                align-items: stretch; 
+                gap: 12px; 
+                padding: 24px; 
+            }
+            .pricing2-col-prod { 
+                flex: none; 
+                width: 100%; 
+                margin-bottom: 12px; 
+                font-weight: 600; 
+                color: var(--text-main);
+            }
+            .pricing2-col { 
+                flex: none; 
+                width: 100%; 
+                justify-content: space-between; 
+            }
+            .pricing2-mobile-label { 
+                display: block; 
+            }
+            .pricing2-summary-row .pricing2-col-prod { 
+                margin-bottom: 0; 
+                font-weight: 400; 
+            }
+            .pricing2-summary-row { 
+                flex-direction: row; 
+                justify-content: space-between; 
+                align-items: center; 
+            }
+            .pricing2-summary-row .pricing2-col { 
+                width: auto; 
+                justify-content: flex-end; 
+            }
+            .pricing2-total-row .pricing2-col-prod {
+                font-weight: 600;
+            }
+            
+            /* Terms Responsive Overrides */
+            .terms-layout {
+                flex-direction: column;
+                align-items: center;
+                gap: 40px;
+            }
+            .terms-text-col, .terms-image-col {
+                width: 100%;
+                max-width: 100%;
+                flex: none;
+            }
+            .terms-logo-img {
+                max-width: 300px;
+                margin: 0 auto;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .builder-wrapper { flex-direction: column; }
+            .builder-sidebar { width: 100%; margin-right: 0; }
+            .builder-vertical-divider { width: 100%; height: 1px; margin: 24px 0; }
+            .preview-card { min-height: 500px; }
+            .card-main-heading { font-size: 32px; }
+            
+            .pricing-product {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+
+    <!-- Top Divider -->
+    <hr class="builder-top-divider">
+
+    <div class="builder-wrapper">
+        <!-- Sidebar Layout -->
+        <aside class="builder-sidebar">
+            <ul class="section-list" id="sortable-section-list">
+                <!-- Javascript maps data array here -->
+            </ul>
+            <button class="btn-add-section" id="add-section-btn">
+                <i class="ph ph-plus"></i> Add Section
+            </button>
+        </aside>
+
+        <!-- Vertical Divider -->
+        <div class="builder-vertical-divider"></div>
+
+        <!-- Main Preview Area Layout (Injected dynamically) -->
+        <section class="builder-content" id="live-template-container">
+            <!-- Templates are cloned into here -->
+        </section>
+        
+        <!-- HIDDEN MASTER BLUEPRINTS -->
+        <div id="master-templates" style="display: none;">
+            
+            <!-- INTRO CARD 1 -->
+            <div class="template-view" data-master="Intro Card 1" style="display: flex;">
+                <div class="preview-card">
+                    <div class="card-yellow-curve-wrapper"><div class="card-yellow-curve"></div></div>
+                    <div class="card-content-inner">
+                        <div class="card-top">
+                            <div class="card-col">
+                                <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/Dark-and-Yellow-Landscape-2.svg" alt="Builders Signs" class="card-logo">
+                                <div class="card-info">
+                                    <div class="card-info-item"><i class="ph ph-globe"></i> <span class="editable-text">www.builderssigns.au.com</span></div>
+                                    <div class="card-info-item"><i class="ph ph-phone"></i> <span class="editable-text">1800 574 155</span></div>
+                                    <div class="card-info-item"><i class="ph ph-envelope-simple"></i> <span class="editable-text">sales@builderssigns.com.au</span></div>
+                                </div>
+                            </div>
+                            <div class="card-col">
+                                <h3 class="card-title editable-text">Client Information</h3>
+                                <div class="card-info">
+                                    <div class="card-info-item"><i class="ph ph-user"></i> <span class="editable-text">John Doe</span></div>
+                                    <div class="card-info-item"><i class="ph ph-phone"></i> <span class="editable-text">1800 234 3245</span></div>
+                                    <div class="card-info-item"><i class="ph ph-envelope-simple"></i> <span class="editable-text">info@johndoe.com.au</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-bottom"><h1 class="card-main-heading editable-text">Making Banner Mesh<br>Print Affordable</h1></div>
+                    </div>
+                </div>
+                <!-- Action Buttons -->
+                <div class="ti-actions">
+                    <button class="btn btn-edit-text-action"><i class="ph ph-pencil-simple"></i> Edit Text</button>
+                </div>
+            </div>
+
+            <!-- INTRO CARD 2 -->
+            <div class="template-view" data-master="Intro Card 2" style="display: flex;">
+                <div class="preview-card">
+                    <div class="card-yellow-top-block"></div>
+                    <div class="card-content-inner">
+                        <div class="card-top-alt"><h1 class="card-main-heading editable-text">Making Banner Mesh<br>Print Affordable</h1></div>
+                        <div class="card-bottom-alt">
+                            <div class="card-col">
+                                <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/Dark-and-Yellow-Landscape-2.svg" alt="Builders Signs" class="card-logo">
+                                <div class="card-info">
+                                    <div class="card-info-item"><i class="ph ph-globe"></i> <span class="editable-text">www.builderssigns.au.com</span></div>
+                                    <div class="card-info-item"><i class="ph ph-phone"></i> <span class="editable-text">1800 574 155</span></div>
+                                    <div class="card-info-item"><i class="ph ph-envelope-simple"></i> <span class="editable-text">sales@builderssigns.com.au</span></div>
+                                </div>
+                            </div>
+                            <div class="card-col">
+                                <h3 class="card-title editable-text">Client Information</h3>
+                                <div class="card-info">
+                                    <div class="card-info-item"><i class="ph ph-user"></i> <span class="editable-text">John Doe</span></div>
+                                    <div class="card-info-item"><i class="ph ph-phone"></i> <span class="editable-text">1800 234 3245</span></div>
+                                    <div class="card-info-item"><i class="ph ph-envelope-simple"></i> <span class="editable-text">info@johndoe.com.au</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Action Buttons -->
+                <div class="ti-actions">
+                    <button class="btn btn-edit-text-action"><i class="ph ph-pencil-simple"></i> Edit Text</button>
+                </div>
+            </div>
+            
+            <!-- TEXT & IMAGE 1 -->
+            <div class="template-view" data-master="Text & Image 1" style="display: flex;">
+                <div class="ti-layout">
+                    <div class="ti-text-col">
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div class="ti-subtitle editable-text">About Builders Signs</div>
+                            <div class="ti-title editable-text">Australian Construction Signage Specialist</div>
+                        </div>
+                        <div class="ti-desc editable-text">Our approach is a little different. We don’t believe busy builders and tradies should waste hours dealing with confusing quote forms or complex artwork files just to order their signs for their building sites.  We simplify the process for smaller builders with our online sign shop. We realise the logjams that affect every project and we remove them. We offer free  templates and completely remove the artwork hassle by giving it to builders free of charge.  For corporate builders we offer personalised catalogs where busy  project managers can order at any time and we seamlessly deliver their order on site within a week.</div>
+                    </div>
+                    <div class="ti-image-col ti-circle-layout">
+                        <div class="ti-circle-dark"></div>
+                        <div class="ti-circle-yellow"></div>
+                        <img class="ti-circle-img" src="https://builderssigns.com.au/wp-content/uploads/2026/08/aboutbuilderssigns.png" alt="Builders Signs Image Placeholder">
+                    </div>
+                </div>
+                <div class="ti-actions">
+                    <button class="btn btn-edit-text-action"><i class="ph ph-pencil-simple"></i> Edit Text</button>
+                    <button class="btn btn-change-image-action"><i class="ph ph-image"></i> Change Image</button>
+                    <input type="file" class="image-upload-input" accept="image/*" style="display: none;">
+                </div>
+            </div>
+
+            <!-- TEXT & IMAGE 2 -->
+            <div class="template-view" data-master="Text & Image 2" style="display: flex;">
+                <div class="ti-layout">
+                    <div class="ti-image-col">
+                        <img class="ti-rounded-img" src="https://builderssigns.com.au/wp-content/uploads/2026/08/aboutbuilderssigns.png" alt="Builders Signs Image Placeholder">
+                    </div>
+                    <div class="ti-text-col">
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div class="ti-subtitle editable-text">About Builders Signs</div>
+                            <div class="ti-title editable-text">Australian Construction Signage Specialist</div>
+                        </div>
+                        <div class="ti-desc editable-text">Our approach is a little different. We don’t believe busy builders and tradies should waste hours dealing with confusing quote forms or complex artwork files just to order their signs for their building sites.  We simplify the process for smaller builders with our online sign shop. We realise the logjams that affect every project and we remove them. We offer free  templates and completely remove the artwork hassle by giving it to builders free of charge.  For corporate builders we offer personalised catalogs where busy  project managers can order at any time and we seamlessly deliver their order on site within a week.</div>
+                    </div>
+                </div>
+                <div class="ti-actions">
+                    <button class="btn btn-edit-text-action"><i class="ph ph-pencil-simple"></i> Edit Text</button>
+                    <button class="btn btn-change-image-action"><i class="ph ph-image"></i> Change Image</button>
+                    <input type="file" class="image-upload-input" accept="image/*" style="display: none;">
+                </div>
+            </div>
+
+            <!-- PRODUCT 1: BANNER MESH -->
+            <div class="template-view" data-master="Product 1" style="display: flex;">
+                <div class="product-layout">
+                    <div class="product-text-col">
+                        <div class="product-title-group">
+                            <div class="product-subtitle editable-text">Banner Mesh</div>
+                            <div class="product-title editable-text">Premium Site Banner Mesh</div>
+                        </div>
+                        <div class="product-desc editable-text">Designed for maximum branding impact and wind-flow optimization on temporary fencing, our heavy-duty mesh withstands tough Australian conditions. Bypass the artwork bottleneck and secure your site perimeter fast.</div>
+                        <ul class="product-bullets editable-text">
+                            <li>Maximum Wind Optimization</li>
+                            <li>Built for AU Sites</li>
+                            <li>Zero Artwork Hassles</li>
+                        </ul>
+                        <div class="ti-actions" style="margin-top: 20px;">
+                            <button class="btn btn-edit-text-action"><i class="ph ph-pencil-simple"></i> Edit Text</button>
+                        </div>
+                    </div>
+                    <div class="product-visuals">
+                        <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/building-sketch-3.png" class="product-bg-sketch" alt="Building Sketch">
+                        <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/Banner-Mesh.png" class="product-main-img" alt="Banner Mesh">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCT 2: BANNER MESH & CORFLUTES -->
+            <div class="template-view" data-master="Product 2" style="display: flex;">
+                <div class="product-layout">
+                    <div class="product-text-col">
+                        <div class="product-title-group">
+                            <div class="product-subtitle editable-text">Signage Package</div>
+                            <div class="product-title editable-text">Complete Site Starter Kit</div>
+                        </div>
+                        <div class="product-desc editable-text">Get complete AS/NZS compliant site branding in a single, streamlined order. This bundle perfectly matches your perimeter mesh and safety corflutes, guaranteeing full compliance without the hassle.</div>
+                        <ul class="product-bullets editable-text">
+                            <li>100% Brand Consistency</li>
+                            <li>AS/NZS Safety Compliant</li>
+                            <li>Single Streamlined Order</li>
+                        </ul>
+                        <div class="ti-actions" style="margin-top: 20px;">
+                            <button class="btn btn-edit-text-action"><i class="ph ph-pencil-simple"></i> Edit Text</button>
+                        </div>
+                    </div>
+                    <div class="product-visuals">
+                        <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/building-sketch-3.png" class="product-bg-sketch" alt="Building Sketch">
+                        <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/Banner-Mesh-Corflutes.png" class="product-main-img" alt="Banner Mesh & Corflutes">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCT 3: CORFLUTES -->
+            <div class="template-view" data-master="Product 3" style="display: flex;">
+                <div class="product-layout">
+                    <div class="product-text-col">
+                        <div class="product-title-group">
+                            <div class="product-subtitle editable-text">Corflute Signs</div>
+                            <div class="product-title editable-text">Heavy-Duty Corflute Signs</div>
+                        </div>
+                        <div class="product-desc editable-text">Printed on weatherproof 5mm flute thickness, these rigid boards are ideal for site safety, compliance, and sub-contractor branding. Secure your site with signage built for maximum outdoor durability.</div>
+                        <ul class="product-bullets editable-text">
+                            <li>Weatherproof 5mm Thickness</li>
+                            <li>Site-Ready Compliance</li>
+                            <li>Automatic Bulk Discounts</li>
+                        </ul>
+                        <div class="ti-actions" style="margin-top: 20px;">
+                            <button class="btn btn-edit-text-action"><i class="ph ph-pencil-simple"></i> Edit Text</button>
+                        </div>
+                    </div>
+                    <div class="product-visuals">
+                        <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/building-sketch-3.png" class="product-bg-sketch" alt="Building Sketch">
+                        <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/Corflutes.png" class="product-main-img" alt="Corflutes">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRODUCT 4: VINYL HOARDINGS -->
+            <div class="template-view" data-master="Product 4" style="display: flex;">
+                <div class="product-layout">
+                    <div class="product-text-col">
+                        <div class="product-title-group">
+                            <div class="product-subtitle editable-text">Vinyl Hoardings</div>
+                            <div class="product-title editable-text">Custom Vinyl Site Hoardings</div>
+                        </div>
+                        <div class="product-desc editable-text">Elevate your site boundary with premium anti-graffiti laminated vinyl configurations engineered for structural Class A and Class B hoardings. Request a priority estimate and secure an elite corporate finish.</div>
+                        <ul class="product-bullets editable-text">
+                            <li>Anti-Graffiti Laminated Finish</li>
+                            <li>Elite Corporate Aesthetic</li>
+                            <li>Priority Custom Estimates</li>
+                        </ul>
+                        <div class="ti-actions" style="margin-top: 20px;">
+                            <button class="btn btn-edit-text-action"><i class="ph ph-pencil-simple"></i> Edit Text</button>
+                        </div>
+                    </div>
+                    <div class="product-visuals">
+                        <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/building-sketch-3.png" class="product-bg-sketch" alt="Building Sketch">
+                        <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/Vinyl-Hoardings.png" class="product-main-img" alt="Vinyl Hoardings">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PRICING 1 (Table Pricing with Image) -->
+            <div class="template-view" data-master="Pricing 1" style="display: flex;">
+                <div style="width: 100%; display: flex; flex-direction: column;">
+                    <div class="pricing-header">Client Quote</div>
+                    <div class="pricing-card">
+                        
+                        <!-- Row 1 -->
+                        <div class="pricing-row">
+                            <div class="pricing-product">
+                                <div class="pricing-img-box">
+                                    <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/bannermesh.png" alt="Banner Mesh">
+                                </div>
+                                <div class="pricing-details">
+                                    <div class="pricing-item-title">Banner Mesh</div>
+                                    <div class="pricing-item-desc">2.4m x 1.6m more information type it here. Long product. More info here...</div>
+                                    <div class="pricing-qty-group">
+                                        <div class="pricing-metric-label">Quantity</div>
+                                        <div class="pricing-metric-val">5</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pricing-metrics">
+                                <div class="pricing-metric-group">
+                                    <div class="pricing-metric-label">Price</div>
+                                    <div class="pricing-metric-val">$55.00</div>
+                                </div>
+                                <div class="pricing-metric-group">
+                                    <div class="pricing-metric-label">Tax</div>
+                                    <div class="pricing-metric-val">10%</div>
+                                </div>
+                            </div>
+                            <div class="pricing-row-total">
+                                <div class="pricing-total-label">Total with Tax</div>
+                                <div class="pricing-total-val">$302.50</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Row 2 -->
+                        <div class="pricing-row">
+                            <div class="pricing-product">
+                                <div class="pricing-img-box">
+                                    <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/meshandcorflutes.png" alt="Banner Mesh with Corflutes">
+                                </div>
+                                <div class="pricing-details">
+                                    <div class="pricing-item-title">Banner Mesh with Corflutes</div>
+                                    <div class="pricing-item-desc">2.4m x 1.6m Banner Mesh and 900mm x 600mm Corflutes signs more info.</div>
+                                    <div class="pricing-qty-group">
+                                        <div class="pricing-metric-label">Quantity</div>
+                                        <div class="pricing-metric-val">30</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pricing-metrics">
+                                <div class="pricing-metric-group">
+                                    <div class="pricing-metric-label">Price</div>
+                                    <div class="pricing-metric-val">$88.00</div>
+                                </div>
+                                <div class="pricing-metric-group">
+                                    <div class="pricing-metric-label">Tax</div>
+                                    <div class="pricing-metric-val">10%</div>
+                                </div>
+                            </div>
+                            <div class="pricing-row-total">
+                                <div class="pricing-total-label">Total with Tax</div>
+                                <div class="pricing-total-val">$2,640.00</div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Row -->
+                        <div class="pricing-delivery">
+                            <div class="pricing-details">
+                                <div class="pricing-item-title">Delivery</div>
+                                <div class="pricing-item-desc">Based on delivery to a commercial address</div>
+                            </div>
+                            <div class="pricing-delivery-val">$40.00</div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="pricing-footer">
+                            <div class="pricing-footer-label">Total</div>
+                            <div class="pricing-footer-val">$2,982.50</div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRICING 2 (Simple Table Pricing with Small Image) -->
+            <div class="template-view" data-master="Pricing 2" style="display: flex;">
+                <div style="width: 100%; display: flex; flex-direction: column;">
+                    <div class="pricing2-header">Client Quote</div>
+                    <div class="pricing2-card">
+                        
+                        <!-- Table Header (Desktop Only) -->
+                        <div class="pricing2-table-header">
+                            <div class="pricing2-col-prod">Product</div>
+                            <div class="pricing2-col">Quantity</div>
+                            <div class="pricing2-col">Price</div>
+                            <div class="pricing2-col">Tax</div>
+                            <div class="pricing2-col pricing2-align-right">Total with Tax</div>
+                        </div>
+
+                        <!-- Row 1 -->
+                        <div class="pricing2-row">
+                            <div class="pricing2-col-prod">
+                                <div class="pricing2-img-box">
+                                    <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/bannermesh.png" alt="Banner Mesh">
+                                </div>
+                                <span>Banner Mesh</span>
+                            </div>
+                            <div class="pricing2-col">
+                                <span class="pricing2-mobile-label">Quantity</span>
+                                <span>5</span>
+                            </div>
+                            <div class="pricing2-col">
+                                <span class="pricing2-mobile-label">Price</span>
+                                <span>$55.00</span>
+                            </div>
+                            <div class="pricing2-col">
+                                <span class="pricing2-mobile-label">Tax</span>
+                                <span>10%</span>
+                            </div>
+                            <div class="pricing2-col pricing2-align-right">
+                                <span class="pricing2-mobile-label">Total with Tax</span>
+                                <span>$302.50</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 2 -->
+                        <div class="pricing2-row">
+                            <div class="pricing2-col-prod">
+                                <div class="pricing2-img-box">
+                                    <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/meshandcorflutes.png" alt="Banner Mesh with Corflutes">
+                                </div>
+                                <span>Banner Mesh with Corflutes</span>
+                            </div>
+                            <div class="pricing2-col">
+                                <span class="pricing2-mobile-label">Quantity</span>
+                                <span>30</span>
+                            </div>
+                            <div class="pricing2-col">
+                                <span class="pricing2-mobile-label">Price</span>
+                                <span>$88.00</span>
+                            </div>
+                            <div class="pricing2-col">
+                                <span class="pricing2-mobile-label">Tax</span>
+                                <span>10%</span>
+                            </div>
+                            <div class="pricing2-col pricing2-align-right">
+                                <span class="pricing2-mobile-label">Total with Tax</span>
+                                <span>$2,640.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 3 -->
+                        <div class="pricing2-row">
+                            <div class="pricing2-col-prod">
+                                <div class="pricing2-img-box">
+                                    <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/corlfutes.png" alt="Corflutes">
+                                </div>
+                                <span>Corflutes</span>
+                            </div>
+                            <div class="pricing2-col">
+                                <span class="pricing2-mobile-label">Quantity</span>
+                                <span>23</span>
+                            </div>
+                            <div class="pricing2-col">
+                                <span class="pricing2-mobile-label">Price</span>
+                                <span>$845.00</span>
+                            </div>
+                            <div class="pricing2-col">
+                                <span class="pricing2-mobile-label">Tax</span>
+                                <span>10%</span>
+                            </div>
+                            <div class="pricing2-col pricing2-align-right">
+                                <span class="pricing2-mobile-label">Total with Tax</span>
+                                <span>$5,326.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 4 -->
+                        <div class="pricing2-row">
+                            <div class="pricing2-col-prod">
+                                <div class="pricing2-img-box">
+                                    <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/vinylhoarding.png" alt="Vinyl Hoardings">
+                                </div>
+                                <span>Vinyl Hoardings</span>
+                            </div>
+                            <div class="pricing2-col">
+                                <span class="pricing2-mobile-label">Quantity</span>
+                                <span>77</span>
+                            </div>
+                            <div class="pricing2-col">
+                                <span class="pricing2-mobile-label">Price</span>
+                                <span>$232.00</span>
+                            </div>
+                            <div class="pricing2-col">
+                                <span class="pricing2-mobile-label">Tax</span>
+                                <span>10%</span>
+                            </div>
+                            <div class="pricing2-col pricing2-align-right">
+                                <span class="pricing2-mobile-label">Total with Tax</span>
+                                <span>$9,320.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Row -->
+                        <div class="pricing2-row pricing2-summary-row">
+                            <div class="pricing2-col-prod">
+                                Delivery (Based on delivery to a commercial address)
+                            </div>
+                            <div class="pricing2-col pricing2-align-right" style="color: var(--text-muted);">
+                                $40.00
+                            </div>
+                        </div>
+
+                        <!-- Total Row -->
+                        <div class="pricing2-row pricing2-summary-row pricing2-total-row">
+                            <div class="pricing2-col-prod">
+                                TOTAL
+                            </div>
+                            <div class="pricing2-col pricing2-align-right">
+                                $20,324.00
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- TERMS 1 (Left Text | Logo Right) -->
+            <div class="template-view" data-master="Terms 1" style="display: flex;">
+                <div class="terms-layout">
+                    <div class="terms-text-col">
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div class="terms-subtitle editable-text">Terms</div>
+                            <div class="terms-title editable-text">Service Terms and Conditions</div>
+                        </div>
+                        <ul class="terms-desc-list editable-text">
+                            <li>This quote is valid from 30 days from August 06, 2026.</li>
+                            <li>We will insert your project into the print queue as soon as we have received your confirmed art.</li>
+                            <li>Builders Signs will take full responsibility for the time it takes to print your materials, however once the order leaves us and given to a courier, we cannot influence the delivery times. In most cases we have a 1-2 day delivery time and up to 7 days for the west coast of Australia.</li>
+                            <li>Where labour, installation and outdoor rigging is concerned, quotes are estimates and can be affected by the following: site access, weather conditions and routine site conditions which are out of our control. These quotes will be adjusted promptly and accordingly and we will inform you of all amendments.</li>
+                            <li>By approving this proposal you are agreeing to Focus Banners service terms and conditions which can be found <u>here</u>.</li>
+                        </ul>
+                        <div class="ti-actions" style="margin-top: 20px;">
+                            <button class="btn btn-edit-text-action"><i class="ph ph-pencil-simple"></i> Edit Text</button>
+                            <button class="btn btn-change-image-action"><i class="ph ph-image"></i> Change Image</button>
+                            <input type="file" class="image-upload-input" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                    <div class="terms-image-col">
+                        <img class="terms-logo-img" src="https://builderssigns.com.au/wp-content/uploads/2026/08/logomarkBS.svg" alt="Builders Signs Logo Mark">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Vanilla Javascript Logic isolated -->
+    <script>
+        (function() {
+            // === LOCAL STORAGE CONFIGURATION ===
+            // Updated to v8 to load the newly added Terms layout by default for review
+            const STORAGE_KEY = 'buildersSigns_ProposalState_v8';
+
+            // Default State mapped to correct default templates
+            const defaultData = [
+                { id: 1, title: 'Introduction', active: false, templateType: 'Intro Card 1', savedContent: {} },
+                { id: 2, title: 'About Builders Signs', active: false, templateType: 'Text & Image 1', savedContent: {} },
+                { id: 3, title: 'Banner Mesh', active: false, templateType: 'Product 1', savedContent: {} }, 
+                { id: 4, title: 'Quote', active: false, templateType: 'Pricing 2', savedContent: {} }, 
+                { id: 5, title: 'Terms', active: true, templateType: 'Terms 1', savedContent: {} } // Active to display Terms 1 template
+            ];
+
+            // Load data from Local Storage, or use default if it's the first visit
+            let sectionsData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultData;
+
+            function saveState() {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(sectionsData));
+            }
+
+            function saveCurrentTemplateState() {
+                const activeSec = sectionsData.find(s => s.active);
+                const liveContainer = document.getElementById('live-template-container');
+                
+                if(activeSec && liveContainer.innerHTML.trim() !== '') {
+                    // Ensure the savedContent object exists (for backwards compatibility)
+                    if (!activeSec.savedContent) activeSec.savedContent = {};
+                    // Save the current HTML string directly into this section's memory
+                    activeSec.savedContent[activeSec.templateType] = liveContainer.innerHTML;
+                    saveState();
+                }
+            }
+
+            // Centralized DOM references
+            const listEl = document.getElementById('sortable-section-list');
+            let draggedIndex = null;
+            
+            // Map the data array and append dynamically to sidebar UI
+            function renderSections() {
+                listEl.innerHTML = '';
+                sectionsData.forEach((sec, index) => {
+                    const li = document.createElement('li');
+                    li.className = `section-item ${sec.active ? 'active' : ''}`;
+                    li.draggable = true;
+                    
+                    li.innerHTML = `
+                        <span class="section-title">${sec.title}</span>
+                        <div class="section-actions">
+                            <i class="ph ph-hand-grabbing drag-handle"></i>
+                            <i class="ph ph-trash btn-delete" data-id="${sec.id}"></i>
+                        </div>
+                    `;
+
+                    // Handle Sidebar Item Click (Switch Section)
+                    li.addEventListener('click', (e) => {
+                        if(e.target.closest('.section-actions')) return; 
+                        
+                        sectionsData.forEach(s => s.active = false);
+                        sec.active = true;
+                        
+                        saveState();
+                        renderSections(); 
+                        updateContentView(); 
+                    });
+
+                    // Drag & Drop Functionality
+                    li.addEventListener('dragstart', (e) => {
+                        draggedIndex = index;
+                        e.dataTransfer.effectAllowed = 'move';
+                        setTimeout(() => li.style.opacity = '0.5', 0);
+                    });
+                    
+                    li.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'move';
+                    });
+                    
+                    li.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        const droppedIndex = index;
+                        if (draggedIndex !== droppedIndex && draggedIndex !== null) {
+                            const item = sectionsData.splice(draggedIndex, 1)[0];
+                            sectionsData.splice(droppedIndex, 0, item);
+                            saveState();
+                            renderSections();
+                        }
+                    });
+                    
+                    li.addEventListener('dragend', () => {
+                        li.style.opacity = '1';
+                        draggedIndex = null;
+                        renderSections();
+                    });
+
+                    listEl.appendChild(li);
+                });
+
+                // Delete Section Functionality
+                listEl.querySelectorAll('.btn-delete').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = parseInt(e.target.dataset.id);
+                        sectionsData = sectionsData.filter(s => s.id !== id);
+                        
+                        if(!sectionsData.find(s => s.active) && sectionsData.length > 0) {
+                            sectionsData[0].active = true;
+                        }
+
+                        saveState();
+                        renderSections();
+                        updateContentView();
+                    });
+                });
+            }
+
+            // Add Section Functionality
+            document.getElementById('add-section-btn').addEventListener('click', () => {
+                const title = prompt('Enter new section name:');
+                if (title && title.trim() !== '') {
+                    sectionsData.push({
+                        id: Date.now(),
+                        title: title.trim(),
+                        active: false,
+                        templateType: 'Intro Card 1',
+                        savedContent: {} // Start with empty memory bank
+                    });
+                    saveState();
+                    renderSections();
+                }
+            });
+
+            // Master Function: Updates Right Canvas & Dropdown based on active state
+            function updateContentView() {
+                const activeSec = sectionsData.find(s => s.active);
+                const liveContainer = document.getElementById('live-template-container');
+                if(!activeSec) {
+                    liveContainer.innerHTML = '';
+                    return;
+                }
+
+                // 1. Update the Dropdown UI to match the active section's saved template
+                const dropdownSpan = document.getElementById('selected-content-template');
+                const dropdownMenu = document.getElementById('content-dropdown');
+                const dropdownItems = dropdownMenu.querySelectorAll('.dropdown-item');
+                
+                dropdownItems.forEach(item => {
+                    const existingCheck = item.querySelector('.ph-check');
+                    if (existingCheck) existingCheck.remove();
+                    
+                    if(item.dataset.template === activeSec.templateType) {
+                        dropdownSpan.textContent = item.textContent.trim();
+                        item.insertAdjacentHTML('beforeend', ' <i class="ph ph-check"></i>');
+                    }
+                });
+
+                // 2. Safely initialize savedContent if missing
+                if (!activeSec.savedContent) activeSec.savedContent = {};
+
+                // 3. Inject the HTML (Either saved modifications or a fresh master copy)
+                if (activeSec.savedContent[activeSec.templateType]) {
+                    // Load the edited copy specific to this section
+                    liveContainer.innerHTML = activeSec.savedContent[activeSec.templateType];
+                } else {
+                    // Load a fresh copy from the Master Blueprint
+                    const master = document.querySelector(`[data-master="${activeSec.templateType}"]`);
+                    if(master) {
+                        liveContainer.innerHTML = master.outerHTML;
+                        // Save the initial pristine copy to this section's memory immediately
+                        activeSec.savedContent[activeSec.templateType] = liveContainer.innerHTML;
+                        saveState();
+                    }
+                }
+
+                // 4. Re-bind the interactive buttons to the newly injected HTML
+                bindLiveTemplateEvents();
+            }
+
+            // Function to attach Event Listeners to the Live Canvas
+            function bindLiveTemplateEvents() {
+                const liveContainer = document.getElementById('live-template-container');
+                
+                // --- Text Editing ---
+                const editBtns = liveContainer.querySelectorAll('.btn-edit-text-action');
+                editBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const templateContainer = this.closest('.template-view');
+                        const editableTexts = templateContainer.querySelectorAll('.editable-text');
+                        
+                        let isEditing = this.classList.contains('active');
+                        
+                        if (!isEditing) {
+                            // Turn ON editing
+                            this.classList.add('active');
+                            this.innerHTML = '<i class="ph ph-check"></i> Save Text';
+                            
+                            editableTexts.forEach(el => {
+                                el.setAttribute('contenteditable', 'true');
+                                // Auto-save while typing!
+                                el.addEventListener('input', saveCurrentTemplateState);
+                            });
+                            if(editableTexts.length > 0) editableTexts[0].focus();
+                        } else {
+                            // Turn OFF editing
+                            this.classList.remove('active');
+                            this.innerHTML = '<i class="ph ph-pencil-simple"></i> Edit Text';
+                            
+                            editableTexts.forEach(el => {
+                                el.setAttribute('contenteditable', 'false');
+                                el.removeEventListener('input', saveCurrentTemplateState);
+                            });
+                            saveCurrentTemplateState();
+                        }
+                    });
+                });
+
+                // --- Image Uploading (For templates that allow it) ---
+                const changeImageBtns = liveContainer.querySelectorAll('.btn-change-image-action');
+                changeImageBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const templateContainer = this.closest('.template-view');
+                        const fileInput = templateContainer.querySelector('.image-upload-input');
+                        if(fileInput) fileInput.click();
+                    });
+                });
+
+                const imageInputs = liveContainer.querySelectorAll('.image-upload-input');
+                imageInputs.forEach(input => {
+                    input.addEventListener('change', function(e) {
+                        if (e.target.files && e.target.files[0]) {
+                            const reader = new FileReader();
+                            reader.onload = function(onloadEvent) {
+                                const templateContainer = input.closest('.template-view');
+                                // NOTE: Added .terms-logo-img to the query selector to support Terms template uploads
+                                const img = templateContainer.querySelector('.ti-circle-img, .ti-rounded-img, .product-main-img, .terms-logo-img');
+                                if(img) {
+                                    img.src = onloadEvent.target.result;
+                                    // Save the new image base64 directly to the section state!
+                                    saveCurrentTemplateState();
+                                }
+                            }
+                            reader.readAsDataURL(e.target.files[0]);
+                        }
+                    });
+                });
+            }
+
+            // Template Dropdown Selection Logic (Intercepted to handle State)
+            const contentDropdownMenu = document.getElementById('content-dropdown');
+            if (contentDropdownMenu) {
+                const items = contentDropdownMenu.querySelectorAll('.dropdown-item');
+                items.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.stopPropagation(); 
+                        
+                        const selectedTemplateKey = this.dataset.template;
+                        const activeSec = sectionsData.find(s => s.active);
+                        
+                        if(activeSec) {
+                            activeSec.templateType = selectedTemplateKey;
+                            saveState();
+                            updateContentView(); 
+                        }
+                        
+                        contentDropdownMenu.classList.remove('show');
+                    });
+                });
+            }
+
+            // Initialize app on load
+            renderSections();
+            updateContentView();
+
+        })();
+    </script>
+
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // === Shared Dropdown Logic ===
+        const toggles = document.querySelectorAll('[data-dropdown-toggle]');
+        
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation(); 
+                
+                const targetId = this.getAttribute('data-dropdown-toggle');
+                const targetMenu = document.getElementById(targetId);
+                
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu !== targetMenu) {
+                        menu.classList.remove('show');
+                    }
+                });
+
+                if (targetMenu) {
+                    targetMenu.classList.toggle('show');
+                }
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown-wrapper')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+
+        // Global dropdown text replacement (Ignoring the App-controlled content dropdown)
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                const menu = this.closest('.dropdown-menu');
+                
+                // Ignore these because they are handled by specific app logic above
+                if(menu.id === 'user-dropdown' || menu.id === 'content-dropdown') {
+                    return;
+                }
+                
+                e.stopPropagation();
+                const selectedText = this.textContent.trim();
+                
+                const existingCheck = menu.querySelector('.ph-check');
+                if (existingCheck) {
+                    existingCheck.remove();
+                }
+                
+                this.insertAdjacentHTML('beforeend', ' <i class="ph ph-check"></i>');
+                
+                const wrapper = menu.closest('.dropdown-wrapper');
+                const triggerSpan = wrapper.querySelector('.clickable span');
+                
+                if(triggerSpan) {
+                    triggerSpan.textContent = selectedText;
+                }
+                
+                menu.classList.remove('show');
+            });
+        });
+
+        // === Mobile Menu Logic ===
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mainNav = document.getElementById('main-nav');
+        const navRight = document.getElementById('nav-right');
+
+        if (mobileMenuBtn && mainNav && navRight) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mainNav.classList.toggle('show');
+                navRight.classList.toggle('show');
+                
+                const icon = mobileMenuBtn.querySelector('i');
+                if (mainNav.classList.contains('show')) {
+                    icon.classList.replace('ph-list', 'ph-x');
+                } else {
+                    icon.classList.replace('ph-x', 'ph-list');
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

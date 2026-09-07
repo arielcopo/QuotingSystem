@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal (#3 Overview) - Builders Signs</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* === Global Reset & Variables === */
+        :root {
+            --text-main: #171717;
+            --text-sub: #525252;
+            --text-light: #737373;
+            --text-muted: #A3A3A3;
+            --bg-body: #FFFFFF;
+            --bg-gray: #FAFAFA;
+            --border-light: #E5E5E5;
+            --border-dark: #D4D4D4;
+            --brand-yellow: #FFCC00;
+            --brand-dark: #332900;
+            --brand-red: #DC2626;
+            --brand-green-bg: #F0FDF4;
+            --brand-green-border: #15803D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button, input, textarea { font-family: inherit; outline: none; border: none; background: none; }
+        button { cursor: pointer; }
+
+        /* === Layout Containers === */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* === Header === */
+        .header {
+            border-bottom: 1px solid var(--border-light);
+            background: var(--bg-body);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .logo {
+            height: 30px;
+            width: auto;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent;
+        }
+
+        .nav-item i { font-size: 20px; }
+        .nav-item.active { 
+            border-bottom-color: var(--text-main); 
+            border-bottom: 1px dashed var(--text-main);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .global-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            width: 187px;
+            height: 30px;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .global-search input {
+            font-size: 12px;
+            color: var(--text-main);
+            width: 100%;
+        }
+        .global-search input::placeholder { color: var(--text-light); }
+
+        .divider-vertical {
+            width: 1px;
+            height: 30px;
+            background-color: var(--border-light);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--brand-yellow);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        /* === Dropdown Global === */
+        .dropdown-wrapper { position: relative; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            background: var(--bg-body);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            box-shadow: 0px 12px 16px -4px rgba(0, 0, 0, 0.08);
+            z-index: 100;
+            min-width: 100%;
+            padding: 4px 0;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-item {
+            padding: 8px 14px;
+            font-size: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        .dropdown-item:hover { background: var(--bg-gray); }
+
+        /* === Top Main Content === */
+        .main-content {
+            margin-top: 32px; 
+            padding-bottom: 64px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-header-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; 
+            margin-bottom: 40px;
+        }
+
+        .content-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .form-group-inline {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .form-label-inline {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-sub);
+            width: 90px;
+        }
+
+        .input-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 375px;
+            height: 36px;
+            padding: 0 14px;
+            background: var(--bg-body);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+            font-size: 12px;
+            color: var(--text-main);
+        }
+        
+        .input-box input {
+            width: 100%;
+            font-size: 12px;
+            color: var(--text-main);
+        }
+
+        .input-box.clickable { cursor: pointer; }
+
+        .btn-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            height: 30px;
+            padding: 0 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.8; }
+
+        .btn-default { background: var(--bg-gray); border: 1px solid var(--border-light); color: var(--text-main); }
+        .btn-primary { background: var(--brand-yellow); color: var(--brand-dark); border: none; }
+        .btn-danger { background: var(--brand-red); color: var(--bg-body); border: none; }
+
+        .btn-icon-only {
+            color: var(--text-sub);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* === Tabs === */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap; /* Prevents overflow on mobile */
+        }
+
+        .tab {
+            padding: 10px 24px;
+            border-radius: 1000px;
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            background: var(--bg-body);
+        }
+
+        .tab .tab-num { color: var(--text-muted); }
+        .tab.active { border: 1px dashed var(--text-main); }
+
+        /* === Overview Content Section === */
+        
+        .overview-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 36px;
+            margin-top: 32px; 
+        }
+
+        .overview-left {
+            display: flex;
+            flex-direction: column;
+            gap: 48px;
+        }
+
+        .overview-right {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Reusable Card Style */
+        .overview-card {
+            background: var(--bg-gray);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* Basic Info Styles */
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+        
+        .info-label {
+            color: var(--text-light);
+            width: 40px;
+        }
+        
+        .info-value-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-main);
+        }
+
+        .badge-success {
+            background-color: var(--brand-green-bg);
+            color: var(--brand-green-border);
+            border: 1px solid var(--brand-green-border);
+            padding: 2px 8px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .icon-btn-small {
+            font-size: 16px;
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Form Styles inside Overview */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #404040;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--bg-body);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+            font-size: 16px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .form-control.text-main { color: var(--text-main); }
+        .form-control.clickable { cursor: pointer; color: var(--text-main); }
+        
+        /* Ensures date picker blends correctly */
+        input[type="date"].form-control {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            text-transform: uppercase;
+        }
+
+        .form-control.textarea {
+            height: 154px;
+            align-items: flex-start;
+            color: var(--text-main);
+            resize: none;
+        }
+        .form-control.textarea::placeholder { color: var(--text-muted); }
+
+        .form-hint {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .grid-2-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 16px;
+        }
+
+        /* Activity Log Table Styles */
+        .activity-log-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .activity-table-wrapper {
+            background: var(--bg-body);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .activity-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .activity-table thead {
+            background: var(--bg-gray);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .activity-table th {
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-sub);
+        }
+
+        .activity-table td {
+            padding: 16px 24px;
+            font-size: 14px;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: middle;
+        }
+        
+        .activity-table td.text-sub { color: var(--text-sub); }
+        .activity-table tr:last-child td { border-bottom: none; }
+
+        /* Email to Client Styles */
+        .email-client-card {
+            gap: 20px;
+        }
+
+        .cc-bcc-links {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            width: 100%;
+            margin-top: -12px;
+        }
+
+        .cc-bcc-links span {
+            font-size: 14px;
+            color: var(--text-main);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .cc-bcc-links span:hover { color: var(--text-sub); }
+
+        .wysiwyg-editor {
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--bg-body);
+            width: 100%;
+        }
+
+        .wysiwyg-toolbar {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid var(--border-dark);
+            display: block;
+        }
+
+        .wysiwyg-content {
+            padding: 16px;
+            font-size: 16px;
+            color: var(--text-main);
+            line-height: 1.5;
+            min-height: 250px;
+        }
+
+        .email-bottom-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .custom-checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .custom-checkbox {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--border-dark);
+            border-radius: 4px;
+            background-color: var(--bg-body);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .custom-checkbox:checked {
+            border-color: var(--brand-dark);
+        }
+
+        .custom-checkbox:checked::after {
+            content: "";
+            position: absolute;
+            left: 6px;
+            top: 3px;
+            width: 4px;
+            height: 9px;
+            border: solid var(--brand-dark);
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #404040;
+        }
+
+        /* === Responsive Styles === */
+        @media (max-width: 1024px) {
+            .header-inner { 
+                flex-direction: column; 
+                height: auto; 
+                padding: 16px 40px; 
+                gap: 0; 
+                align-items: stretch; 
+            }
+            .nav-left { 
+                width: 100%; 
+                flex-wrap: wrap; 
+                justify-content: space-between; 
+                gap: 16px; 
+            }
+            .mobile-menu-btn { 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+            }
+            .main-nav { 
+                display: none; 
+                width: 100%; 
+                flex-direction: column; 
+                align-items: flex-start; 
+                gap: 16px; 
+                padding-top: 16px;
+                padding-bottom: 16px; 
+                border-top: 1px solid var(--border-light); 
+            }
+            .main-nav.show { display: flex; }
+            
+            .nav-right { 
+                display: none; 
+                width: 100%; 
+                flex-direction: column; 
+                align-items: flex-start; 
+                gap: 16px; 
+                padding-top: 0; 
+                margin-top: 0; 
+            }
+            .nav-right.show { display: flex; }
+            
+            .global-search { width: 100%; }
+            .global-search input { width: 100%; }
+            .divider-vertical { display: none; }
+
+            /* Grid collapses to 1 column on tablet */
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Form inputs in header adjust */
+            .input-box { width: 100%; }
+        }
+
+        @media (max-width: 768px) {
+            /* Restoring form responsive behavior for top proposal header rows */
+            .content-row { flex-direction: column; align-items: stretch; gap: 16px; }
+            .form-group-inline { flex-direction: column; align-items: flex-start; width: 100%; gap: 8px;}
+            .form-label-inline { width: auto; }
+            .btn-group { flex-wrap: wrap; }
+            
+            .tabs-container { flex-direction: column; align-items: stretch; }
+            .tab { justify-content: center; }
+            .grid-2-col { grid-template-columns: 1fr; }
+            .email-bottom-row { flex-direction: column; align-items: flex-start; gap: 20px; }
+            
+            /* Responsive table behavior */
+            .activity-table-wrapper { overflow-x: auto; }
+            .activity-table { min-width: 500px; }
+        }
+        
+        @media (max-width: 375px) {
+            .container { padding: 0 20px; }
+            .overview-card { padding: 20px; }
+            .action-buttons { flex-direction: column; align-items: stretch; }
+            .btn { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container header-inner">
+        <div class="nav-left">
+            <a href="dashboard.html">
+                <img src="https://builderssigns.com.au/wp-content/uploads/2026/06/Dark-and-Yellow-Landscape-2.svg" alt="Builders Signs" class="logo">
+            </a>
+            
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu">
+                <i class="ph ph-list"></i>
+            </button>
+
+            <nav class="main-nav" id="main-nav">
+                <a href="dashboard.html" class="nav-item"><i class="ph ph-chart-bar"></i> Dashboard</a>
+                <a href="proposal.html" class="nav-item active"><i class="ph ph-envelope-simple"></i> Proposal</a>
+                <a href="#" class="nav-item"><i class="ph ph-users"></i> Clients</a>
+                <a href="#" class="nav-item"><i class="ph ph-layout"></i> Templates</a>
+                <a href="#" class="nav-item"><i class="ph ph-squares-four"></i> Themes</a>
+                <a href="#" class="nav-item"><i class="ph ph-gear"></i> Accounts</a>
+            </nav>
+        </div>
+        
+        <div class="nav-right" id="nav-right">
+            <div class="global-search">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="divider-vertical"></div>
+            
+            <div class="dropdown-wrapper">
+                <div class="user-profile" data-dropdown-toggle="user-dropdown">
+                    <div class="user-avatar"></div>
+                    <div class="user-info">
+                        <span>Marcus Bawden</span>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                </div>
+                <div class="dropdown-menu" id="user-dropdown">
+                    <div class="dropdown-item">My Profile</div>
+                    <div class="dropdown-item">Logout</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container main-content">
+
+    <!-- Header Content Row 1 -->
+    <div class="content-header-rows">
+        <div class="content-row">
+            <div class="form-group-inline">
+                <div class="form-label-inline">Proposal name</div>
+                <div class="input-box">
+                    <input type="text" value="Department of Education | Bin Cover Quote">
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-default">Preview</button>
+                <button class="btn btn-default">Download PDF</button>
+                <div class="divider-vertical" style="height: 36px;"></div>
+                <button class="btn btn-default">Back</button>
+                <button class="btn btn-primary">Save Proposal</button>
+            </div>
+        </div>
+
+        <!-- Header Content Row 2 -->
+        <div class="content-row">
+            <div class="form-group-inline">
+                <div class="form-label-inline" style="display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; width: auto; min-width: 90px;">
+                    Client
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <button class="btn-icon-only"><i class="ph ph-stack-plus"></i></button>
+                        <button class="btn-icon-only"><i class="ph ph-user-circle-plus"></i></button>
+                    </div>
+                </div>
+
+                <div class="dropdown-wrapper" style="width: auto; flex: 1;">
+                    <div class="input-box clickable" data-dropdown-toggle="client-dropdown">
+                        <span>Rachael Pyper (rachael.pyper2@det.nsw.edu.au)</span>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                    <div class="dropdown-menu" id="client-dropdown">
+                        <div class="dropdown-item">Rachael Pyper (rachael.pyper2@det.nsw.edu.au) <i class="ph ph-check"></i></div>
+                        <div class="dropdown-item">Ellie Shaw (ellie@jaggerandstone.com)</div>
+                        <div class="dropdown-item">Chris Anderson (hello@dayforit.biz)</div>
+                        <div class="dropdown-item">Nina Ivanovic (nvanovic@powercor.com.au)</div>
+                        <div class="dropdown-item">Brian Doyle (info@doyleboxing.com.au)</div>
+                    </div>
+                </div>
+                <button class="btn-icon-only"><i class="ph ph-arrow-square-out"></i></button>
+                <button class="btn-icon-only"><i class="ph ph-x"></i></button>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-default">Discussion</button>
+                <button class="btn btn-default">Notes</button>
+                <button class="btn btn-default">View in XERO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Center Tabs -->
+    <div class="tabs-container">
+        <div class="tab">
+            <span class="tab-num">01</span> Edit Quote
+        </div>
+        <div class="tab">
+            <span class="tab-num">02</span> Edit Content
+        </div>
+        <div class="tab active">
+            <span class="tab-num">03</span> Overview
+        </div>
+    </div>
+
+    <!-- CONTENT for Overview -->
+    <div class="overview-grid">
+        
+        <!-- Left Column -->
+        <div class="overview-left">
+            
+            <!-- Basic Info Card -->
+            <div class="overview-card">
+                <h2 class="section-title">Basic Info</h2>
+                
+                <div class="info-list">
+                    <div class="info-row">
+                        <span class="info-label">Sent</span>
+                        <span class="info-value-group">August 18, 2026 12:45 (3 hours ago)</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">State</span>
+                        <div class="info-value-group">
+                            <span class="badge-success">Approved</span>
+                            <button class="icon-btn-small"><i class="ph ph-pencil-simple"></i></button>
+                            <span>August 18, 2026 12:45 (3 hours ago)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Code</label>
+                    <input type="text" class="form-control text-main" value="Code" placeholder="Enter code">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Tags</label>
+                    <input type="text" class="form-control text-main" value="Tags" placeholder="Enter tags">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Noted (Internal Only)</label>
+                    <textarea class="form-control textarea" placeholder="Enter a description..."></textarea>
+                </div>
+
+                <div class="grid-2-col">
+                    
+                    <!-- REVISED EXPIRATION DATE SECTION -->
+                    <div class="form-group">
+                        <label class="form-label">Expiration Date</label>
+                        <div class="dropdown-wrapper">
+                            
+                            <!-- Trigger matching form-control layout -->
+                            <div class="form-control text-main clickable" data-dropdown-toggle="calendar-dropdown">
+                                <span id="selected-date-text">2026-02-20</span>
+                                <div data-svg-wrapper data-format="Stroke" data-weight="Regular" style="display: flex; align-items: center; justify-content: center;">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13 2.5H3C2.72386 2.5 2.5 2.72386 2.5 3V13C2.5 13.2761 2.72386 13.5 3 13.5H13C13.2761 13.5 13.5 13.2761 13.5 13V3C13.5 2.72386 13.2761 2.5 13 2.5Z" stroke="#A3A3A3" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M11 1.5V3.5" stroke="#A3A3A3" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M5 1.5V3.5" stroke="#A3A3A3" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2.5 5.5H13.5" stroke="#A3A3A3" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            
+                            <!-- Custom Calendar UI inside Dropdown Menu -->
+                            <div class="dropdown-menu" id="calendar-dropdown" style="padding: 0; border: none; box-shadow: none; background: transparent; width: 320px; z-index: 105;">
+                                <div style="width: 100%; height: auto; padding: 20px; background: white; border-radius: 8px; outline: 1px #D4D4D4 solid; outline-offset: -1px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 16px; display: flex; box-sizing: border-box; box-shadow: 0px 12px 16px -4px rgba(0, 0, 0, 0.08);">
+                                    <div style="flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 12px; display: flex">
+                                        <div style="width: 280px; justify-content: space-between; align-items: center; display: inline-flex">
+                                            <div data-hierarchy="Tertiary gray" data-icon="Only" data-size="md" data-state="Default" style="border-radius: 8px; justify-content: flex-start; align-items: flex-start; display: flex; cursor: pointer;">
+                                                <div data-icon="Only" data-size="md" style="padding: 10px; overflow: hidden; border-radius: 8px; justify-content: center; align-items: center; gap: 8px; display: flex">
+                                                    <div data-svg-wrapper style="position: relative">
+                                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12.5 15L7.5 10L12.5 5" stroke="#737373" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="text-align: center; color: #404040; font-size: 16px; font-family: Inter; font-weight: 600; line-height: 24px; word-wrap: break-word">February 2026</div>
+                                            <div data-hierarchy="Tertiary gray" data-icon="Only" data-size="md" data-state="Default" style="border-radius: 8px; justify-content: flex-start; align-items: flex-start; display: flex; cursor: pointer;">
+                                                <div data-icon="Only" data-size="md" style="padding: 10px; overflow: hidden; border-radius: 8px; justify-content: center; align-items: center; gap: 8px; display: flex">
+                                                    <div data-svg-wrapper style="position: relative">
+                                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M7.5 15L12.5 10L7.5 5" stroke="#737373" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 4px; display: flex">
+                                            <div style="width: 280px; justify-content: flex-start; align-items: flex-start; display: inline-flex">
+                                                <div data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 20px; word-wrap: break-word">Mo</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 20px; word-wrap: break-word">Tu</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 20px; word-wrap: break-word">We</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 20px; word-wrap: break-word">Th</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 20px; word-wrap: break-word">Fr</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 20px; word-wrap: break-word">Sat</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 20px; word-wrap: break-word">Su</div>
+                                                </div>
+                                            </div>
+                                            <div style="overflow: hidden; border-radius: 20px; justify-content: flex-start; align-items: flex-start; display: inline-flex">
+                                                <div data-position="Leading/trailing" data-state="Disabled" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #737373; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">30</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Disabled" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #737373; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">31</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">1</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">2</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">3</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">4</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">5</div>
+                                                </div>
+                                            </div>
+                                            <div style="overflow: hidden; border-radius: 20px; justify-content: flex-start; align-items: flex-start; display: inline-flex">
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">6</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">7</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">8</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">9</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">10</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">11</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">12</div>
+                                                </div>
+                                            </div>
+                                            <div style="overflow: hidden; border-radius: 20px; justify-content: flex-start; align-items: flex-start; display: inline-flex">
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">13</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">14</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">15</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">16</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">17</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">18</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">19</div>
+                                                </div>
+                                            </div>
+                                            <div style="overflow: hidden; border-radius: 20px; justify-content: flex-start; align-items: flex-start; display: inline-flex">
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Today's date" style="width: 40px; height: 40px; position: relative; background: #FFCC00; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 500; line-height: 20px; word-wrap: break-word">20</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">21</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">22</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">23</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">24</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">25</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">26</div>
+                                                </div>
+                                            </div>
+                                            <div style="overflow: hidden; border-radius: 20px; justify-content: flex-start; align-items: flex-start; display: inline-flex">
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">27</div>
+                                                </div>
+                                                <div class="calendar-date-btn" data-position="Leading/trailing" data-state="Default" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px; cursor: pointer;">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #404040; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">28</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Disabled" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #737373; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">1</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Disabled" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #737373; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">2</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Disabled" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #737373; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">3</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Disabled" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #737373; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">4</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Disabled" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #737373; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">5</div>
+                                                </div>
+                                            </div>
+                                            <div style="overflow: hidden; border-radius: 20px; justify-content: flex-start; align-items: flex-start; display: inline-flex">
+                                                <div data-position="Leading/trailing" data-state="Disabled" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #737373; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">6</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Disabled" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #737373; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">7</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Disabled" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #737373; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">8</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Disabled" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #737373; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">9</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Disabled" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #737373; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">10</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Disabled" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #737373; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">11</div>
+                                                </div>
+                                                <div data-position="Leading/trailing" data-state="Disabled" data-type="Inactive" style="width: 40px; height: 40px; position: relative; border-radius: 20px">
+                                                    <div style="width: 24px; left: 8px; top: 10px; position: absolute; text-align: center; color: #737373; font-size: 14px; font-family: Inter; font-weight: 400; line-height: 20px; word-wrap: break-word">12</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="form-hint">in 30 days</span>
+                    </div>
+                    <!-- /REVISED EXPIRATION DATE SECTION -->
+
+                    <div class="form-group">
+                        <label class="form-label">Proposal URL</label>
+                        <div class="form-control" style="padding: 0; display: flex; overflow: hidden;">
+                            <input type="text" id="proposal-url-input" class="text-main" value="www.url.com.au" style="flex: 1; padding: 10px 14px; background: transparent; border: none; outline: none; width: 100%;">
+                            <button type="button" id="copy-url-btn" style="padding: 0 14px; border-left: 1px solid var(--border-dark); background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                <i class="ph ph-copy" style="color: var(--text-muted); font-size: 20px; transition: color 0.2s;"></i>
+                            </button>
+                        </div>
+                        <span class="form-hint">Copy proposal URL for {FName LName}</span>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary"><i class="ph ph-copy"></i> Clone Proposal</button>
+                    <button class="btn btn-danger"><i class="ph ph-trash"></i> Delete</button>
+                </div>
+            </div>
+
+            <!-- Activity Log Section -->
+            <div class="activity-log-section">
+                <h2 class="section-title">Activity Log</h2>
+                <div class="activity-table-wrapper">
+                    <table class="activity-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Time</th>
+                                <th style="width: 45%;">Who</th>
+                                <th style="width: 30%;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span style="font-weight: 500;">18 Aug, 13:47</span></td>
+                                <td class="text-sub">NSW Department of Education<br>(rachael.pyper2@det.nsw.edu.au)</td>
+                                <td class="text-sub">Downloaded PDF</td>
+                            </tr>
+                            <tr>
+                                <td><span style="font-weight: 500;">16 Aug, 13:47</span></td>
+                                <td class="text-sub">NSW Department of Education<br>(rachael.pyper2@det.nsw.edu.au)</td>
+                                <td class="text-sub">Approved Proposal</td>
+                            </tr>
+                            <tr>
+                                <td><span style="font-weight: 500;">15 Aug, 13:47</span></td>
+                                <td class="text-sub">NSW Department of Education<br>(rachael.pyper2@det.nsw.edu.au)</td>
+                                <td class="text-sub">Viewed for about 1 hour</td>
+                            </tr>
+                            <tr>
+                                <td><span style="font-weight: 500;">14 Aug, 13:47</span></td>
+                                <td class="text-sub">NSW Department of Education<br>(rachael.pyper2@det.nsw.edu.au)</td>
+                                <td class="text-sub">Sent to Rachael Pyper</td>
+                            </tr>
+                            <tr>
+                                <td><span style="font-weight: 500;">11 Aug, 13:47</span></td>
+                                <td class="text-sub">NSW Department of Education<br>(rachael.pyper2@det.nsw.edu.au)</td>
+                                <td class="text-sub">Sent to Rachael Pyper</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column -->
+        <div class="overview-right">
+            
+            <!-- Email to Client Card -->
+            <div class="overview-card email-client-card">
+                <h2 class="section-title">Email to Client</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">Template</label>
+                    <div class="dropdown-wrapper">
+                        <div class="form-control text-main clickable" data-dropdown-toggle="template-dropdown">
+                            <span>Local Printing</span>
+                            <i class="ph ph-caret-down" style="color: var(--text-light); font-size: 20px;"></i>
+                        </div>
+                        <div class="dropdown-menu" id="template-dropdown">
+                            <div class="dropdown-item">Local Printing <i class="ph ph-check"></i></div>
+                            <div class="dropdown-item">Fabric Printing</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">To</label>
+                    <input type="text" class="form-control text-main" value="marcus@focusbanners.com.au">
+                </div>
+
+                <!-- Cc and Bcc Toggle Links -->
+                <div class="cc-bcc-links">
+                    <span id="toggle-cc-btn">Cc</span>
+                    <span id="toggle-bcc-btn">Bcc</span>
+                </div>
+
+                <!-- Hidden Cc Form -->
+                <div class="form-group" id="cc-form-group" style="display: none;">
+                    <label class="form-label">Cc</label>
+                    <input type="text" class="form-control text-main" value="john@focusbanners.com.au" placeholder="Enter Cc email">
+                </div>
+
+                <!-- Hidden Bcc Form -->
+                <div class="form-group" id="bcc-form-group" style="display: none;">
+                    <label class="form-label">Bcc</label>
+                    <input type="text" class="form-control text-main" value="doe@focusbanners.com.au" placeholder="Enter Bcc email">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Subject</label>
+                    <input type="text" class="form-control text-main" value="[ProposalName] proposal from [UserCompany]">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Body</label>
+                    <div class="wysiwyg-editor">
+                        <img class="wysiwyg-toolbar" src="data:image/png;base64,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">
+                        <div class="wysiwyg-content">
+                            Hi [ClientFirstName],<br><br>
+                            Thanks for your inquiry.<br><br>
+                            Please find our quote here: https://fproof.au/quote/ored9o/<br><br>
+                            Please let me know if you have any questions.<br><br>
+                            Kind regards,<br>
+                            Builders Signs<br>
+                            sales@builderssigns.com.au<br>
+                            1800 574 155
+                        </div>
+                    </div>
+                    <span class="form-hint">The proposal link in the body above is what the client clicks to view/respond.</span>
+                </div>
+
+                <div class="email-bottom-row">
+                    <label class="custom-checkbox-wrapper">
+                        <input type="checkbox" class="custom-checkbox">
+                        <span class="checkbox-label">Attach PDF version</span>
+                    </label>
+                    <button class="btn btn-primary"><i class="ph ph-envelope-simple"></i> Send Proposal By Email</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // === Shared Dropdown Logic ===
+        const toggles = document.querySelectorAll('[data-dropdown-toggle]');
+        
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation(); 
+                
+                const targetId = this.getAttribute('data-dropdown-toggle');
+                const targetMenu = document.getElementById(targetId);
+                
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu !== targetMenu) {
+                        menu.classList.remove('show');
+                    }
+                });
+
+                if (targetMenu) {
+                    targetMenu.classList.toggle('show');
+                }
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown-wrapper')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+
+        // Specific page logic: Select item from dropdown (text replacement for page inputs)
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const menu = this.closest('.dropdown-menu');
+                
+                // Ignore header profile dropdown for text replacement
+                if(menu.id === 'user-dropdown') {
+                    menu.classList.remove('show');
+                    return;
+                }
+                
+                const wrapper = menu.closest('.dropdown-wrapper');
+                const triggerSpan = wrapper.querySelector('.clickable span');
+                
+                if(triggerSpan) {
+                    triggerSpan.textContent = this.textContent.trim();
+                }
+                menu.classList.remove('show');
+            });
+        });
+
+        // === Custom Calendar Date Selection Logic ===
+        const calendarDateBtns = document.querySelectorAll('.calendar-date-btn');
+        calendarDateBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Stop click from bubbling up
+                
+                // Get the text inside the clicked day button and pad it (e.g. "1" -> "01")
+                const dayNum = this.textContent.trim().padStart(2, '0');
+                
+                // Reset backgrounds for all day buttons
+                calendarDateBtns.forEach(b => {
+                    b.style.background = 'transparent';
+                });
+                
+                // Apply yellow background to the clicked button
+                this.style.background = '#FFCC00';
+                
+                // Update the text in the trigger span
+                const wrapper = this.closest('.dropdown-wrapper');
+                const triggerSpan = wrapper.querySelector('#selected-date-text');
+                if (triggerSpan) {
+                    triggerSpan.textContent = `2026-02-${dayNum}`;
+                }
+                
+                // Close the calendar dropdown
+                const menu = this.closest('.dropdown-menu');
+                if (menu) {
+                    menu.classList.remove('show');
+                }
+            });
+        });
+
+        // === Mobile Menu Logic ===
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mainNav = document.getElementById('main-nav');
+        const navRight = document.getElementById('nav-right');
+
+        if (mobileMenuBtn && mainNav && navRight) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mainNav.classList.toggle('show');
+                navRight.classList.toggle('show');
+                
+                const icon = mobileMenuBtn.querySelector('i');
+                if (mainNav.classList.contains('show')) {
+                    icon.classList.replace('ph-list', 'ph-x');
+                } else {
+                    icon.classList.replace('ph-x', 'ph-list');
+                }
+            });
+        }
+
+        // === Copy Proposal URL Logic ===
+        const copyBtn = document.getElementById('copy-url-btn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', function() {
+                const urlInput = document.getElementById('proposal-url-input');
+                urlInput.select();
+                urlInput.setSelectionRange(0, 99999); // Mobile compatibility
+
+                // Attempt to copy
+                navigator.clipboard.writeText(urlInput.value).then(function() {
+                    const icon = copyBtn.querySelector('i');
+                    icon.classList.replace('ph-copy', 'ph-check');
+                    icon.style.color = 'var(--brand-green-border)';
+                    
+                    setTimeout(() => {
+                        icon.classList.replace('ph-check', 'ph-copy');
+                        icon.style.color = 'var(--text-muted)';
+                    }, 2000);
+                }).catch(function(err) {
+                    console.error("Could not copy text: ", err);
+                });
+            });
+        }
+
+        // === Cc & Bcc Toggle Logic ===
+        const toggleCcBtn = document.getElementById('toggle-cc-btn');
+        const ccFormGroup = document.getElementById('cc-form-group');
+        
+        if (toggleCcBtn && ccFormGroup) {
+            toggleCcBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Toggle between 'none' and 'flex'
+                if (ccFormGroup.style.display === 'none') {
+                    ccFormGroup.style.display = 'flex';
+                } else {
+                    ccFormGroup.style.display = 'none';
+                }
+            });
+        }
+
+        const toggleBccBtn = document.getElementById('toggle-bcc-btn');
+        const bccFormGroup = document.getElementById('bcc-form-group');
+        
+        if (toggleBccBtn && bccFormGroup) {
+            toggleBccBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Toggle between 'none' and 'flex'
+                if (bccFormGroup.style.display === 'none') {
+                    bccFormGroup.style.display = 'flex';
+                } else {
+                    bccFormGroup.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

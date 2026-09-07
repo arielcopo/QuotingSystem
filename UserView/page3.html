@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product - Quotation Proposal - Builders Signs</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* === Global Reset === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF;
+            color: #171717;
+            overflow-x: hidden;
+        }
+
+        .ph-thin {
+            -webkit-text-stroke: 0.5px currentColor;
+        }
+
+        /* === Navigation Header === */
+        .header-wrapper {
+            width: 100%;
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #E5E5E5;
+        }
+
+        .header-inner {
+            max-width: 1440px; 
+            margin: 0 auto;
+            padding: 26px 40px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo {
+            width: 201px; 
+            height: auto;
+        }
+
+        .header-title {
+            font-size: 18px; 
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 4.3px;
+            color: #171717;
+        }
+
+        .burger-menu {
+            display: none;
+            font-size: 32px; 
+            cursor: pointer;
+            color: #171717;
+        }
+
+        /* === Main Layout Structure === */
+        .main-container {
+            max-width: 1440px; 
+            margin: 0 auto;
+            display: flex;
+            min-height: calc(100vh - 96px);
+        }
+
+        /* === Left Navigation === */
+        .sidebar {
+            width: 100%;
+            max-width: 320px; 
+            padding: 40px 0 40px 40px; 
+            border-right: 1px solid #E5E5E5;
+            display: flex;
+            flex-direction: column;
+            gap: 18px; 
+            flex-shrink: 0;
+            background-color: #FFFFFF;
+        }
+
+        .nav-item {
+            font-size: 18px; 
+            font-weight: 600;
+            line-height: 28px; 
+            color: #171717;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .nav-item.active {
+            text-decoration: underline;
+            text-decoration-color: #D2D2D2;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 50%;
+        }
+
+        /* === Right Content Layout === */
+        .right-content {
+            width: 100%;
+            flex-grow: 1; /* Allows container to fill remaining width */
+            padding: 0; /* Padding removed so inner margin can dictate spacing */
+            overflow: hidden; /* Crops the overlapping image perfectly on the right side */
+            position: relative;
+        }
+
+        /* Content Wrapper - Locked Margins */
+        .about-section-wrapper {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 50px;
+            margin-top: 40px; /* Locked margin top */
+            margin-left: 40px; /* Locked margin left */
+        }
+
+        /* === About Text Column === */
+        .about-text-column {
+            width: 358px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 20px;
+            flex-shrink: 0; /* Prevents text column from shrinking */
+        }
+
+        .about-header-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 8px;
+            align-self: stretch;
+        }
+
+        .about-subtitle {
+            color: #525252;
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 30px;
+            word-wrap: break-word;
+        }
+
+        .about-title {
+            color: #171717;
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 44px;
+            word-wrap: break-word;
+        }
+
+        .about-description {
+            color: #525252;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 28px;
+            word-wrap: break-word;
+        }
+
+        /* === Overlapping Image Column === */
+        .about-image-column {
+            width: 702.25px;
+            height: 714.95px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        /* Dark Brown Circle (Furthest Back) */
+        .circle-bg-dark {
+            width: 655.28px;
+            height: 655.28px;
+            position: absolute;
+            left: 0px;
+            top: 59.67px;
+            background: #332900;
+            border-radius: 50%;
+        }
+
+        /* Yellow Circle (Middle Layer) */
+        .circle-bg-yellow {
+            width: 655.28px;
+            height: 655.28px;
+            position: absolute;
+            left: 25.03px;
+            top: 30px;
+            background: #FFCC00;
+            border-radius: 50%;
+        }
+
+
+        /* === Feature List (Bullets to Phosphor Icons) === */
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 32px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #525252;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 28px;
+        }
+
+        .check-icon {
+            color: #15803D; /* Phosphor Green */
+            font-size: 16px; /* 28px as requested */
+            width: 16px;
+            height: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        /* === Background Image Column (z-index: 0 - Background) === */
+        .about-image-column {
+            position: absolute;
+            z-index: 0; /* Background layer as requested */
+            bottom: 0; /* Anchor to bottom */
+            right: 0; /* Anchor to right */
+            width: 85%; /* Make it large enough to span across */
+            max-width: 900px;
+            pointer-events: none; /* Allows user to click text on top */
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+        }
+
+        .about-image-column img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            object-position: bottom right;
+            display: block;
+        }
+
+       
+
+
+        /* =======================================================
+           TABLET BREAKPOINT (768px max) 
+           - Sidebar hides, Burger Menu shows.
+        ======================================================= */
+        @media (max-width: 768px) {
+            .header-inner {
+                padding: 20px 30px; 
+            }
+
+            .burger-menu {
+                display: block;
+            }
+
+            .header-title {
+                display: none; 
+            }
+
+            .main-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                max-width: 100%;
+                padding: 0 30px;
+                border-right: none;
+                border-bottom: 1px solid #E5E5E5;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .sidebar.active {
+                max-height: 320px;
+                padding: 30px;
+                opacity: 1;
+            }
+
+            /* Adjust wrapper for tablet viewing */
+            .about-section-wrapper {
+                flex-direction: column;
+                margin-right: 40px; 
+            }
+            
+            .about-text-column {
+                width: 100%;
+            }
+        }
+
+        /* =======================================================
+           MOBILE BREAKPOINT (375px max) 
+        ======================================================= */
+        @media (max-width: 375px) {
+            .about-section-wrapper {
+                margin-top: 20px;
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+
+            .about-title {
+                font-size: 28px;
+                line-height: 36px;
+            }
+
+            .about-description {
+                font-size: 16px;
+                line-height: 24px;
+            }
+            
+            /* Scale down images for mobile */
+            .about-image-column, .circle-bg-dark, .circle-bg-yellow, .circle-image-main {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1/1;
+                position: relative;
+                left: 0 !important;
+                top: 0 !important;
+            }
+            
+            .circle-bg-dark { display: none; } /* Hide accents on mobile for simplicity, optional */
+            .circle-bg-yellow { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <header class="header-wrapper">
+        <div class="header-inner">
+            <img src="https://builderssigns.com.au/wp-content/uploads/2026/06/Dark-and-Yellow-Landscape-2.svg" alt="Builders Signs" class="header-logo">
+            <div class="header-title">Quotation Proposal</div>
+            <!-- Burger Icon -->
+            <i class="ph-thin ph-list burger-menu" onclick="toggleSidebar()"></i>
+        </div>
+    </header>
+
+    <div class="main-container">
+        
+        <!-- Left Navigation -->
+        <nav class="sidebar" id="mobile-sidebar">
+            <a href="#" class="nav-item">Introduction</a>
+            <a href="#" class="nav-item">About Builders Signs</a>
+            <a href="#" class="nav-item active">Banner Mesh</a>
+            <a href="#" class="nav-item">Quote</a>
+            <a href="#" class="nav-item">Terms</a>
+        </nav>
+
+        <!-- Right Content Area -->
+        <main class="right-content">
+            
+            <div class="about-section-wrapper">
+                
+                <!-- Text Area -->
+                <div class="about-text-column">
+                    <div class="about-header-group">
+                        <div class="about-subtitle">Banner Mesh</div>
+                        <div class="about-title">About Banner Mesh</div>
+                    </div>
+                    <div class="about-description">
+                        Banner Mesh Panels are designed to fit individual fence temporary fence panels frequently seen on building sites. Individual panels have a number of advantages over longer banners
+                            
+                    <!-- Modified Bullet List -->
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <i class="ph-bold ph-check check-icon"></i>
+                            <span>Budget-Friendly Setup</span>
+                        </li>
+                        <li class="feature-item">
+                            <i class="ph-bold ph-check check-icon"></i>
+                            <span>Tradie-Proof Durability</span>
+                        </li>
+                        <li class="feature-item">
+                            <i class="ph-bold ph-check check-icon"></i>
+                            <span>Wrinkle-Free Fit</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Overlapping Image Area -->
+                <div class="about-image-column">
+                    <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/page-3-banner-mesh.png" alt="Builders Signs Banner Mesh">
+                </div>
+
+            </div>
+            
+        </main>
+    </div>
+
+    <!-- Mobile Navigation Script -->
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mobile-sidebar');
+            sidebar.classList.toggle('active');
+        }
+    </script>
+
+</body>
+</html>

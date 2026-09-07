@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal - Builders Signs</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* === Global Reset === */
+        :root {
+            --text-main: #171717;
+            --text-sub: #525252;
+            --text-light: #737373;
+            --bg-body: #FFFFFF;
+            --bg-gray: #FAFAFA;
+            --bg-today: #F5F5F7;
+            --border-light: #E5E5E5;
+            --border-dark: #D4D4D4;
+            --brand-yellow: #FFCC00;
+            --brand-dark: #332900;
+            
+            /* Status Colors */
+            --status-approved-text: #16A34A;
+            --status-approved-bg: #F0FDF4;
+            --status-rejected-text: #DC2626;
+            --status-rejected-bg: #FEF2F2;
+            --status-viewed-text: #CA8A04;
+            --status-viewed-bg: #FEFCE8;
+            --status-sent-text: #2B83E8;
+            --status-sent-bg: #F0F6FC;
+            --status-draft-text: #8842EB;
+            --status-draft-bg: #F2E8FF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button, input { font-family: inherit; outline: none; border: none; background: none; }
+        button { cursor: pointer; }
+
+        /* === Layout Containers === */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* === Header === */
+        .header {
+            border-bottom: 1px solid var(--border-light);
+            background: var(--bg-body);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .logo {
+            height: 30px;
+            width: auto;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent;
+        }
+
+        .nav-item i { font-size: 20px; }
+        .nav-item.active { border-bottom-color: var(--text-main); border-bottom: 1px dashed var(--text-main);}
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .global-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            width: 187px;
+            height: 30px;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .global-search input {
+            font-size: 12px;
+            color: var(--text-main);
+            width: 100%;
+        }
+        .global-search input::placeholder { color: var(--text-light); }
+
+        .divider-vertical {
+            width: 1px;
+            height: 30px;
+            background-color: var(--border-light);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--brand-yellow);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        /* === Main Content === */
+        .main-content {
+            margin-top: 32px;
+            padding-bottom: 64px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Status Tabs */
+        .status-tabs {
+            display: inline-flex;
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .status-tab {
+            padding: 6px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            border-right: 1px solid var(--border-dark);
+            background: var(--bg-body);
+        }
+        .status-tab:last-child { border-right: none; }
+        
+        .status-tab.approved { color: var(--status-approved-text); }
+        .status-tab.rejected { color: var(--status-rejected-text); }
+        .status-tab.viewed { color: var(--status-viewed-text); }
+        .status-tab.sent { color: var(--status-sent-text); }
+        .status-tab.draft { color: var(--status-draft-text); }
+
+        /* Filters Bar */
+        .filters-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .filters-left, .filters-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .dropdown-wrapper { position: relative; }
+
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            height: 30px;
+            padding: 0 14px;
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            background: var(--bg-body);
+            font-size: 12px;
+            color: var(--text-light);
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+            min-width: 120px;
+        }
+        
+        .filter-btn.search-input-btn { width: 187px; justify-content: flex-start; cursor: text; }
+        .filter-btn.search-input-btn input { width: 100%; font-size: 12px; }
+
+        .btn-secondary, .btn-primary {
+            height: 30px;
+            padding: 0 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-secondary {
+            background: var(--bg-gray);
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+        }
+
+        .btn-primary {
+            background: var(--brand-yellow);
+            color: var(--brand-dark);
+        }
+
+        /* Dropdown Menus */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            background: var(--bg-body);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            box-shadow: 0px 12px 16px -4px rgba(0, 0, 0, 0.08);
+            z-index: 100;
+            min-width: 100%;
+            padding: 4px 0;
+        }
+
+        .dropdown-menu.show { display: block; }
+        .dropdown-item {
+            padding: 8px 14px;
+            font-size: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        .dropdown-item:hover, .dropdown-item.active { background: var(--bg-gray); }
+        .dropdown-item i { color: var(--text-sub); }
+
+        /* === Calendar UI Component === */
+        .calendar-menu {
+            padding: 20px;
+            width: 320px;
+            box-sizing: border-box;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .calendar-nav-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+        .calendar-nav-btn:hover { background: var(--bg-gray); }
+
+        .calendar-month-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #404040;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            row-gap: 4px;
+            justify-items: center;
+        }
+
+        .calendar-cell {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            border-radius: 50%;
+        }
+
+        .calendar-cell.day-name {
+            font-weight: 500;
+            color: #404040;
+        }
+
+        .calendar-cell.date {
+            font-weight: 400;
+            color: #404040;
+            cursor: pointer;
+        }
+
+        .calendar-cell.date:hover:not(.active):not(.disabled) {
+            background-color: var(--bg-gray);
+        }
+
+        .calendar-cell.date.disabled {
+            color: var(--text-light);
+            cursor: default;
+        }
+
+        .calendar-cell.date.today {
+            background-color: var(--bg-today);
+            font-weight: 500;
+        }
+
+        .calendar-cell.date.active {
+            background-color: var(--brand-yellow);
+            color: var(--brand-dark);
+            font-weight: 500;
+        }
+
+        /* Custom Checkbox */
+        .custom-checkbox {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            background-color: var(--bg-body);
+            cursor: pointer;
+            position: relative;
+        }
+        .custom-checkbox:checked {
+            background-color: var(--text-main);
+            border-color: var(--text-main);
+        }
+        .custom-checkbox:checked::after {
+            content: "\2713";
+            color: white;
+            font-size: 14px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* === Table === */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            background: var(--bg-body);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 1200px;
+        }
+
+        .data-table th {
+            background: var(--bg-gray);
+            padding: 18px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-sub);
+            border-bottom: 1px solid var(--border-light);
+            cursor: pointer;
+        }
+
+        .data-table th div { display: flex; align-items: center; gap: 4px; }
+        .data-table td { padding: 18px; border-bottom: 1px solid var(--border-light); vertical-align: middle; }
+        .data-table tr:last-child td { border-bottom: none; }
+
+        .cell-state { width: 220px;}
+        .cell-name { width: 360px; }
+
+        .badge {
+            display: flex;
+            justify-content: center;
+            padding: 4px 8px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+        
+        .badge.viewed { background: var(--status-viewed-bg); color: var(--status-viewed-text); }
+        .badge.approved { background: var(--status-approved-bg); color: var(--status-approved-text); }
+        .badge.sent { background: var(--status-sent-bg); color: var(--status-sent-text); }
+        .badge.rejected { background: var(--status-rejected-bg); color: var(--status-rejected-text); }
+        .badge.draft { background: var(--status-draft-bg); color: var(--status-draft-text); }
+
+        .sub-text { font-size: 12px; color: var(--text-sub); display: flex; justify-content: center;  gap: 12px; }
+        .sub-text u { cursor: pointer; }
+        .sub-text-xs { font-size: 11px; color: var(--text-light); }
+        .name-title { font-size: 12px; font-weight: 600; color: var(--text-sub); margin-bottom: 6px; }
+        .price-text { font-size: 12px; font-weight: 600; color: var(--text-sub); }
+
+        /* Actions Segmented Control */
+        .actions-group { display: flex; align-items: center; gap: 20px; }
+        .segmented-control {
+            display: inline-flex;
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        .segmented-btn {
+            padding: 6px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #404040;
+            background: var(--bg-body);
+            border-right: 1px solid var(--border-dark);
+        }
+        .segmented-btn:last-child { border-right: none; }
+        .segmented-btn.dark { background: var(--text-main); color: var(--bg-body); }
+        .icon-actions { display: flex; align-items: center; gap: 10px; }
+        .icon-actions i { font-size: 18px; cursor: pointer; }
+        .icon-actions .ph-copy { color: var(--status-approved-text); }
+        .icon-actions .ph-archive-box { color: var(--status-viewed-text); }
+        .icon-actions .ph-trash { color: var(--status-rejected-text); }
+
+        /* === Pagination === */
+        .pagination-container {
+            margin-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .pagination-info { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-sub); }
+        .pagination-controls {
+            display: inline-flex;
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        .page-btn {
+            height: 30px;
+            min-width: 40px;
+            padding: 0 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-body);
+            border-right: 1px solid var(--border-dark);
+            font-size: 14px;
+            font-weight: 500;
+            color: #404040;
+        }
+        .page-btn:last-child { border-right: none; }
+        .page-btn.active { background: var(--bg-gray); }
+
+        /* === Responsive === */
+        
+        /* Updated Navigation header responsiveness for tablet and mobile */
+        @media (max-width: 1024px) {
+            .filters-bar, .pagination-container { flex-direction: column; align-items: flex-start; }
+            
+            .header-inner { 
+                flex-direction: column; 
+                height: auto; 
+                padding: 16px 40px; 
+                gap: 0; 
+                align-items: stretch; 
+            }
+            .nav-left { 
+                width: 100%; 
+                flex-wrap: wrap; 
+                justify-content: space-between; 
+                gap: 16px; 
+            }
+            .mobile-menu-btn { 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+            }
+            .main-nav { 
+                display: none; 
+                width: 100%; 
+                flex-direction: column; 
+                align-items: flex-start; 
+                gap: 16px; 
+                padding-top: 16px;
+                padding-bottom: 16px; 
+                border-top: 1px solid var(--border-light); 
+            }
+            .main-nav.show { display: flex; }
+            
+            .nav-right { 
+                display: none; 
+                width: 100%; 
+                flex-direction: column; 
+                align-items: flex-start; 
+                gap: 16px; 
+                padding-top: 0; 
+                margin-top: 0; 
+            }
+            .nav-right.show { display: flex; }
+            
+            .global-search { width: 100%; }
+            .global-search input { width: 100%; }
+            .divider-vertical { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .status-tabs { flex-wrap: wrap; }
+            .status-tab { border-bottom: 1px solid var(--border-dark); }
+        }
+        
+        @media (max-width: 375px) {
+            .container { padding: 0 20px; }
+            .filters-left, .filters-right { width: 100%; flex-direction: column; align-items: stretch; }
+            .filter-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container header-inner">
+            <div class="nav-left">
+                <a href="dashboard.html">
+                    <img src="https://builderssigns.com.au/wp-content/uploads/2026/06/Dark-and-Yellow-Landscape-2.svg" alt="Builders Signs" class="logo">
+                </a>
+                
+                <!-- Added burger menu button here -->
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu">
+                    <i class="ph ph-list"></i>
+                </button>
+
+                <!-- Added id="main-nav" -->
+                <nav class="main-nav" id="main-nav">
+                    <a href="dashboard.html" class="nav-item"><i class="ph ph-chart-bar"></i> Dashboard</a>
+                    <a href="proposal.html" class="nav-item active"><i class="ph ph-envelope-simple"></i> Proposal</a>
+                    <a href="#" class="nav-item"><i class="ph ph-users"></i> Clients</a>
+                    <a href="#" class="nav-item"><i class="ph ph-layout"></i> Templates</a>
+                    <a href="#" class="nav-item"><i class="ph ph-squares-four"></i> Themes</a>
+                    <a href="#" class="nav-item"><i class="ph ph-gear"></i> Accounts</a>
+                </nav>
+            </div>
+            
+            <!-- Added id="nav-right" -->
+            <div class="nav-right" id="nav-right">
+                <div class="global-search">
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="divider-vertical"></div>
+                
+                <div class="dropdown-wrapper">
+                    <div class="user-profile" data-dropdown-toggle="user-dropdown">
+                        <div class="user-avatar"></div>
+                        <div class="user-info">
+                            <span>Marcus Bawden</span>
+                            <i class="ph ph-caret-down"></i>
+                        </div>
+                    </div>
+                    <div class="dropdown-menu" id="user-dropdown">
+                        <div class="dropdown-item">My Profile</div>
+                        <div class="dropdown-item">Logout</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        
+        <div>
+            <div class="status-tabs">
+                <button class="status-tab approved">Approved (1511)</button>
+                <button class="status-tab rejected">Rejected (1)</button>
+                <button class="status-tab viewed">Viewed (44)</button>
+                <button class="status-tab sent">Sent (4)</button>
+                <button class="status-tab draft">Draft (1)</button>
+            </div>
+        </div>
+
+        <div class="filters-bar">
+            <div class="filters-left">
+                <div class="dropdown-wrapper">
+                    <button class="filter-btn" data-dropdown-toggle="filter-all">
+                        All <i class="ph ph-caret-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="filter-all">
+                        <div class="dropdown-item active">All <i class="ph ph-check"></i></div>
+                        <div class="dropdown-item">Archived</div>
+                        <div class="dropdown-item">Unarchived</div>
+                    </div>
+                </div>
+
+                <div class="dropdown-wrapper">
+                    <button class="filter-btn" data-dropdown-toggle="filter-created">
+                        Created <i class="ph ph-caret-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="filter-created">
+                        <div class="dropdown-item active">Created <i class="ph ph-check"></i></div>
+                        <div class="dropdown-item">Expires</div>
+                        <div class="dropdown-item">Sent</div>
+                        <div class="dropdown-item">Approved</div>
+                        <div class="dropdown-item">Rejected</div>
+                    </div>
+                </div>
+
+                <!-- Date From Calendar -->
+                <div class="dropdown-wrapper">
+                    <button class="filter-btn" data-dropdown-toggle="filter-from">
+                        From <i class="ph ph-caret-down"></i>
+                    </button>
+                    <div class="dropdown-menu calendar-menu" id="filter-from">
+                        <div class="calendar-header">
+                            <button class="calendar-nav-btn"><i class="ph ph-caret-left"></i></button>
+                            <div class="calendar-month-title">February 2025</div>
+                            <button class="calendar-nav-btn"><i class="ph ph-caret-right"></i></button>
+                        </div>
+                        <div class="calendar-grid">
+                            <!-- Header Row -->
+                            <div class="calendar-cell day-name">Mo</div>
+                            <div class="calendar-cell day-name">Tu</div>
+                            <div class="calendar-cell day-name">We</div>
+                            <div class="calendar-cell day-name">Th</div>
+                            <div class="calendar-cell day-name">Fr</div>
+                            <div class="calendar-cell day-name">Sat</div>
+                            <div class="calendar-cell day-name">Su</div>
+                            
+                            <!-- Row 1 -->
+                            <div class="calendar-cell date disabled">30</div>
+                            <div class="calendar-cell date disabled">31</div>
+                            <div class="calendar-cell date">1</div>
+                            <div class="calendar-cell date">2</div>
+                            <div class="calendar-cell date">3</div>
+                            <div class="calendar-cell date">4</div>
+                            <div class="calendar-cell date active">5</div>
+
+                            <!-- Row 2 -->
+                            <div class="calendar-cell date">6</div>
+                            <div class="calendar-cell date">7</div>
+                            <div class="calendar-cell date">8</div>
+                            <div class="calendar-cell date">9</div>
+                            <div class="calendar-cell date">10</div>
+                            <div class="calendar-cell date">11</div>
+                            <div class="calendar-cell date">12</div>
+
+                            <!-- Row 3 -->
+                            <div class="calendar-cell date">13</div>
+                            <div class="calendar-cell date">14</div>
+                            <div class="calendar-cell date">15</div>
+                            <div class="calendar-cell date">16</div>
+                            <div class="calendar-cell date">17</div>
+                            <div class="calendar-cell date">18</div>
+                            <div class="calendar-cell date">19</div>
+
+                            <!-- Row 4 -->
+                            <div class="calendar-cell date today">20</div>
+                            <div class="calendar-cell date">21</div>
+                            <div class="calendar-cell date">22</div>
+                            <div class="calendar-cell date">23</div>
+                            <div class="calendar-cell date">24</div>
+                            <div class="calendar-cell date">25</div>
+                            <div class="calendar-cell date">26</div>
+
+                            <!-- Row 5 -->
+                            <div class="calendar-cell date">27</div>
+                            <div class="calendar-cell date">28</div>
+                            <div class="calendar-cell date disabled">1</div>
+                            <div class="calendar-cell date disabled">2</div>
+                            <div class="calendar-cell date disabled">3</div>
+                            <div class="calendar-cell date disabled">4</div>
+                            <div class="calendar-cell date disabled">5</div>
+
+                            <!-- Row 6 -->
+                            <div class="calendar-cell date disabled">6</div>
+                            <div class="calendar-cell date disabled">7</div>
+                            <div class="calendar-cell date disabled">8</div>
+                            <div class="calendar-cell date disabled">9</div>
+                            <div class="calendar-cell date disabled">10</div>
+                            <div class="calendar-cell date disabled">11</div>
+                            <div class="calendar-cell date disabled">12</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date To Calendar -->
+                <div class="dropdown-wrapper">
+                    <button class="filter-btn" data-dropdown-toggle="filter-to">
+                        To <i class="ph ph-caret-down"></i>
+                    </button>
+                    <div class="dropdown-menu calendar-menu" id="filter-to">
+                        <div class="calendar-header">
+                            <button class="calendar-nav-btn"><i class="ph ph-caret-left"></i></button>
+                            <div class="calendar-month-title">February 2025</div>
+                            <button class="calendar-nav-btn"><i class="ph ph-caret-right"></i></button>
+                        </div>
+                        <div class="calendar-grid">
+                            <!-- Header Row -->
+                            <div class="calendar-cell day-name">Mo</div>
+                            <div class="calendar-cell day-name">Tu</div>
+                            <div class="calendar-cell day-name">We</div>
+                            <div class="calendar-cell day-name">Th</div>
+                            <div class="calendar-cell day-name">Fr</div>
+                            <div class="calendar-cell day-name">Sat</div>
+                            <div class="calendar-cell day-name">Su</div>
+                            
+                            <!-- Row 1 -->
+                            <div class="calendar-cell date disabled">30</div>
+                            <div class="calendar-cell date disabled">31</div>
+                            <div class="calendar-cell date">1</div>
+                            <div class="calendar-cell date">2</div>
+                            <div class="calendar-cell date">3</div>
+                            <div class="calendar-cell date">4</div>
+                            <div class="calendar-cell date">5</div>
+
+                            <!-- Row 2 -->
+                            <div class="calendar-cell date">6</div>
+                            <div class="calendar-cell date">7</div>
+                            <div class="calendar-cell date">8</div>
+                            <div class="calendar-cell date">9</div>
+                            <div class="calendar-cell date">10</div>
+                            <div class="calendar-cell date">11</div>
+                            <div class="calendar-cell date">12</div>
+
+                            <!-- Row 3 -->
+                            <div class="calendar-cell date">13</div>
+                            <div class="calendar-cell date">14</div>
+                            <div class="calendar-cell date">15</div>
+                            <div class="calendar-cell date">16</div>
+                            <div class="calendar-cell date">17</div>
+                            <div class="calendar-cell date">18</div>
+                            <div class="calendar-cell date">19</div>
+
+                            <!-- Row 4 -->
+                            <div class="calendar-cell date today">20</div>
+                            <div class="calendar-cell date">21</div>
+                            <div class="calendar-cell date">22</div>
+                            <div class="calendar-cell date active">23</div>
+                            <div class="calendar-cell date">24</div>
+                            <div class="calendar-cell date">25</div>
+                            <div class="calendar-cell date">26</div>
+
+                            <!-- Row 5 -->
+                            <div class="calendar-cell date">27</div>
+                            <div class="calendar-cell date">28</div>
+                            <div class="calendar-cell date disabled">1</div>
+                            <div class="calendar-cell date disabled">2</div>
+                            <div class="calendar-cell date disabled">3</div>
+                            <div class="calendar-cell date disabled">4</div>
+                            <div class="calendar-cell date disabled">5</div>
+
+                            <!-- Row 6 -->
+                            <div class="calendar-cell date disabled">6</div>
+                            <div class="calendar-cell date disabled">7</div>
+                            <div class="calendar-cell date disabled">8</div>
+                            <div class="calendar-cell date disabled">9</div>
+                            <div class="calendar-cell date disabled">10</div>
+                            <div class="calendar-cell date disabled">11</div>
+                            <div class="calendar-cell date disabled">12</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-btn search-input-btn">
+                    <input type="text" placeholder="Name, Client Email, Code...">
+                </div>
+                <button class="btn-secondary">Search</button>
+            </div>
+            
+            <div class="filters-right">
+                <button class="btn-secondary">Export to .csv</button>
+                <button class="btn-primary">New Proposal</button>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;"><input type="checkbox" class="custom-checkbox"></th>
+                        <th>State</th>
+                        <th><div>Name <i class="ph ph-caret-down"></i></div></th>
+                        <th><div>Total <i class="ph ph-caret-down"></i></div></th>
+                        <th><div>Created <i class="ph ph-caret-down"></i></div></th>
+                        <th><div>Sent <i class="ph ph-caret-down"></i></div></th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Row 1: Viewed -->
+                    <tr>
+                        <td><input type="checkbox" class="custom-checkbox"></td>
+                        <td class="cell-state">
+                            <span class="badge viewed">Viewed yesterday at 08:28</span>
+                            <div class="sub-text">Expires Sep 18 <u>1 Comment</u></div>
+                        </td>
+                        <td class="cell-name">
+                            <div class="name-title">Iss Facility Services | Bin Covers Quote</div>
+                            <div class="sub-text-xs">Iss Facility Services (stefania.cardenas@au.issworld.com)</div>
+                        </td>
+                        <td><span class="price-text">$241.00</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:33</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:45</span></td>
+                        <td>
+                            <div class="actions-group">
+                                <div class="segmented-control">
+                                    <button class="segmented-btn">Overview</button>
+                                    <button href="proposal_1_EditQuote.html" class="segmented-btn"><a href="proposal_1_EditQuote.html">  Quote</a></button>
+                                    <button class="segmented-btn">Content</button>
+                                    <button class="segmented-btn dark">Preview</button>
+                                </div>
+                                <div class="icon-actions">
+                                    <i class="ph ph-copy"></i>
+                                    <i class="ph ph-archive-box"></i>
+                                    <i class="ph ph-trash"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 2: Approved -->
+                    <tr>
+                        <td><input type="checkbox" class="custom-checkbox"></td>
+                        <td class="cell-state">
+                            <span class="badge approved">Approved Thursday at 11:47</span>
+                            <div class="sub-text">Expires Sep 17</div>
+                        </td>
+                        <td class="cell-name">
+                            <div class="name-title">Department of Education | Bin Cover Quote</div>
+                            <div class="sub-text-xs">NSW Department of Education (rachael.pyper2@det.nsw.edu.au)</div>
+                        </td>
+                        <td><span class="price-text">$4451.00</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:33</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:45</span></td>
+                        <td>
+                            <div class="actions-group">
+                                <div class="segmented-control">
+                                    <button class="segmented-btn">Overview</button>
+                                    <button href="proposal_1_EditQuote.html" class="segmented-btn"><a href="proposal_1_EditQuote.html">  Quote</a></button>
+                                    <button class="segmented-btn">Content</button>
+                                    <button class="segmented-btn dark">Preview</button>
+                                </div>
+                                <div class="icon-actions">
+                                    <i class="ph ph-copy"></i>
+                                    <i class="ph ph-archive-box"></i>
+                                    <i class="ph ph-trash"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 3: Approved -->
+                    <tr>
+                        <td><input type="checkbox" class="custom-checkbox"></td>
+                        <td class="cell-state">
+                            <span class="badge approved">Approved Tuesday at 09:28</span>
+                            <div class="sub-text">Expires Sep 17</div>
+                        </td>
+                        <td class="cell-name">
+                            <div class="name-title">Powercor | CCB Covers Quote</div>
+                            <div class="sub-text-xs">Powercor (nvanovic@powercor.com.au)</div>
+                        </td>
+                        <td><span class="price-text">$3521.00</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:33</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:45</span></td>
+                        <td>
+                            <div class="actions-group">
+                                <div class="segmented-control">
+                                    <button class="segmented-btn">Overview</button>
+                                    <button href="proposal_1_EditQuote.html" class="segmented-btn"><a href="proposal_1_EditQuote.html">  Quote</a></button>
+                                    <button class="segmented-btn">Content</button>
+                                    <button class="segmented-btn dark">Preview</button>
+                                </div>
+                                <div class="icon-actions">
+                                    <i class="ph ph-copy"></i>
+                                    <i class="ph ph-archive-box"></i>
+                                    <i class="ph ph-trash"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 4: Sent -->
+                    <tr>
+                        <td><input type="checkbox" class="custom-checkbox"></td>
+                        <td class="cell-state">
+                            <span class="badge sent">Sent Tuesday at 07:48</span>
+                            <div class="sub-text">Expires Sep 17</div>
+                        </td>
+                        <td class="cell-name">
+                            <div class="name-title">School Parent Group | Directors Chair Fabric Quote</div>
+                            <div class="sub-text-xs">School Parent Group (amymdonovan@yahoo.com)</div>
+                        </td>
+                        <td><span class="price-text">$2451.00</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:33</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:45</span></td>
+                        <td>
+                            <div class="actions-group">
+                                <div class="segmented-control">
+                                    <button class="segmented-btn">Overview</button>
+                                    <button href="proposal_1_EditQuote.html" class="segmented-btn"><a href="proposal_1_EditQuote.html">  Quote</a></button>
+                                    <button class="segmented-btn">Content</button>
+                                    <button class="segmented-btn dark">Preview</button>
+                                </div>
+                                <div class="icon-actions">
+                                    <i class="ph ph-copy"></i>
+                                    <i class="ph ph-archive-box"></i>
+                                    <i class="ph ph-trash"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 5: Viewed -->
+                    <tr>
+                        <td><input type="checkbox" class="custom-checkbox"></td>
+                        <td class="cell-state">
+                            <span class="badge viewed">Viewed Tuesday at 07:16</span>
+                        </td>
+                        <td class="cell-name">
+                            <div class="name-title">Ironman | IM 70.3 Melbourne Capex Quote</div>
+                            <div class="sub-text-xs">IRONMAN (sarah.stephen@ironman.com)</div>
+                        </td>
+                        <td><span class="price-text">$2451.00</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:33</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:45</span></td>
+                        <td>
+                            <div class="actions-group">
+                                <div class="segmented-control">
+                                    <button class="segmented-btn">Overview</button>
+                                    <button href="proposal_1_EditQuote.html" class="segmented-btn"><a href="proposal_1_EditQuote.html">  Quote</a></button>
+                                    <button class="segmented-btn">Content</button>
+                                    <button class="segmented-btn dark">Preview</button>
+                                </div>
+                                <div class="icon-actions">
+                                    <i class="ph ph-copy"></i>
+                                    <i class="ph ph-archive-box"></i>
+                                    <i class="ph ph-trash"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 6: Draft -->
+                    <tr>
+                        <td><input type="checkbox" class="custom-checkbox"></td>
+                        <td class="cell-state">
+                            <span class="badge draft">Draft</span>
+                        </td>
+                        <td class="cell-name">
+                            <div class="name-title">Trophy Land | Toblerone Signs Quote</div>
+                            <div class="sub-text-xs">Trophy Land Super Store Pty Ltd (frank@trophyland.com.au)</div>
+                        </td>
+                        <td><span class="price-text">$2451.00</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:33</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:45</span></td>
+                        <td>
+                            <div class="actions-group">
+                                <div class="segmented-control">
+                                    <button class="segmented-btn">Overview</button>
+                                    <button href="proposal_1_EditQuote.html" class="segmented-btn"><a href="proposal_1_EditQuote.html">  Quote</a></button>
+                                    <button class="segmented-btn">Content</button>
+                                    <button class="segmented-btn dark">Preview</button>
+                                </div>
+                                <div class="icon-actions">
+                                    <i class="ph ph-copy"></i>
+                                    <i class="ph ph-archive-box"></i>
+                                    <i class="ph ph-trash"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 7: Approved -->
+                    <tr>
+                        <td><input type="checkbox" class="custom-checkbox"></td>
+                        <td class="cell-state">
+                            <span class="badge approved">Approved Thursday at 11:47</span>
+                            <div class="sub-text">Expires Sep 17</div>
+                        </td>
+                        <td class="cell-name">
+                            <div class="name-title">Department of Education | Bin Cover Quote</div>
+                            <div class="sub-text-xs">NSW Department of Education (rachael.pyper2@det.nsw.edu.au)</div>
+                        </td>
+                        <td><span class="price-text">$2451.00</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:33</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:45</span></td>
+                        <td>
+                            <div class="actions-group">
+                                <div class="segmented-control">
+                                    <button class="segmented-btn">Overview</button>
+                                    <button href="proposal_1_EditQuote.html" class="segmented-btn"><a href="proposal_1_EditQuote.html">  Quote</a></button>
+                                    <button class="segmented-btn">Content</button>
+                                    <button class="segmented-btn dark">Preview</button>
+                                </div>
+                                <div class="icon-actions">
+                                    <i class="ph ph-copy"></i>
+                                    <i class="ph ph-archive-box"></i>
+                                    <i class="ph ph-trash"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- Row 8: Rejected -->
+                    <tr>
+                        <td><input type="checkbox" class="custom-checkbox"></td>
+                        <td class="cell-state">
+                            <span class="badge rejected">Rejected Friday at 14:21</span>
+                            <div class="sub-text">Expires Sep 13</div>
+                        </td>
+                        <td class="cell-name">
+                            <div class="name-title">Doyle Boxing Club | CCB Covers Quote</div>
+                            <div class="sub-text-xs">Doyle Boxing Club (info@doyleboxing.com.au)</div>
+                        </td>
+                        <td><span class="price-text">$2451.00</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:33</span></td>
+                        <td><span class="sub-text-xs">Tuesday at 10:45</span></td>
+                        <td>
+                            <div class="actions-group">
+                                <div class="segmented-control">
+                                    <button class="segmented-btn">Overview</button>
+                                    <button href="proposal_1_EditQuote.html" class="segmented-btn"><a href="proposal_1_EditQuote.html">  Quote</a></button>
+                                    <button class="segmented-btn">Content</button>
+                                    <button class="segmented-btn dark">Preview</button>
+                                </div>
+                                <div class="icon-actions">
+                                    <i class="ph ph-copy"></i>
+                                    <i class="ph ph-archive-box"></i>
+                                    <i class="ph ph-trash"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination-container">
+            <div class="pagination-info">
+                Displaying proposals 1-15 of 1563 in total | per page: 
+                <div class="dropdown-wrapper">
+                    <button class="filter-btn" style="min-width: 70px; " data-dropdown-toggle="per-page">
+                        15 <i class="ph ph-caret-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="per-page" style="min-width: 70px;">
+                        <div class="dropdown-item active">15 <i class="ph ph-check"></i></div>
+                        <div class="dropdown-item">30</div>
+                        <div class="dropdown-item">60</div>
+                        <div class="dropdown-item">100</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pagination-controls">
+                <button class="page-btn"><i class="ph ph-arrow-left"></i></button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">...</button>
+                <button class="page-btn">105</button>
+                <button class="page-btn"><i class="ph ph-arrow-right"></i></button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggles = document.querySelectorAll('[data-dropdown-toggle]');
+            
+            toggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.stopPropagation(); 
+                    
+                    const targetId = this.getAttribute('data-dropdown-toggle');
+                    const targetMenu = document.getElementById(targetId);
+                    
+                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                        if (menu !== targetMenu) {
+                            menu.classList.remove('show');
+                        }
+                    });
+
+                    if (targetMenu) {
+                        targetMenu.classList.toggle('show');
+                    }
+                });
+            });
+
+            // Added check to prevent closing when interacting with calendar elements inside the dropdown
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.dropdown-wrapper')) {
+                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                        menu.classList.remove('show');
+                    });
+                }
+            });
+
+            // Added Mobile Menu Toggle Logic
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mainNav = document.getElementById('main-nav');
+            const navRight = document.getElementById('nav-right');
+
+            if (mobileMenuBtn && mainNav && navRight) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mainNav.classList.toggle('show');
+                    navRight.classList.toggle('show');
+                    
+                    const icon = mobileMenuBtn.querySelector('i');
+                    if (mainNav.classList.contains('show')) {
+                        icon.classList.replace('ph-list', 'ph-x');
+                    } else {
+                        icon.classList.replace('ph-x', 'ph-list');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
+

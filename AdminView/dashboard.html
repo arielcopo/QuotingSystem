@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Builders Signs</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* === Global Reset & Variables === */
+        :root {
+            --text-main: #171717;
+            --text-sub: #525252;
+            --text-light: #737373;
+            --bg-body: #FFFFFF;
+            --bg-gray: #FAFAFA;
+            --border-light: #E5E5E5;
+            --border-dark: #D4D4D4;
+            --brand-yellow: #FFCC00;
+            --brand-dark: #332900;
+            --brand-red: #DC2626;
+            
+            /* Status Colors */
+            --status-approved-bg: #DCFCE7;
+            --status-approved-border: #16A34A;
+            --status-rejected-bg: #FEE2E2;
+            --status-rejected-border: #DC2626;
+            --status-viewed-bg: #FEF9C3;
+            --status-viewed-border: #CA8A04;
+            --status-sent-bg: #F0F6FC;
+            --status-sent-border: #2B83E8;
+            --status-draft-bg: #F2E8FF;
+            --status-draft-border: #8842EB;
+            --status-other-bg: #F5F5F7;
+            --status-other-border: #525252;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button, input { font-family: inherit; outline: none; border: none; background: none; }
+        button { cursor: pointer; }
+
+        /* === Global Icon Sizing (Strict 20x20px) === */
+        i.ph {
+            font-size: 20px !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+        }
+        i.ph.icon-16 {
+            font-size: 16px !important;
+            width: 16px !important;
+            height: 16px !important;
+        }
+
+        /* === Layout Containers === */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* === Header === */
+        .header {
+            border-bottom: 1px solid var(--border-light);
+            background: var(--bg-body);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .logo {
+            height: 30px;
+            width: auto;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent;
+        }
+
+        .nav-item.active { 
+            border-bottom-color: var(--text-main); 
+            border-bottom: 1px dashed var(--text-main);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .global-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            width: 187px;
+            height: 30px;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .global-search input {
+            font-size: 12px;
+            color: var(--text-main);
+            width: 100%;
+        }
+        .global-search input::placeholder { color: var(--text-light); }
+
+        .divider-vertical {
+            width: 1px;
+            height: 30px;
+            background-color: var(--border-light);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--brand-yellow);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        /* === Dropdown Global === */
+        .dropdown-wrapper { position: relative; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            background: var(--bg-body);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            box-shadow: 0px 12px 16px -4px rgba(0, 0, 0, 0.08);
+            z-index: 100;
+            min-width: 100%;
+            padding: 4px 0;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-item {
+            padding: 8px 14px;
+            font-size: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        .dropdown-item:hover { background: var(--bg-gray); }
+
+        /* === Dashboard Layout Framework === */
+        .main-content {
+            margin-top: 32px; 
+            padding-bottom: 64px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 448px minmax(0, 1fr);
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .left-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 448px;
+        }
+
+        .right-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; 
+        }
+
+        /* === Action Buttons Section === */
+        .action-card {
+            background: var(--bg-body);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 14px;
+            display: flex;
+            gap: 10px;
+            width: 448px;
+            height: 126px;
+        }
+
+        .action-btn {
+            background: var(--bg-body);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            width: 97px;
+            height: 96px;
+            transition: background 0.2s ease;
+        }
+
+        .action-btn:hover { background: var(--bg-gray); }
+
+        .action-btn-text {
+            width: 100%;
+            max-width: 65px;
+            text-align: center;
+            color: var(--text-main);
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 18px;
+            word-wrap: break-word;
+        }
+
+        /* === Quick Stats Section === */
+        .quick-stats-card {
+            width: 448px;
+            background: var(--bg-body);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header-bar {
+            height: 40px;
+            background: var(--bg-gray);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-main);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .quick-stats-body {
+            padding: 18px 31px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+        }
+
+        .stat-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 36px;
+            width: 100%;
+        }
+
+        .stat-label {
+            width: 65px;
+            flex-shrink: 0;
+            color: var(--text-light);
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 18px;
+        }
+
+        .stat-bar-container { flex-grow: 1; display: flex; }
+        .stat-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .stat-bar { width: 100%; height: 17px; }
+        .stat-val { font-size: 10px; font-weight: 500; line-height: 1; }
+
+        .bar-approved { background-color: var(--status-approved-bg); border-top: 1px solid var(--status-approved-border); border-bottom: 1px solid var(--status-approved-border); border-left: 1px solid var(--status-approved-border); border-radius: 2px 0 0 2px; }
+        .bar-rejected { background-color: var(--status-rejected-bg); border: 1px solid var(--status-rejected-border); }
+        .bar-other { background-color: var(--status-other-bg); border-top: 1px solid var(--status-other-border); border-bottom: 1px solid var(--status-other-border); border-right: 1px solid var(--status-other-border); border-radius: 0 2px 2px 0; }
+
+        .val-approved { color: var(--status-approved-border); }
+        .val-rejected { color: var(--status-rejected-border); }
+        .val-other { color: var(--status-other-border); }
+
+        .w-30 { width: 30%; } .w-10 { width: 10%; } .w-60 { width: 60%; }
+        .w-40 { width: 40%; } .w-6 { width: 6%; } .w-54 { width: 54%; }
+        .w-53 { width: 53%; } .w-33 { width: 33%; } .w-14 { width: 14%; }
+
+        /* === General Legend === */
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+            margin-top: 18px;
+        }
+        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; }
+        .legend-box { width: 24px; height: 14px; border-radius: 3.5px; }
+        
+        .l-approved { color: var(--status-approved-border); }
+        .l-approved .legend-box { background: var(--status-approved-bg); border: 1px solid var(--status-approved-border); }
+        .l-rejected { color: var(--status-rejected-border); }
+        .l-rejected .legend-box { background: var(--status-rejected-bg); border: 1px solid var(--status-rejected-border); }
+        .l-viewed { color: var(--status-viewed-border); }
+        .l-viewed .legend-box { background: var(--status-viewed-bg); border: 1px solid var(--status-viewed-border); }
+        .l-sent { color: var(--status-sent-border); }
+        .l-sent .legend-box { background: var(--status-sent-bg); border: 1px solid var(--status-sent-border); }
+        .l-draft { color: var(--status-draft-border); }
+        .l-draft .legend-box { background: var(--status-draft-bg); border: 1px solid var(--status-draft-border); }
+        .l-other { color: var(--status-other-border); }
+        .l-other .legend-box { background: var(--status-other-bg); border: 1px solid var(--status-other-border); }
+
+        /* === Overview Charts Section === */
+        .overview-card {
+            width: 448px;
+            min-height: 450px;
+            height: auto; 
+            background: var(--bg-body);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .overview-tabs {
+            height: 40px;
+            background: var(--bg-gray);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 29px;
+        }
+
+        .overview-tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 0;
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent; 
+            transition: border-color 0.2s ease;
+        }
+
+        .tab-prop { color: var(--status-approved-border); }
+        .tab-prop i { color: var(--status-approved-border); }
+        .tab-prop.active { border-bottom: 1px dashed var(--status-approved-border); }
+
+        .tab-rej { color: var(--status-rejected-border); }
+        .tab-rej i { color: var(--status-rejected-border); }
+        .tab-rej.active { border-bottom: 1px dashed var(--status-rejected-border); }
+
+        .overview-content {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 24px;
+            padding-bottom: 24px;
+            height: 100%;
+        }
+        .overview-content.active { display: flex; }
+
+        .doughnut-wrapper {
+            width: 280px;
+            height: 280px;
+            position: relative;
+            margin-bottom: 24px;
+        }
+        path.segment { transition: all 0.3s ease; }
+
+        /* === Bar Chart Section (Right Column) === */
+        .bar-chart-card {
+            background: var(--bg-body);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 20px 32px; 
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 378px; 
+        }
+        
+        .bar-chart-scroll { width: 100%; overflow-x: auto; flex-grow: 1; display: flex; flex-direction: column; scrollbar-width: thin; scrollbar-color: var(--border-dark) var(--bg-gray); }
+        .bar-chart-scroll::-webkit-scrollbar { height: 6px; }
+        .bar-chart-scroll::-webkit-scrollbar-track { background: var(--bg-gray); border-radius: 3px; }
+        .bar-chart-scroll::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: 3px; }
+        
+        .bar-chart-inner { min-width: 750px; flex-grow: 1; display: flex; gap: 16px; margin-bottom: 16px; margin-top: 8px; }
+        
+        .bar-y-axis { display: flex; flex-direction: column; justify-content: space-between; color: var(--text-light); font-size: 12px; font-weight: 500; text-align: right; padding-bottom: 28px; }
+        .bar-y-axis span { line-height: 0; }
+        
+        .bar-chart-area { position: relative; flex-grow: 1; display: flex; flex-direction: column; }
+        
+        .bar-grid-lines { position: absolute; top: 0; bottom: 28px; left: 0; right: 0; display: flex; flex-direction: column; justify-content: space-between; z-index: 1; }
+        .bar-grid-line { width: 100%; border-top: 1px solid var(--border-light); }
+        .bar-grid-line.base-line { border-top-color: var(--border-dark); }
+        
+        .bar-groups-container { position: absolute; top: 0; bottom: 28px; left: 0; right: 0; display: flex; justify-content: space-between; z-index: 2; padding: 0 16px; }
+        .bar-group-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; position: relative; width: 44px; }
+        .bar-group { display: flex; align-items: flex-end; gap: 3px; height: 100%; width: 100%; justify-content: center; }
+        .bar-item { width: 8.5px; border-radius: 2px 2px 0 0; border: 1px solid; border-bottom: none; transition: transform 0.2s ease, filter 0.2s ease; cursor: pointer; }
+        .bar-item:hover { filter: brightness(0.9); transform: scaleY(1.02); transform-origin: bottom; }
+        
+        .bar-item.approved { background: var(--status-approved-bg); border-color: var(--status-approved-border); }
+        .bar-item.rejected { background: var(--status-rejected-bg); border-color: var(--status-rejected-border); }
+        .bar-item.viewed { background: var(--status-viewed-bg); border-color: var(--status-viewed-border); }
+        .bar-item.sent { background: var(--status-sent-bg); border-color: var(--status-sent-border); }
+        
+        .x-axis-label { position: absolute; bottom: -28px; font-size: 12px; font-weight: 500; color: var(--text-light); white-space: nowrap; }
+        
+        .bar-chart-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-top: 10px; }
+        .bar-chart-footer .chart-legend { margin-top: 0; justify-content: flex-start; }
+        .bar-chart-summary { display: flex; align-items: center; gap: 30px; }
+        .summary-item { display: flex; align-items: center; gap: 6px; }
+        .summary-item .val { font-size: 18px; font-weight: 600; color: var(--text-main); }
+        .summary-item .lbl { font-size: 18px; font-weight: 600; color: #A3A3A3; }
+        
+        .chart-tooltip {
+            position: absolute; background: var(--text-main); color: #ffffff; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; pointer-events: none; opacity: 0; transform: translateY(10px); transition: opacity 0.2s ease, transform 0.2s ease; z-index: 1000; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); text-align: center; line-height: 1.4;
+        }
+        .chart-tooltip.show { opacity: 1; transform: translateY(0); }
+
+        /* === Extracted Controls === */
+        .filter-btn { display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 30px; padding: 0 14px; border: 1px solid var(--border-dark); border-radius: 8px; background: var(--bg-body); font-size: 12px; color: var(--text-light); box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05); min-width: 120px; cursor: pointer; }
+        .status-tabs { display: inline-flex; border: 1px solid var(--border-dark); border-radius: 8px; overflow: hidden; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05); }
+        .status-tab { padding: 6px 16px; font-size: 12px; font-weight: 600; border-right: 1px solid var(--border-dark); background: var(--bg-body); cursor: pointer; }
+        .status-tab:last-child { border-right: none; }
+        .status-tab.approved { color: var(--status-approved-border); }
+        .status-tab.rejected { color: var(--status-rejected-border); }
+        .status-tab.viewed { color: var(--status-viewed-border); }
+        .status-tab.sent { color: var(--status-sent-border); }
+        .status-tab.draft { color: var(--status-draft-border); }
+        .segmented-control { display: inline-flex; border: 1px solid var(--border-dark); border-radius: 8px; overflow: hidden; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05); }
+        .segmented-btn { padding: 6px 16px; font-size: 12px; font-weight: 600; color: #404040; background: var(--bg-body); border-right: 1px solid var(--border-dark); cursor: pointer; }
+        .segmented-btn:last-child { border-right: none; }
+
+        /* Calendars */
+        .calendar-menu { padding: 20px; width: 320px; box-sizing: border-box; }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .calendar-nav-btn { display: flex; justify-content: center; align-items: center; width: 32px; height: 32px; border-radius: 8px; color: var(--text-light); font-size: 16px; transition: background 0.2s; cursor: pointer; }
+        .calendar-nav-btn:hover { background: var(--bg-gray); }
+        .calendar-month-title { font-size: 16px; font-weight: 600; color: #404040; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 4px; justify-items: center; }
+        .calendar-cell { width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; font-size: 14px; border-radius: 50%; }
+        .calendar-cell.day-name { font-weight: 500; color: #404040; }
+        .calendar-cell.date { font-weight: 400; color: #404040; cursor: pointer; }
+        .calendar-cell.date:hover:not(.active):not(.disabled) { background-color: var(--bg-gray); }
+        .calendar-cell.date.disabled { color: var(--text-light); cursor: default; }
+        .calendar-cell.date.today { background-color: var(--bg-gray); font-weight: 500; }
+        .calendar-cell.date.active { background-color: var(--brand-yellow); color: var(--brand-dark); font-weight: 500; }
+
+        /* === List Cards (Client Activity & Proposals) === */
+        .lists-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            width: 100%;
+            margin-top: 12px; 
+            align-items: flex-start; /* Ensures cards size purely to their specific content heights */
+        }
+        .list-card {
+            flex: 1;
+            max-width: 436px;
+            min-width: 320px; 
+            background: var(--bg-body);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .list-card-tabs {
+            height: 40px;
+            background: var(--bg-gray);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 29px;
+            flex-shrink: 0;
+        }
+        .list-tab {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease, color 0.2s ease;
+            color: var(--text-main);
+        }
+        .list-tab.active {
+            border-bottom: 1px dashed var(--c);
+            color: var(--c);
+        }
+        .list-card-body {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-dark) transparent;
+        }
+        .list-card-body::-webkit-scrollbar { width: 6px; }
+        .list-card-body::-webkit-scrollbar-track { background: transparent; }
+        .list-card-body::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: 3px; }
+        
+        .list-content { display: none; flex-direction: column; }
+        .list-content.active { display: flex; }
+        
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-light);
+            gap: 16px;
+        }
+        .list-item:last-child { border-bottom: none; }
+        
+        .li-left { display: flex; align-items: flex-start; gap: 4px; flex: 1; min-width: 0; }
+        .li-icon { flex-shrink: 0; margin-top: 2px; }
+        .li-details { display: flex; flex-direction: column; overflow: hidden; }
+        .li-title { font-size: 12px; font-weight: 500; color: var(--text-main); line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .li-subtitle { font-size: 10px; font-weight: 400; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .li-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-align: right; min-width: 95px; flex-shrink: 0; }
+        .li-meta1 { font-size: 10px; font-weight: 400; color: var(--text-light); }
+        .li-meta2 { font-size: 10px; font-weight: 400; color: #A3A3A3; }
+
+        /* =========================================
+           Responsive Framework
+           ========================================= */
+           
+        @media (max-width: 1024px) {
+            .container { padding: 0 32px; }
+            .header-inner { flex-direction: column; height: auto; padding: 16px 0; gap: 16px; align-items: stretch; }
+            .nav-left { width: 100%; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+            .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
+            .main-nav { display: none; width: 100%; flex-direction: column; align-items: flex-start; gap: 16px; padding: 16px 0; border-top: 1px solid var(--border-light); }
+            .main-nav.show { display: flex; }
+            .nav-right { display: none; width: 100%; flex-direction: column; align-items: stretch; gap: 16px; }
+            .nav-right.show { display: flex; }
+            .global-search, .global-search input { width: 100%; }
+            .divider-vertical { display: none; }
+            
+            .dashboard-grid { grid-template-columns: 1fr; gap: 24px; }
+            .left-col, .right-col { width: 100%; }
+            .action-card, .quick-stats-card, .overview-card, .bar-chart-card { width: 100%; height: auto; }
+            .action-card { flex-wrap: wrap; justify-content: center; }
+            .list-card { max-width: 100%; flex: 1 1 100%; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+            
+            /* Clean grid for action buttons on tablet/mobile */
+            .action-card { display: grid; grid-template-columns: repeat(2, 1fr); padding: 16px; gap: 12px; }
+            .action-btn { width: 100%; max-width: none; }
+            .action-btn-text { max-width: none; }
+            
+            .quick-stats-body { padding: 18px 20px; }
+            
+            /* Horizontal scroll for Status Tabs to prevent visual breakage */
+            .status-tabs { max-width: 100%; overflow-x: auto; overflow-y: hidden; justify-content: flex-start; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+            .status-tabs::-webkit-scrollbar { display: none; }
+            .status-tab { flex: 1 0 auto; white-space: nowrap; }
+            
+            .lists-row { flex-direction: column; gap: 20px; align-items: stretch; }
+            
+            /* Horizontal scroll for List Card Tabs */
+            .list-card-tabs { justify-content: flex-start; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 0 16px !important; gap: 16px !important; }
+            .list-card-tabs::-webkit-scrollbar { display: none; }
+            .list-tab { flex-shrink: 0; white-space: nowrap; }
+            
+            /* Controls row 1 layout */
+            .controls-row-1 { justify-content: flex-start !important; }
+            .filter-btn { flex: 1 1 calc(50% - 12px); min-width: 140px; }
+        }
+
+        @media (max-width: 480px) {
+            /* Stats stack for readability on small screens */
+            .stat-row { flex-direction: column; gap: 6px; align-items: flex-start; }
+            .stat-label { width: 100%; }
+            .stat-bar-container { width: 100%; }
+            
+            /* Scale Doughnut smoothly */
+            .doughnut-wrapper { transform: scale(0.85); transform-origin: top center; margin-bottom: -15px; }
+            
+            /* Chart padding and summary adjustments */
+            .bar-chart-card { padding: 20px 16px; }
+            .bar-chart-summary { flex-direction: column; align-items: flex-start; gap: 8px; }
+            
+            /* Controls rows stack completely */
+            .filter-btn { flex: 1 1 100%; min-width: 100%; }
+            .controls-row-2 { gap: 16px !important; flex-direction: column; align-items: stretch !important; }
+            .segmented-control { width: 100%; display: flex; }
+            .segmented-btn { flex: 1; text-align: center; }
+            
+            /* Prevent calendar clipping on tiny mobile screens */
+            .calendar-menu { width: 280px; padding: 12px; }
+            .calendar-cell { width: 32px; height: 32px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container header-inner">
+        <div class="nav-left">
+            <a href="dashboard.html">
+                <img src="https://builderssigns.com.au/wp-content/uploads/2026/06/Dark-and-Yellow-Landscape-2.svg" alt="Builders Signs" class="logo">
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu"><i class="ph ph-list"></i></button>
+            <nav class="main-nav" id="main-nav">
+                <a href="dashboard.html" class="nav-item active"><i class="ph ph-chart-bar"></i> Dashboard</a>
+                <a href="proposal.html" class="nav-item"><i class="ph ph-envelope-simple"></i> Proposal</a>
+                <a href="#" class="nav-item"><i class="ph ph-users"></i> Clients</a>
+                <a href="#" class="nav-item"><i class="ph ph-layout"></i> Templates</a>
+                <a href="#" class="nav-item"><i class="ph ph-squares-four"></i> Themes</a>
+                <a href="#" class="nav-item"><i class="ph ph-gear"></i> Accounts</a>
+            </nav>
+        </div>
+        <div class="nav-right" id="nav-right">
+            <div class="global-search"><input type="text" placeholder="Search..."></div>
+            <div class="divider-vertical"></div>
+            <div class="dropdown-wrapper">
+                <div class="user-profile" data-dropdown-toggle="user-dropdown">
+                    <div class="user-avatar"></div>
+                    <div class="user-info">
+                        <span>Marcus Bawden</span>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                </div>
+                <div class="dropdown-menu" id="user-dropdown">
+                    <div class="dropdown-item">My Profile</div>
+                    <div class="dropdown-item">Logout</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container main-content">
+    <div class="dashboard-grid">
+        
+        <!-- === Left Column === -->
+        <div class="left-col">
+            
+            <!-- 1. Action Buttons -->
+            <div class="action-card">
+                <a href="proposal_1_EditQuote.html">
+                    <button class="action-btn">
+                        <div class="icon-wrapper"><i class="ph ph-envelope-simple"></i></div>
+                        <div class="action-btn-text">NEW<br>PROPOSAL</div>
+                    </button>
+                </a>
+                <a href="#">
+                    <button class="action-btn">
+                        <div class="icon-wrapper"><i class="ph ph-newspaper-clipping"></i></div>
+                        <div class="action-btn-text">NEW<br>TEMPLATE</div>
+                    </button>
+                </a>
+                <a href="#">
+                    <button class="action-btn">
+                        <div class="icon-wrapper"><i class="ph ph-users"></i></div>
+                        <div class="action-btn-text">NEW<br>CLIENT</div>
+                    </button>
+                </a>
+                <a href="#">
+                    <button class="action-btn">
+                        <div class="icon-wrapper"><i class="ph ph-file-image"></i></div>
+                        <div class="action-btn-text">NEW<br>THEME</div>
+                    </button>
+                </a>
+            </div>
+
+            <!-- 2. Quick Stats Section -->
+            <div class="quick-stats-card">
+                <div class="card-header-bar"><i class="ph ph-chart-bar"></i> Quick Stats</div>
+                <div class="quick-stats-body">
+                    <div class="stat-rows">
+                        <div class="stat-row">
+                            <div class="stat-label">This Month</div>
+                            <div class="stat-bar-container">
+                                <div class="stat-col w-30"><div class="stat-bar bar-approved"></div><span class="stat-val val-approved">30%</span></div>
+                                <div class="stat-col w-10"><div class="stat-bar bar-rejected"></div><span class="stat-val val-rejected">10%</span></div>
+                                <div class="stat-col w-60"><div class="stat-bar bar-other"></div><span class="stat-val val-other">60%</span></div>
+                            </div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">Last Month</div>
+                            <div class="stat-bar-container">
+                                <div class="stat-col w-40"><div class="stat-bar bar-approved"></div><span class="stat-val val-approved">40%</span></div>
+                                <div class="stat-col w-6"><div class="stat-bar bar-rejected"></div><span class="stat-val val-rejected">6%</span></div>
+                                <div class="stat-col w-54"><div class="stat-bar bar-other"></div><span class="stat-val val-other">54%</span></div>
+                            </div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label">This Year</div>
+                            <div class="stat-bar-container">
+                                <div class="stat-col w-53"><div class="stat-bar bar-approved"></div><span class="stat-val val-approved">53%</span></div>
+                                <div class="stat-col w-33"><div class="stat-bar bar-rejected"></div><span class="stat-val val-rejected">33%</span></div>
+                                <div class="stat-col w-14"><div class="stat-bar bar-other"></div><span class="stat-val val-other">14%</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item l-approved"><div class="legend-box"></div>Approved</div>
+                        <div class="legend-item l-rejected"><div class="legend-box"></div>Rejected</div>
+                        <div class="legend-item l-other"><div class="legend-box"></div>Other</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Overview Charts Section -->
+            <div class="overview-card">
+                <div class="overview-tabs">
+                    <button class="overview-tab-btn tab-prop active" data-target="prop-overview">
+                        <i class="ph ph-envelope-open"></i> Proposal Overview
+                    </button>
+                    <button class="overview-tab-btn tab-rej" data-target="rej-overview">
+                        <i class="ph ph-x-square"></i> Rejected Overview
+                    </button>
+                </div>
+                
+                <div class="overview-content active" id="prop-overview">
+                    <div class="doughnut-wrapper" id="doughnut-proposal"></div>
+                    <div class="chart-legend" style="max-width: 350px;">
+                        <div class="legend-item l-approved"><div class="legend-box"></div>Approved</div>
+                        <div class="legend-item l-viewed"><div class="legend-box"></div>Viewed</div>
+                        <div class="legend-item l-draft"><div class="legend-box"></div>Draft</div>
+                        <div class="legend-item l-rejected"><div class="legend-box"></div>Rejected</div>
+                        <div class="legend-item l-sent"><div class="legend-box"></div>Sent</div>
+                    </div>
+                </div>
+
+                <div class="overview-content" id="rej-overview">
+                    <div class="doughnut-wrapper" id="doughnut-rejected"></div>
+                    <div class="chart-legend" style="max-width: 380px;">
+                        <div class="legend-item l-approved"><div class="legend-box"></div>Project Cancelled</div>
+                        <div class="legend-item l-sent"><div class="legend-box"></div>Choose Competitor</div>
+                        <div class="legend-item l-rejected"><div class="legend-box"></div>Too Expensive</div>
+                        <div class="legend-item l-draft"><div class="legend-box"></div>Found Another Solution</div>
+                        <div class="legend-item l-viewed"><div class="legend-box"></div>Can't Make Deadline</div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- === Right Column === -->
+        <div class="right-col">
+            
+            <!-- Dynamic Bar Chart Section -->
+            <div class="bar-chart-card">
+                <div class="bar-chart-scroll">
+                    <div class="bar-chart-inner">
+                        <div class="bar-y-axis">
+                            <span>50</span><span>40</span><span>30</span><span>20</span><span>10</span><span>0</span>
+                        </div>
+                        <div class="bar-chart-area">
+                            <div class="bar-grid-lines">
+                                <div class="bar-grid-line"></div><div class="bar-grid-line"></div><div class="bar-grid-line"></div>
+                                <div class="bar-grid-line"></div><div class="bar-grid-line"></div><div class="bar-grid-line base-line"></div>
+                            </div>
+                            <div class="bar-groups-container" id="bar-groups-container"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bar-chart-footer">
+                    <div class="chart-legend">
+                        <div class="legend-item l-approved"><div class="legend-box"></div>Approved</div>
+                        <div class="legend-item l-rejected"><div class="legend-box"></div>Rejected</div>
+                        <div class="legend-item l-viewed"><div class="legend-box"></div>Viewed</div>
+                        <div class="legend-item l-sent"><div class="legend-box"></div>Sent</div>
+                    </div>
+                    <div class="bar-chart-summary">
+                        <div class="summary-item"><span class="val">505</span><span class="lbl">Proposals</span></div>
+                        <div class="summary-item"><span class="lbl">Total</span><span class="val">$1,142,899.85</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Row 1 -->
+            <div class="controls-row-1" style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                <div class="dropdown-wrapper">
+                    <button class="filter-btn" data-dropdown-toggle="filter-all">
+                        All <i class="ph ph-caret-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="filter-all">
+                        <div class="dropdown-item active">All <i class="ph ph-check"></i></div>
+                        <div class="dropdown-item">Archived</div>
+                        <div class="dropdown-item">Unarchived</div>
+                    </div>
+                </div>
+                <div class="dropdown-wrapper">
+                    <button class="filter-btn" data-dropdown-toggle="filter-created">
+                        Created <i class="ph ph-caret-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="filter-created">
+                        <div class="dropdown-item active">Created <i class="ph ph-check"></i></div>
+                        <div class="dropdown-item">Expires</div>
+                        <div class="dropdown-item">Sent</div>
+                        <div class="dropdown-item">Approved</div>
+                        <div class="dropdown-item">Rejected</div>
+                    </div>
+                </div>
+                <!-- 16px Calendar Icon updated here -->
+                <div class="dropdown-wrapper">
+                    <button class="filter-btn" data-dropdown-toggle="filter-from">
+                        From <i class="ph ph-calendar-blank icon-16"></i>
+                    </button>
+                    <div class="dropdown-menu calendar-menu" id="filter-from">
+                        <div class="calendar-header">
+                            <button class="calendar-nav-btn"><i class="ph ph-caret-left"></i></button>
+                            <div class="calendar-month-title">February 2025</div>
+                            <button class="calendar-nav-btn"><i class="ph ph-caret-right"></i></button>
+                        </div>
+                        <div class="calendar-grid">
+                            <div class="calendar-cell day-name">Mo</div><div class="calendar-cell day-name">Tu</div><div class="calendar-cell day-name">We</div><div class="calendar-cell day-name">Th</div><div class="calendar-cell day-name">Fr</div><div class="calendar-cell day-name">Sat</div><div class="calendar-cell day-name">Su</div>
+                            <div class="calendar-cell date disabled">30</div><div class="calendar-cell date disabled">31</div><div class="calendar-cell date">1</div><div class="calendar-cell date">2</div><div class="calendar-cell date">3</div><div class="calendar-cell date">4</div><div class="calendar-cell date active">5</div>
+                            <div class="calendar-cell date">6</div><div class="calendar-cell date">7</div><div class="calendar-cell date">8</div><div class="calendar-cell date">9</div><div class="calendar-cell date">10</div><div class="calendar-cell date">11</div><div class="calendar-cell date">12</div>
+                            <div class="calendar-cell date">13</div><div class="calendar-cell date">14</div><div class="calendar-cell date">15</div><div class="calendar-cell date">16</div><div class="calendar-cell date">17</div><div class="calendar-cell date">18</div><div class="calendar-cell date">19</div>
+                            <div class="calendar-cell date today">20</div><div class="calendar-cell date">21</div><div class="calendar-cell date">22</div><div class="calendar-cell date">23</div><div class="calendar-cell date">24</div><div class="calendar-cell date">25</div><div class="calendar-cell date">26</div>
+                            <div class="calendar-cell date">27</div><div class="calendar-cell date">28</div><div class="calendar-cell date disabled">1</div><div class="calendar-cell date disabled">2</div><div class="calendar-cell date disabled">3</div><div class="calendar-cell date disabled">4</div><div class="calendar-cell date disabled">5</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 16px Calendar Icon updated here -->
+                <div class="dropdown-wrapper">
+                    <button class="filter-btn" data-dropdown-toggle="filter-to">
+                        To <i class="ph ph-calendar-blank icon-16"></i>
+                    </button>
+                    <div class="dropdown-menu calendar-menu" id="filter-to">
+                        <div class="calendar-header">
+                            <button class="calendar-nav-btn"><i class="ph ph-caret-left"></i></button>
+                            <div class="calendar-month-title">February 2025</div>
+                            <button class="calendar-nav-btn"><i class="ph ph-caret-right"></i></button>
+                        </div>
+                        <div class="calendar-grid">
+                            <div class="calendar-cell day-name">Mo</div><div class="calendar-cell day-name">Tu</div><div class="calendar-cell day-name">We</div><div class="calendar-cell day-name">Th</div><div class="calendar-cell day-name">Fr</div><div class="calendar-cell day-name">Sat</div><div class="calendar-cell day-name">Su</div>
+                            <div class="calendar-cell date disabled">30</div><div class="calendar-cell date disabled">31</div><div class="calendar-cell date">1</div><div class="calendar-cell date">2</div><div class="calendar-cell date">3</div><div class="calendar-cell date">4</div><div class="calendar-cell date">5</div>
+                            <div class="calendar-cell date">6</div><div class="calendar-cell date">7</div><div class="calendar-cell date">8</div><div class="calendar-cell date">9</div><div class="calendar-cell date">10</div><div class="calendar-cell date">11</div><div class="calendar-cell date">12</div>
+                            <div class="calendar-cell date">13</div><div class="calendar-cell date">14</div><div class="calendar-cell date">15</div><div class="calendar-cell date">16</div><div class="calendar-cell date">17</div><div class="calendar-cell date">18</div><div class="calendar-cell date">19</div>
+                            <div class="calendar-cell date today">20</div><div class="calendar-cell date">21</div><div class="calendar-cell date">22</div><div class="calendar-cell date active">23</div><div class="calendar-cell date">24</div><div class="calendar-cell date">25</div><div class="calendar-cell date">26</div>
+                            <div class="calendar-cell date">27</div><div class="calendar-cell date">28</div><div class="calendar-cell date disabled">1</div><div class="calendar-cell date disabled">2</div><div class="calendar-cell date disabled">3</div><div class="calendar-cell date disabled">4</div><div class="calendar-cell date disabled">5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Row 2 -->
+            <div class="controls-row-2" style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 32px;">
+                <div class="status-tabs">
+                    <button class="status-tab approved">Approved</button>
+                    <button class="status-tab rejected">Rejected</button>
+                    <button class="status-tab viewed">Viewed</button>
+                    <button class="status-tab sent">Sent</button>
+                    <button class="status-tab draft">Draft</button>
+                </div>
+                <div class="segmented-control">
+                    <button class="segmented-btn">Show Totals</button>
+                    <button class="segmented-btn" style="background: var(--bg-gray); color: var(--text-main);">Proposal</button>
+                </div>
+            </div>
+
+            <!-- === NEW LIST SECTIONS (Client Activity / Status) === -->
+            <!-- Cards adapt strictly to their contents because of align-items: flex-start -->
+            <div class="lists-row">
+                
+                <!-- Card 1: Client Activity & Comments -->
+                <div class="list-card">
+                    <div class="list-card-tabs" id="tabs-left">
+                        <button class="list-tab tab-left active" data-target="content-client" style="--c: #404040; color: #404040;">
+                            <i class="ph ph-users"></i> Client Activity
+                        </button>
+                        <button class="list-tab tab-left" data-target="content-comments" style="--c: #404040; color: #404040;">
+                            <i class="ph ph-chat-circle-text"></i> Comments
+                        </button>
+                    </div>
+                    <div class="list-card-body">
+                        <div id="content-client" class="list-content active"></div>
+                        <div id="content-comments" class="list-content"></div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Draft, Approved, Viewed, Sent -->
+                <div class="list-card">
+                    <div class="list-card-tabs" id="tabs-right" style="gap: 14px; padding: 0 14px;">
+                        <button class="list-tab tab-right active" data-target="content-draft" style="--c: var(--status-draft-border); color: var(--status-draft-border);">Draft</button>
+                        <button class="list-tab tab-right" data-target="content-approved" style="--c: var(--status-approved-border); color: var(--status-approved-border);">Approved</button>
+                        <button class="list-tab tab-right" data-target="content-viewed" style="--c: var(--status-viewed-border); color: var(--status-viewed-border);">Viewed</button>
+                        <button class="list-tab tab-right" data-target="content-sent" style="--c: var(--status-sent-border); color: var(--status-sent-border);">Sent</button>
+                    </div>
+                    <div class="list-card-body">
+                        <div id="content-draft" class="list-content active"></div>
+                        <div id="content-approved" class="list-content"></div>
+                        <div id="content-viewed" class="list-content"></div>
+                        <div id="content-sent" class="list-content"></div>
+                    </div>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<script>
+    // === Data Arrays for the New Lists ===
+    
+    // Left Card Data
+    const dataClientActivity = [
+        { icon: "ph-folder", title: "Powercor | CCB Banners Quote", subtitle: "Powercor (nvanovic@powercor.com.au)", meta1: "less than 5 seconds", meta2: "4 hours ago", color: "#171717" },
+        { icon: "ph-folder", title: "Mentholatum | Pull Up Banners Quote", subtitle: "Mentholatum (holly.walker@mentholatum.com.au)", meta1: "14 minutes", meta2: "8 hours ago", color: "#171717" },
+        { icon: "ph-folder", title: "Evoco Design | Custom Bin Covers Quote", subtitle: "Evoco Design (sam@evocodesign.com.au)", meta1: "about 1 hour", meta2: "18 hours ago", color: "#171717" },
+        { icon: "ph-folder", title: "IRONMAN | IM 70.3 SC Capex Signage", subtitle: "IRONMAN (jemma.baker@ironman.com)", meta1: "less than 5 seconds", meta2: "20 hours ago", color: "#171717" },
+        { icon: "ph-folder", title: "USM Events | TEQ Corflutes", subtitle: "IRONMAN (tom.dennis@ironman.com.au)", meta1: "less than 5 seconds", meta2: "23 hours ago", color: "#171717" },
+        { icon: "ph-folder", title: "USM Events | TEQ Corflutes", subtitle: "IRONMAN (tom.dennis@ironman.com.au)", meta1: "less than 5 seconds", meta2: "24 hours ago", color: "#171717" },
+        { icon: "ph-folder", title: "USM Events | TEQ Corflutes", subtitle: "IRONMAN (tom.dennis@ironman.com.au)", meta1: "less than 5 seconds", meta2: "yesterday at 13:27", color: "#171717" },
+        { icon: "ph-folder", title: "USM Events | TEQ Corflutes", subtitle: "IRONMAN (tom.dennis@ironman.com.au)", meta1: "less than 5 seconds", meta2: "yesterday at 02:22", color: "#171717" }
+    ];
+
+    const dataComments = [
+        { icon: "ph-envelope-simple", title: "Gas 20 Industries | Inflatable Pillar Quote", subtitle: "Gas20 Industries (gas20industries@hotmail.com)", meta1: "Marcus B.", meta2: "yesterday at 10:12", color: "#171717" },
+        { icon: "ph-envelope-simple", title: "Shire of Gnowangerup | Bunting Quote", subtitle: "Shire of G (penny.wells@gnowangerup.wa.gov.au)", meta1: "Marcus B.", meta2: "Tuesday at 10:17", color: "#171717" },
+        { icon: "ph-envelope-simple", title: "Sydney Dragway | CCB Cover Quote", subtitle: "Sydney Dragway (eliza@sydneydragway.com.au)", meta1: "Marcus B.", meta2: "Monday at 12:32", color: "#171717" },
+        { icon: "ph-envelope-simple", title: "QUT Ceremonies | Seat Covers Quote", subtitle: "QUT Ceremonies (b.eden@qut.edu.au)", meta1: "Marcus B.", meta2: "Monday at 12:14", color: "#171717" },
+        { icon: "ph-envelope-simple", title: "USM Events | TEQ Corflutes", subtitle: "IRONMAN (tom.dennis@ironman.com.au)", meta1: "Marcus B.", meta2: "Monday at 12:14", color: "#171717" },
+        { icon: "ph-envelope-simple", title: "Venues West | Seat Covers Quote", subtitle: "Venues (steph.michielsen@venueswest.wa.gov.au)", meta1: "Marcus B.", meta2: "Monday at 09:28", color: "#171717" },
+        { icon: "ph-envelope-simple", title: "USM Events | TEQ Corflutes", subtitle: "IRONMAN (tom.dennis@ironman.com.au)", meta1: "Marcus B.", meta2: "Monday at 09:30", color: "#171717" },
+        { icon: "ph-envelope-simple", title: "Sunshine Coast Lightning | CCB Covers", subtitle: "Sunshine (lokeeffe@sunshinecoastlightning.com.au)", meta1: "Marcus B.", meta2: "on Aug 28", color: "#171717" }
+    ];
+
+    // Right Card Data
+    const dataDraft = [
+        { icon: "ph-pencil-simple", title: "Asahi Bevarages | CCB Covers Quote", subtitle: "Asahi (Zacchary.Manny@asahibeverages.com)", meta1: null, meta2: "5 hours ago", color: "var(--status-draft-border)" },
+        { icon: "ph-pencil-simple", title: "AusCycling | Rectangle Flags Quote", subtitle: "AusCycling (Paula.Ewing@auscycling.org.au)", meta1: null, meta2: "on Jun 2", color: "var(--status-draft-border)" },
+        { icon: "ph-pencil-simple", title: "Nudgee College | Marquees Quote", subtitle: "Tim Lang (tlang@nudgee.qld.edu.au)", meta1: null, meta2: "on Jan 21", color: "var(--status-draft-border)" }
+    ];
+
+    const dataApproved = [
+        { icon: "ph-check", title: "Ironman | Noosa Tri 2026 FB2 Covers", subtitle: "IRONMAN (maximilian.graf@ironman.com)", meta1: null, meta2: "an hour ago", color: "var(--status-approved-border)" },
+        { icon: "ph-check", title: "Iss Facility Services | Bin Covers Samples", subtitle: "Iss Facility Services (stefania.cardenas@au.issworld.com)", meta1: null, meta2: "yesterday at 14:42", color: "var(--status-approved-border)" },
+        { icon: "ph-check", title: "Rockstar | Vinyl Valance and Awning Vinyl", subtitle: "Rockstar (tiff@rockstar.net.au)", meta1: null, meta2: "yesterday at 09:30", color: "var(--status-approved-border)" },
+        { icon: "ph-check", title: "SoldOut | NRL Finals Scrim Panels", subtitle: "Sold Out (callum.buchanan@soldout.com.au)", meta1: null, meta2: "yesterday at 10:05", color: "var(--status-approved-border)" },
+        { icon: "ph-check", title: "Ironman | Noosa Tri Scaff Covers", subtitle: "IRONMAN (maximilian.graf@ironman.com)", meta1: null, meta2: "yesterday at 03:16", color: "var(--status-approved-border)" },
+        { icon: "ph-check", title: "IRONMAN | IM 70.3 SC Capex Signage", subtitle: "IRONMAN (jemma.baker@ironman.com)", meta1: null, meta2: "Wednesday at 10:30", color: "var(--status-approved-border)" },
+        { icon: "ph-check", title: "Powercor | CCB Banners Quote", subtitle: "Powercor (nvanovic@powercor.com.au)", meta1: null, meta2: "Tuesday at 12:03", color: "var(--status-approved-border)" },
+        { icon: "ph-check", title: "Emmanuel College | Bin Covers Quote", subtitle: "Emmanuel College (wtaylor@emmanuel.qld.edu.au)", meta1: null, meta2: "Tuesday at 07:24", color: "var(--status-approved-border)" }
+    ];
+
+    const dataViewed = [
+        { icon: "ph-folder", title: "Powercor | CCB Banners Quote", subtitle: "Powercor (nvanovic@powercor.com.au)", meta1: null, meta2: "4 hours ago", color: "var(--status-viewed-border)" },
+        { icon: "ph-folder", title: "Mentholatum | Pull Up Banners Quote", subtitle: "Mentholatum (holly.walker@mentholatum.com.au)", meta1: null, meta2: "8 hours ago", color: "var(--status-viewed-border)" },
+        { icon: "ph-folder", title: "Evoco Design | Custom Bin Covers Quote", subtitle: "Evoco Design (sam@evocodesign.com.au)", meta1: null, meta2: "18 hours ago", color: "var(--status-viewed-border)" },
+        { icon: "ph-folder", title: "IRONMAN | IM 70.3 SC Capex Signage", subtitle: "IRONMAN (jemma.baker@ironman.com)", meta1: null, meta2: "20 hours ago", color: "var(--status-viewed-border)" },
+        { icon: "ph-folder", title: "USM Events | TEQ Corflutes", subtitle: "IRONMAN (tom.dennis@ironman.com.au)", meta1: null, meta2: "23 hours ago", color: "var(--status-viewed-border)" },
+        { icon: "ph-folder", title: "USM Events | TEQ Corflutes", subtitle: "IRONMAN (tom.dennis@ironman.com.au)", meta1: null, meta2: "24 hours ago", color: "var(--status-viewed-border)" },
+        { icon: "ph-folder", title: "USM Events | TEQ Corflutes", subtitle: "IRONMAN (tom.dennis@ironman.com.au)", meta1: null, meta2: "yesterday at 13:27", color: "var(--status-viewed-border)" },
+        { icon: "ph-folder", title: "USM Events | TEQ Corflutes", subtitle: "IRONMAN (tom.dennis@ironman.com.au)", meta1: null, meta2: "yesterday at 02:22", color: "var(--status-viewed-border)" }
+    ];
+
+    const dataSent = [
+        { icon: "ph-envelope-simple", title: "School Parent Group | Chair Fabric", subtitle: "School Parent Group (amymdonovan@yahoo.com)", meta1: null, meta2: "on Aug 18", color: "var(--status-sent-border)" },
+        { icon: "ph-envelope-simple", title: "Sarina SLSC | Buoys Quote", subtitle: "Sarina Surf Lifesaving Club (tlnme@bigpond.com)", meta1: null, meta2: "on Aug 4", color: "var(--status-sent-border)" },
+        { icon: "ph-envelope-simple", title: "LS Events | CCB Covers Quote", subtitle: "LS Events (jorja@lsevents.com.au)", meta1: null, meta2: "on Jul 23", color: "var(--status-sent-border)" },
+        { icon: "ph-envelope-simple", title: "LS Events | CCB Covers Quote", subtitle: "LS Events (jorja@lsevents.com.au)", meta1: null, meta2: "on Jun 12", color: "var(--status-sent-border)" }
+    ];
+
+    // Function to inject list HTML dynamically
+    function populateList(containerId, dataArray) {
+        const container = document.getElementById(containerId);
+        if(!container) return;
+        
+        container.innerHTML = dataArray.map(item => `
+            <div class="list-item">
+                <div class="li-left">
+                    <i class="ph ${item.icon} li-icon" style="color: ${item.color};"></i>
+                    <div class="li-details">
+                        <div class="li-title">${item.title}</div>
+                        <div class="li-subtitle">${item.subtitle}</div>
+                    </div>
+                </div>
+                <div class="li-right">
+                    ${item.meta1 ? `<div class="li-meta1">${item.meta1}</div>` : ''}
+                    <div class="li-meta2">${item.meta2}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // === Doughnut Chart SVG Generator ===
+    function renderDoughnut(containerId, data) {
+        const size = 280; 
+        const center = size / 2;
+        const radiusOut = 95;
+        const radiusIn = 55;
+        
+        let svg = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
+        let htmlLabels = '';
+        
+        let currentAngle = Math.PI / 2; 
+
+        data.forEach(item => {
+            const angle = (item.value / 100) * Math.PI * 2;
+            const endAngle = currentAngle + angle;
+            const largeArc = item.value > 50 ? 1 : 0;
+
+            const getPoint = (r, a) => ({
+                x: center + r * Math.cos(a),
+                y: center + r * Math.sin(a)
+            });
+
+            const p1 = getPoint(radiusOut, currentAngle);
+            const p2 = getPoint(radiusOut, endAngle);
+            const p3 = getPoint(radiusIn, endAngle);
+            const p4 = getPoint(radiusIn, currentAngle);
+
+            const path = `
+                M ${p1.x} ${p1.y}
+                A ${radiusOut} ${radiusOut} 0 ${largeArc} 1 ${p2.x} ${p2.y}
+                L ${p3.x} ${p3.y}
+                A ${radiusIn} ${radiusIn} 0 ${largeArc} 0 ${p4.x} ${p4.y}
+                Z
+            `;
+
+            svg += `<path class="segment" d="${path}" fill="${item.bg}" stroke="${item.border}" stroke-width="1"/>`;
+
+            const midAngle = currentAngle + angle / 2;
+            const labelR = radiusOut + 25; 
+            const labelPos = getPoint(labelR, midAngle);
+            
+            htmlLabels += `<div style="position: absolute; left: ${labelPos.x}px; top: ${labelPos.y}px; transform: translate(-50%, -50%); color: ${item.border}; font-size: 11px; font-weight: 500;">${item.label}</div>`;
+
+            currentAngle = endAngle;
+        });
+
+        svg += `</svg>`;
+        document.getElementById(containerId).innerHTML = `
+            <div style="position:absolute; width:100%; height:100%; top:0; left:0;">${svg}</div>
+            ${htmlLabels}
+        `;
+    }
+
+    // === On DOM Ready ===
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // 1. Populate Lists dynamically
+        populateList('content-client', dataClientActivity);
+        populateList('content-comments', dataComments);
+        populateList('content-draft', dataDraft);
+        populateList('content-approved', dataApproved);
+        populateList('content-viewed', dataViewed);
+        populateList('content-sent', dataSent);
+        
+        // 2. Logic for new specific Lists Tabs
+        const setupTabs = (tabClass) => {
+            const tabs = document.querySelectorAll(`.${tabClass}`);
+            tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    const currentTab = e.currentTarget;
+                    // Deactivate sibling tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    currentTab.classList.add('active');
+                    
+                    // Activate target content
+                    const parentBody = currentTab.closest('.list-card').querySelector('.list-card-body');
+                    parentBody.querySelectorAll('.list-content').forEach(c => c.classList.remove('active'));
+                    const targetId = currentTab.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+        };
+        setupTabs('tab-left');
+        setupTabs('tab-right');
+        
+        // 3. Dropdowns logic
+        const toggles = document.querySelectorAll('[data-dropdown-toggle]');
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation(); 
+                const targetId = this.getAttribute('data-dropdown-toggle');
+                const targetMenu = document.getElementById(targetId);
+                
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu !== targetMenu) { menu.classList.remove('show'); }
+                });
+
+                if (targetMenu) { targetMenu.classList.toggle('show'); }
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown-wrapper')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.remove('show'));
+            }
+        });
+        
+        // 4. Render existing Doughnut Charts
+        const proposalData = [
+            { label: '60%', value: 60, bg: 'var(--status-approved-bg)', border: 'var(--status-approved-border)' },
+            { label: '20%', value: 20, bg: 'var(--status-rejected-bg)', border: 'var(--status-rejected-border)' },
+            { label: '10%', value: 10, bg: 'var(--status-viewed-bg)', border: 'var(--status-viewed-border)' },
+            { label: '5%', value: 5, bg: 'var(--status-sent-bg)', border: 'var(--status-sent-border)' },
+            { label: '5%', value: 5, bg: 'var(--status-draft-bg)', border: 'var(--status-draft-border)' }
+        ];
+
+        const rejectedData = [
+            { label: '29.5%', value: 29.5, bg: 'var(--status-approved-bg)', border: 'var(--status-approved-border)' },
+            { label: '11.9%', value: 11.9, bg: 'var(--status-rejected-bg)', border: 'var(--status-rejected-border)' },
+            { label: '10.4%', value: 10.4, bg: 'var(--status-viewed-bg)', border: 'var(--status-viewed-border)' },
+            { label: '15.5%', value: 15.5, bg: 'var(--status-sent-bg)', border: 'var(--status-sent-border)' },
+            { label: '32.7%', value: 32.7, bg: 'var(--status-draft-bg)', border: 'var(--status-draft-border)' }
+        ];
+
+        renderDoughnut('doughnut-proposal', proposalData);
+        renderDoughnut('doughnut-rejected', rejectedData);
+
+        // 5. Existing Tabs Logic
+        const overviewTabs = document.querySelectorAll('.overview-tab-btn');
+        const overviewContents = document.querySelectorAll('.overview-content');
+
+        overviewTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                overviewTabs.forEach(t => t.classList.remove('active'));
+                overviewContents.forEach(c => c.classList.remove('active'));
+
+                tab.classList.add('active');
+                const target = tab.getAttribute('data-target');
+                document.getElementById(target).classList.add('active');
+            });
+        });
+
+        // 6. Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mainNav = document.getElementById('main-nav');
+        const navRight = document.getElementById('nav-right');
+
+        if (mobileMenuBtn && mainNav && navRight) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mainNav.classList.toggle('show');
+                navRight.classList.toggle('show');
+                const icon = mobileMenuBtn.querySelector('i');
+                if (mainNav.classList.contains('show')) {
+                    icon.classList.replace('ph-list', 'ph-x');
+                } else {
+                    icon.classList.replace('ph-x', 'ph-list');
+                }
+            });
+        }
+
+        // 7. Dynamic Bar Chart Logic
+        const barChartData = [
+            { label: "2025/10", approved: 23, rejected: 16, viewed: 5, sent: 1.5 },
+            { label: "2025/11", approved: 19, rejected: 16, viewed: 9, sent: 5 },
+            { label: "2025/12", approved: 26, rejected: 16, viewed: 13, sent: 9 },
+            { label: "2026/01", approved: 23, rejected: 16, viewed: 5, sent: 1.5 },
+            { label: "2026/02", approved: 10, rejected: 6, viewed: 5, sent: 1.5 },
+            { label: "2026/03", approved: 39, rejected: 35, viewed: 33, sent: 24 },
+            { label: "2026/04", approved: 27, rejected: 18, viewed: 13, sent: 1.5 },
+            { label: "2026/05", approved: 18, rejected: 9, viewed: 5, sent: 1.5 },
+            { label: "2026/06", approved: 35, rejected: 29, viewed: 23, sent: 9 },
+            { label: "2026/07", approved: 33, rejected: 31, viewed: 15, sent: 8 },
+            { label: "2026/08", approved: 10, rejected: 8, viewed: 5, sent: 1.5 },
+            { label: "2026/09", approved: 33, rejected: 16, viewed: 14, sent: 8 }
+        ];
+
+        const barContainer = document.getElementById('bar-groups-container');
+        const barMaxY = 50; 
+        
+        const tooltip = document.createElement('div');
+        tooltip.className = 'chart-tooltip';
+        document.body.appendChild(tooltip);
+
+        barChartData.forEach(data => {
+            const groupWrapper = document.createElement('div');
+            groupWrapper.className = 'bar-group-wrapper';
+
+            const group = document.createElement('div');
+            group.className = 'bar-group';
+
+            const types = ['approved', 'rejected', 'viewed', 'sent'];
+            
+            types.forEach(type => {
+                const val = data[type];
+                const heightPct = (val / barMaxY) * 100;
+                
+                const bar = document.createElement('div');
+                bar.className = `bar-item ${type}`;
+                bar.style.height = `${heightPct}%`;
+                
+                bar.addEventListener('mouseenter', () => {
+                    const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
+                    
+                    tooltip.innerHTML = `<span style="color:#A3A3A3; font-size:10px;">${data.label}</span><br/><strong>${typeLabel}: ${val}</strong>`;
+                    tooltip.style.visibility = 'hidden';
+                    tooltip.classList.add('show');
+                    
+                    const rect = bar.getBoundingClientRect();
+                    tooltip.style.left = `${rect.left + window.scrollX + (rect.width / 2) - (tooltip.offsetWidth / 2)}px`;
+                    tooltip.style.top = `${rect.top + window.scrollY - tooltip.offsetHeight - 8}px`;
+                    
+                    tooltip.style.visibility = 'visible';
+                });
+                
+                bar.addEventListener('mouseleave', () => {
+                    tooltip.classList.remove('show');
+                });
+
+                group.appendChild(bar);
+            });
+
+            const xAxisLabel = document.createElement('div');
+            xAxisLabel.className = 'x-axis-label';
+            xAxisLabel.textContent = data.label;
+
+            groupWrapper.appendChild(group);
+            groupWrapper.appendChild(xAxisLabel);
+            barContainer.appendChild(groupWrapper);
+        });
+        
+        window.addEventListener('scroll', () => {
+            tooltip.classList.remove('show');
+        });
+    });
+</script>
+</body>
+</html>

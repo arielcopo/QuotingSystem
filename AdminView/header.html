@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Builders Signs</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* === Global Reset & Variables === */
+        :root {
+            --text-main: #171717;
+            --text-sub: #525252;
+            --text-light: #737373;
+            --bg-body: #FFFFFF;
+            --bg-gray: #FAFAFA;
+            --border-light: #E5E5E5;
+            --border-dark: #D4D4D4;
+            --brand-yellow: #FFCC00;
+            --brand-dark: #332900;
+            --brand-red: #DC2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button, input { font-family: inherit; outline: none; border: none; background: none; }
+        button { cursor: pointer; }
+
+        /* === Layout Containers === */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* === Header === */
+        .header {
+            border-bottom: 1px solid var(--border-light);
+            background: var(--bg-body);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .logo {
+            height: 30px;
+            width: auto;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-main);
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent;
+        }
+
+        .nav-item i { font-size: 20px; }
+        .nav-item.active { 
+            border-bottom-color: var(--text-main); 
+            border-bottom: 1px dashed var(--text-main);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .global-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            width: 187px;
+            height: 30px;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .global-search input {
+            font-size: 12px;
+            color: var(--text-main);
+            width: 100%;
+        }
+        .global-search input::placeholder { color: var(--text-light); }
+
+        .divider-vertical {
+            width: 1px;
+            height: 30px;
+            background-color: var(--border-light);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--brand-yellow);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        /* === Dropdown Global === */
+        .dropdown-wrapper { position: relative; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            background: var(--bg-body);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            box-shadow: 0px 12px 16px -4px rgba(0, 0, 0, 0.08);
+            z-index: 100;
+            min-width: 100%;
+            padding: 4px 0;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-item {
+            padding: 8px 14px;
+            font-size: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        .dropdown-item:hover { background: var(--bg-gray); }
+
+        /* === Main Content Placeholder === */
+        .main-content {
+            margin-top: 32px; 
+            padding-bottom: 64px;
+        }
+
+        /* === Responsive Styles === */
+        @media (max-width: 1024px) {
+            .header-inner { 
+                flex-direction: column; 
+                height: auto; 
+                padding: 16px 40px; 
+                gap: 0; 
+                align-items: stretch; 
+            }
+            .nav-left { 
+                width: 100%; 
+                flex-wrap: wrap; 
+                justify-content: space-between; 
+                gap: 16px; 
+            }
+            .mobile-menu-btn { 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+            }
+            .main-nav { 
+                display: none; 
+                width: 100%; 
+                flex-direction: column; 
+                align-items: flex-start; 
+                gap: 16px; 
+                padding-top: 16px;
+                padding-bottom: 16px; 
+                border-top: 1px solid var(--border-light); 
+            }
+            .main-nav.show { display: flex; }
+            
+            .nav-right { 
+                display: none; 
+                width: 100%; 
+                flex-direction: column; 
+                align-items: flex-start; 
+                gap: 16px; 
+                padding-top: 0; 
+                margin-top: 0; 
+            }
+            .nav-right.show { display: flex; }
+            
+            .global-search { width: 100%; }
+            .global-search input { width: 100%; }
+            .divider-vertical { display: none; }
+        }
+
+        @media (max-width: 375px) {
+            .container { padding: 0 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="container header-inner">
+        <div class="nav-left">
+            <a href="dashboard.html">
+                <img src="https://builderssigns.com.au/wp-content/uploads/2026/06/Dark-and-Yellow-Landscape-2.svg" alt="Builders Signs" class="logo">
+            </a>
+            
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Menu">
+                <i class="ph ph-list"></i>
+            </button>
+
+            <nav class="main-nav" id="main-nav">
+                <!-- Set "Dashboard" as the active tab for your new view -->
+                <a href="dashboard.html" class="nav-item active"><i class="ph ph-chart-bar"></i> Dashboard</a>
+                <a href="proposal.html" class="nav-item"><i class="ph ph-envelope-simple"></i> Proposal</a>
+                <a href="#" class="nav-item"><i class="ph ph-users"></i> Clients</a>
+                <a href="#" class="nav-item"><i class="ph ph-layout"></i> Templates</a>
+                <a href="#" class="nav-item"><i class="ph ph-squares-four"></i> Themes</a>
+                <a href="#" class="nav-item"><i class="ph ph-gear"></i> Accounts</a>
+            </nav>
+        </div>
+        
+        <div class="nav-right" id="nav-right">
+            <div class="global-search">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="divider-vertical"></div>
+            
+            <div class="dropdown-wrapper">
+                <div class="user-profile" data-dropdown-toggle="user-dropdown">
+                    <div class="user-avatar"></div>
+                    <div class="user-info">
+                        <span>Marcus Bawden</span>
+                        <i class="ph ph-caret-down"></i>
+                    </div>
+                </div>
+                <div class="dropdown-menu" id="user-dropdown">
+                    <div class="dropdown-item">My Profile</div>
+                    <div class="dropdown-item">Logout</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container main-content">
+    <!-- Blank slate for your Dashboard content -->
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // === Shared Dropdown Logic ===
+        const toggles = document.querySelectorAll('[data-dropdown-toggle]');
+        
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation(); 
+                
+                const targetId = this.getAttribute('data-dropdown-toggle');
+                const targetMenu = document.getElementById(targetId);
+                
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu !== targetMenu) {
+                        menu.classList.remove('show');
+                    }
+                });
+
+                if (targetMenu) {
+                    targetMenu.classList.toggle('show');
+                }
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown-wrapper')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+
+        // === Mobile Menu Logic ===
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mainNav = document.getElementById('main-nav');
+        const navRight = document.getElementById('nav-right');
+
+        if (mobileMenuBtn && mainNav && navRight) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mainNav.classList.toggle('show');
+                navRight.classList.toggle('show');
+                
+                const icon = mobileMenuBtn.querySelector('i');
+                if (mainNav.classList.contains('show')) {
+                    icon.classList.replace('ph-list', 'ph-x');
+                } else {
+                    icon.classList.replace('ph-x', 'ph-list');
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

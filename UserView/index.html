@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction - Quotation Proposal - Builders Signs</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* === Global Reset === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFFFFF;
+            color: #171717;
+            overflow-x: hidden;
+        }
+
+        .ph-thin {
+            -webkit-text-stroke: 0.5px currentColor;
+        }
+
+        /* === Navigation Header === */
+        .header-wrapper {
+            width: 100%;
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #E5E5E5;
+        }
+
+        .header-inner {
+            max-width: 1440px; 
+            margin: 0 auto;
+            padding: 26px 40px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo {
+            width: 201px; 
+            height: auto;
+        }
+
+        .header-title {
+            font-size: 18px; 
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 4.3px;
+            color: #171717;
+        }
+
+        .burger-menu {
+            display: none;
+            font-size: 32px; 
+            cursor: pointer;
+            color: #171717;
+        }
+
+        /* === Main Layout Structure === */
+        .main-container {
+            max-width: 1440px; 
+            margin: 0 auto;
+            display: flex;
+            min-height: calc(100vh - 96px);
+        }
+
+        /* === Left Navigation === */
+        .sidebar {
+            width: 100%;
+            max-width: 320px; 
+            padding: 40px 0 40px 40px; 
+            border-right: 1px solid #E5E5E5;
+            display: flex;
+            flex-direction: column;
+            gap: 18px; 
+            flex-shrink: 0;
+            background-color: #FFFFFF;
+        }
+
+        .nav-item {
+            font-size: 18px; 
+            font-weight: 600;
+            line-height: 28px; 
+            color: #171717;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .nav-item.active {
+            text-decoration: underline;
+            text-decoration-color: #D2D2D2;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 50%;
+        }
+
+        /* === Right Content === */
+        .right-content {
+            width: 100%;
+            max-width: 1120px; 
+            padding: 40px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+        }
+
+        /* === Card Component === */
+        .card {
+            width: 100%;
+            max-width: 1048px; 
+            min-height: 646px; 
+            background-color: #332900;
+            border-radius: 35px; 
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Yellow Background Arch */
+        .card-yellow-bg {
+            position: absolute;
+            bottom: 0;
+            left: -10%;
+            width: 120%;
+            height: 352px; 
+            background-color: #FFCC00;
+            border-top-left-radius: 50% 100%;
+            border-top-right-radius: 50% 100%;
+            z-index: 1;
+        }
+
+        /* Card Inner Content */
+        .card-inner {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            padding: 60px 85px; 
+            flex-grow: 1;
+        }
+
+        .card-top {
+            display: flex;
+            flex-direction: row; /* Strict 2 Columns for Desktop & Tablet */
+            flex-wrap: nowrap; 
+            justify-content: space-between;
+            gap: 32px; 
+        }
+
+        .company-info, .client-info {
+            display: flex;
+            flex-direction: column;
+            /* gap: 32px;  */
+            flex: 1; 
+            min-width: 0; 
+        }
+
+        .company-info {
+          gap: 36px;
+
+        }
+        
+        .client-info {
+          gap: 46px;
+
+        }
+
+        .card-logo {
+            width: 100%;
+            max-width: 312px; 
+            height: auto;
+        }
+
+        .client-info h2 {
+            font-size: 36px; 
+            font-weight: 700;
+            color: #FFFFFF;
+            line-height: 1.2;
+            margin-top: 10px;
+        }
+
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; 
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px; 
+            color: #FFFFFF;
+            font-size: 18px; 
+            font-weight: 400;
+            line-height: 1.5;
+            word-break: break-word; 
+        }
+
+        .contact-item i {
+            font-size: 24px; 
+            flex-shrink: 0;
+        }
+
+        .card-bottom {
+            text-align: center;
+            margin-top: auto;
+            padding-bottom: 30px; 
+            padding-top: 48px;
+        }
+
+        .card-title {
+            color: #332900;
+            font-size: 55px; 
+            font-weight: 700;
+            line-height: 1.25;
+            max-width: 600px; 
+            margin: 0 auto;
+        }
+
+        /* === Arrow Down Element === */
+        .arrow-down-container {
+            margin-top: 40px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .arrow-down-container i {
+            font-size: 40px; 
+            color: #171717;
+        }
+
+        /* =======================================================
+           TABLET BREAKPOINT (768px max) 
+           - Sidebar hides, Burger Menu shows.
+           - Card maintains 2 Columns.
+        ======================================================= */
+        @media (max-width: 768px) {
+            .header-inner {
+                padding: 20px 30px; 
+            }
+
+            .burger-menu {
+                display: block;
+            }
+
+            .header-title {
+                display: none; 
+            }
+
+            .main-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                max-width: 100%;
+                padding: 0 30px;
+                border-right: none;
+                border-bottom: 1px solid #E5E5E5;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .sidebar.active {
+                max-height: 320px;
+                padding: 30px;
+                opacity: 1;
+            }
+
+            .right-content {
+                padding: 40px; 
+            }
+
+            .card-inner {
+                padding: 40px 40px 0 40px; 
+            }
+
+            .card-yellow-bg {
+                height: 256px; 
+            }
+
+            .card-bottom {
+                height: 256px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding-bottom: 20px;
+            }
+
+            /* Tablet Custom Font & Logo Sizes (Edit these px as needed) */
+            .client-info h2 { font-size: 28px; }
+            .contact-item { font-size: 15px; }
+            .card-title { font-size: 38px; }
+            .card-logo { max-width: 260px; }
+        }
+
+        /* =======================================================
+           MOBILE BREAKPOINT (375px max) 
+           - Card shifts to 1 Stacked Column.
+        ======================================================= */
+        @media (max-width: 375px) {
+            .right-content {
+                padding: 20px; 
+            }
+
+            .card-inner {
+                padding: 40px 24px 0 24px; 
+            }
+
+            /* Triggers the 1 column layout */
+            .card-top {
+                flex-direction: column; 
+                gap: 48px; 
+            }
+
+            .company-info, .client-info {
+                width: 100%;
+                gap: 20px;
+            }
+
+            .card-yellow-bg {
+                height: 180px;
+            }
+
+            .card-bottom {
+                height: 200px;
+            }
+
+            /* Mobile Custom Font & Logo Sizes (Edit these px as needed) */
+            .client-info h2 { font-size: 24px; }
+            .contact-item { font-size: 14px; }
+            .card-title { font-size: 24px; line-height: 32px; }
+            .card-logo { max-width: 220px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <header class="header-wrapper">
+        <div class="header-inner">
+            <img src="https://builderssigns.com.au/wp-content/uploads/2026/06/Dark-and-Yellow-Landscape-2.svg" alt="Builders Signs" class="header-logo">
+            <div class="header-title">Quotation Proposal</div>
+            <!-- Burger Icon -->
+            <i class="ph-thin ph-list burger-menu" onclick="toggleSidebar()"></i>
+        </div>
+    </header>
+
+    <div class="main-container">
+        
+        <!-- Left Navigation -->
+        <nav class="sidebar" id="mobile-sidebar">
+            <a href="#" class="nav-item active">Introduction</a>
+            <a href="#" class="nav-item">About Builders Signs</a>
+            <a href="#" class="nav-item">Banner Mesh</a>
+            <a href="#" class="nav-item">Quote</a>
+            <a href="#" class="nav-item">Terms</a>
+        </nav>
+
+        <!-- Right Content Area -->
+        <main class="right-content">
+            
+            <!-- Proposal Card -->
+            <div class="card">
+                <!-- Geometrical Background Engine -->
+                <div class="card-yellow-bg"></div>
+
+                <!-- Card Content Layer -->
+                <div class="card-inner">
+                    <div class="card-top">
+                        
+                        <!-- Left Info / 1st Column (Dark Background) -->
+                        <div class="company-info">
+                            <!-- Logo URL (White Text) -->
+                            <img src="https://builderssigns.com.au/wp-content/uploads/2026/08/Dark-and-Yellow-Landscape-2.svg" alt="Builders Signs" class="card-logo">
+                            <div class="contact-list">
+                                <div class="contact-item"><i class="ph-thin ph-globe"></i> www.builderssigns.au.com</div>
+                                <div class="contact-item"><i class="ph-thin ph-phone"></i> 1800 574 155</div>
+                                <div class="contact-item"><i class="ph-thin ph-envelope-simple"></i> sales@builderssigns.com.au</div>
+                            </div>
+                        </div>
+
+                        <!-- Right Info / 2nd Column (Dark Background) -->
+                        <div class="client-info">
+                            <h2>Client Information</h2>
+                            <div class="contact-list">
+                                <div class="contact-item"><i class="ph-thin ph-user"></i> John Doe</div>
+                                <div class="contact-item"><i class="ph-thin ph-phone"></i> 1800 234 3245</div>
+                                <div class="contact-item"><i class="ph-thin ph-envelope-simple"></i> info@johndoe.com.au</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Bottom Title Layer (Yellow Background) -->
+                    <div class="card-bottom">
+                        <h1 class="card-title">Making Banner Mesh Print Affordable</h1>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Arrow Down Icon Below Card -->
+            <div class="arrow-down-container">
+                <i class="ph-thin ph-arrow-down"></i>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Mobile Navigation Script -->
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mobile-sidebar');
+            sidebar.classList.toggle('active');
+        }
+    </script>
+
+</body>
+</html>
