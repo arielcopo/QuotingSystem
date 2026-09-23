@@ -807,7 +807,7 @@
                 </div>
 
                 <div class="table-row">
-                    <div class="col-name">Atlas Events</div>
+                    <div class="col-name"><a href="proposal_1_EditQuote.html"> Atlas Events </a></div>
                     <div class="col-rows">0</div>
                     <div class="col-total">0.00</div>
                     <div class="col-actions">
@@ -817,7 +817,7 @@
                 </div>
 
                 <div class="table-row">
-                    <div class="col-name">Price List</div>
+                    <div class="col-name"><a href="proposal_1_EditQuote.html"> Price List </a></div>
                     <div class="col-rows">79</div>
                     <div class="col-total">15,814.00</div>
                     <div class="col-actions">
@@ -911,7 +911,7 @@
     </div>
 </div>
 
-<!-- === Modal Overlay: Clone Template === -->
+<!-- === Modal Overlay: Clone Template (Left Side) === -->
 <div class="modal-overlay" id="cloneModal">
     <div class="modal-box modal-box-sm">
         <div class="modal-header-section">
@@ -928,7 +928,7 @@
     </div>
 </div>
 
-<!-- === Modal Overlay: Delete Template === -->
+<!-- === Modal Overlay: Delete Template (Left Side) === -->
 <div class="modal-overlay" id="deleteModal">
     <div class="modal-box modal-box-sm">
         <div class="modal-header-section">
@@ -941,6 +941,40 @@
         <div class="modal-actions">
             <button class="btn btn-cancel" onclick="closeDeleteModal()">No</button>
             <button class="btn btn-danger" onclick="confirmDelete()">Yes</button>
+        </div>
+    </div>
+</div>
+
+<!-- === Modal Overlay: Clone Pricing (Right Side) === -->
+<div class="modal-overlay" id="clonePricingModal">
+    <div class="modal-box modal-box-sm">
+        <div class="modal-header-section">
+            <div class="icon-wrapper"><i class="ph ph-copy"></i></div>
+            <div>
+                <h2 class="modal-title">Clone Pricing</h2>
+                <div class="modal-desc">Do you really want to clone this pricing?</div>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-cancel" onclick="closeClonePricingModal()">No</button>
+            <button class="btn btn-primary" onclick="confirmClonePricing()">Yes</button>
+        </div>
+    </div>
+</div>
+
+<!-- === Modal Overlay: Delete Pricing (Right Side) === -->
+<div class="modal-overlay" id="deletePricingModal">
+    <div class="modal-box modal-box-sm">
+        <div class="modal-header-section">
+            <div class="icon-wrapper danger"><i class="ph ph-trash"></i></div>
+            <div>
+                <h2 class="modal-title">Delete Pricing</h2>
+                <div class="modal-desc">Do you really want to delete this pricing? This action is not reversible.</div>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-cancel" onclick="closeDeletePricingModal()">No</button>
+            <button class="btn btn-danger" onclick="confirmDeletePricing()">Yes</button>
         </div>
     </div>
 </div>
@@ -1085,7 +1119,7 @@
         closeSettingsModal();
     }
 
-    // === Clone & Delete Logic ===
+    // === Clone & Delete Logic (Left Side - Template Cards) ===
     let targetCardForAction = null;
 
     function openCloneModal(card) {
@@ -1103,7 +1137,6 @@
     function confirmClone() {
         if (targetCardForAction) {
             const clonedCard = targetCardForAction.cloneNode(true);
-            // Append the cloned card directly after the targeted card
             targetCardForAction.parentNode.insertBefore(clonedCard, targetCardForAction.nextSibling);
         }
         closeCloneModal();
@@ -1126,6 +1159,48 @@
             targetCardForAction.remove();
         }
         closeDeleteModal();
+    }
+
+    // === Clone & Delete Logic (Right Side - Pricing Templates) ===
+    let targetPricingRowForAction = null;
+
+    function openClonePricingModal(row) {
+        targetPricingRowForAction = row;
+        document.getElementById('clonePricingModal').classList.add('show-modal');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeClonePricingModal() {
+        document.getElementById('clonePricingModal').classList.remove('show-modal');
+        document.body.style.overflow = '';
+        targetPricingRowForAction = null;
+    }
+
+    function confirmClonePricing() {
+        if (targetPricingRowForAction) {
+            const clonedRow = targetPricingRowForAction.cloneNode(true);
+            targetPricingRowForAction.parentNode.insertBefore(clonedRow, targetPricingRowForAction.nextSibling);
+        }
+        closeClonePricingModal();
+    }
+
+    function openDeletePricingModal(row) {
+        targetPricingRowForAction = row;
+        document.getElementById('deletePricingModal').classList.add('show-modal');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDeletePricingModal() {
+        document.getElementById('deletePricingModal').classList.remove('show-modal');
+        document.body.style.overflow = '';
+        targetPricingRowForAction = null;
+    }
+
+    function confirmDeletePricing() {
+        if (targetPricingRowForAction) {
+            targetPricingRowForAction.remove();
+        }
+        closeDeletePricingModal();
     }
 
     // === Drag and Drop Logic ===
@@ -1188,24 +1263,36 @@
     // === Shared Global Setup ===
     document.addEventListener('DOMContentLoaded', () => {
         
-        // Global Click Listener for dynamically added cards
+        // Global Click Listener for dynamically added elements
         document.addEventListener('click', function(e) {
-            // Check for Settings click
+            // LEFT SIDE: Settings click
             if (e.target.classList.contains('ph-gear-six')) {
                 const card = e.target.closest('.template-card');
                 if (card) openSettingsModal(card);
             }
 
-            // Check for Clone click - strictly target icons inside .template-card-icons to avoid Right Table
+            // LEFT SIDE: Clone click - strictly target icons inside .template-card-icons
             if (e.target.classList.contains('ph-copy') && e.target.closest('.template-card-icons')) {
                 const card = e.target.closest('.template-card');
                 if (card) openCloneModal(card);
             }
 
-            // Check for Delete click - strictly target icons inside .template-card-icons to avoid Right Table
+            // LEFT SIDE: Delete click - strictly target icons inside .template-card-icons
             if (e.target.classList.contains('ph-trash') && e.target.closest('.template-card-icons')) {
                 const card = e.target.closest('.template-card');
                 if (card) openDeleteModal(card);
+            }
+
+            // RIGHT SIDE: Clone Pricing click - strictly target icons inside .col-actions
+            if (e.target.classList.contains('ph-copy') && e.target.closest('.col-actions')) {
+                const row = e.target.closest('.table-row');
+                if (row) openClonePricingModal(row);
+            }
+
+            // RIGHT SIDE: Delete Pricing click - strictly target icons inside .col-actions
+            if (e.target.classList.contains('ph-trash') && e.target.closest('.col-actions')) {
+                const row = e.target.closest('.table-row');
+                if (row) openDeletePricingModal(row);
             }
         });
 
@@ -1220,6 +1307,8 @@
                     if (this.id === 'settingsModal') closeSettingsModal();
                     if (this.id === 'cloneModal') closeCloneModal();
                     if (this.id === 'deleteModal') closeDeleteModal();
+                    if (this.id === 'clonePricingModal') closeClonePricingModal();
+                    if (this.id === 'deletePricingModal') closeDeletePricingModal();
                 }
             });
         });
